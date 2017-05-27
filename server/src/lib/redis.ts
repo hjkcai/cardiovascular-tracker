@@ -12,7 +12,7 @@ client.on('error', (err: any) => {
 
 export default client
 
-export function getRedis (key: string) {
+export function get (key: string) {
   return new Promise<any>((resolve, reject) => {
     client.get(key, (err, result) => {
       if (err) reject(err)
@@ -21,9 +21,10 @@ export function getRedis (key: string) {
   })
 }
 
-export function setRedis (key: string, value: any) {
+export function set (key: string, value: any, ...args: any[]) {
   return new Promise<void>((resolve, reject) => {
-    client.set(key, JSON.stringify(value), err => {
+
+    client.set(key, JSON.stringify(value), ...args, (err: Error) => {
       if (err) reject(err)
       else resolve()
     })
