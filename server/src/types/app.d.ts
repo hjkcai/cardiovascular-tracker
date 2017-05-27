@@ -22,3 +22,12 @@ declare interface WechatUserInfo {
       timestamp: number
   }
 }
+
+/** 从微信服务器上取得的原始 session 数据 */
+declare interface WechatSession {
+  openid: string,
+  session_key: string,
+  expires_in: number,
+  errcode: number,
+  errmsg: string
+}
