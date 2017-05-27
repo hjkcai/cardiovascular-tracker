@@ -8,5 +8,9 @@ module.exports = {
     uri: 'mongodb://localhost'
   },
   logs: path.join(__dirname, 'logs'),
-  port: 3000
+  port: 3000,
+  wechat: {
+    appId: '',
+    appSecret: ''
+  }
 }
