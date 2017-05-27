@@ -1,0 +1,13 @@
+<template>
+  <view id="index"></view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+  }
+</script>
+
+<style lang="less">
+</style>
