@@ -11,7 +11,7 @@ const routes = glob.sync(path.join(__dirname, '!(index).js'))
 
 // 逐个加入主路由中
 for (const route of routes) {
-  const subrouter: Router | null = require(route)
+  const subrouter: Router | null = require(route).default
   if (subrouter instanceof Router) {
     router.use(subrouter.routes())
   }
