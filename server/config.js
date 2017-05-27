@@ -9,6 +9,7 @@ module.exports = {
   },
   logs: path.join(__dirname, 'logs'),
   port: 3000,
+  secret: '',
   wechat: {
     appId: '',
     appSecret: ''
