@@ -10,6 +10,6 @@ import LoggerMiddleware from './lib/middlewares/logger'
 const app = new Koa()
 app.use(LoggerMiddleware)
 app.use(ApiResponserMiddleware)
-app.use(router.routes())
+app.use(router.prefix('/api').routes())
 
 export default app
