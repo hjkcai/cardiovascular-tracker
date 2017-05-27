@@ -19,6 +19,7 @@
     "@types/log4js": "^0.0.32",
     "@types/mongoose": "^4.7.12",
     "@types/node": "^7.0.18",
+    "@types/redis": "^0.12.36",
     "axios": "^0.16.1",
     "glob": "^7.1.2",
     "jsonwebtoken": "^7.4.1",
@@ -27,7 +28,8 @@
     "koa-jwt": "^3.2.2",
     "koa-router": "^7.2.0",
     "log4js": "^1.1.1",
-    "mongoose": "^4.10.2"
+    "mongoose": "^4.10.2",
+    "redis": "^2.7.1"
   },
   "devDependencies": {
     "tslint": "^5.2.0",
