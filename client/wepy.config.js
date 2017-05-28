@@ -23,7 +23,7 @@ module.exports = {
   plugins: {
     axios: {},
     replace: {
-      filter: /./,
+      filter: /\.js$/,
       config: {
         find: 'API_HOST',
         replace: 'localhost'
