@@ -42,5 +42,8 @@ jspm_packages
 # Compiled files
 dist
 
+# wepy cache
+.wepycache
+
 # Private files
 ssl
