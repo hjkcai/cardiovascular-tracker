@@ -31,3 +31,11 @@ declare interface WechatSessionRaw {
   errcode: number,
   errmsg: string
 }
+
+/** 在 redis 中储存的 session 数据 */
+declare interface WechatSession {
+  id: string,
+  openid: string,
+  sessionKey: string,
+  salt: string
+}
