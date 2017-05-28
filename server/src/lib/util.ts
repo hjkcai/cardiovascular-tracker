@@ -12,11 +12,12 @@ export function dumpHttpRequest (ctx: Context) {
     return arr[i] + ': ' + arr[i + 1]
   }).filter(i => i).join('\n')
 
-  if (ctx.body != null) {
+  const data = ctx.request.body
+  if (data != null) {
     result += '\n\n'
-    if (typeof ctx.body === 'object') {
-      result += JSON.stringify(ctx.body)
-    } else result += ctx.body
+    if (typeof data === 'object') {
+      result += JSON.stringify(data)
+    } else result += data
   }
 
   return result
