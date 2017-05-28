@@ -21,25 +21,34 @@ router.post('login', async (ctx, next) => {
   }
 
   const data: LoginData = ctx.request.body
-  const session = await wechat.getSession(data.code)
-  const userinfo = await wechat.decodeUserInfo(session.session_key, data.userinfo)
+  const wechatSession = await wechat.getSession(data.code)
+  const userinfo = await wechat.decodeUserInfo(wechatSession.session_key, data.userinfo)
 
   // 保存用户信息
   await User.update({ _id: userinfo.openId }, { $set: userinfo }, { upsert: true })
 
-  // 生成并保存 3rd session
-  const newSession: WechatSession = {
-    id: '',
-    openid: session.openid,
-    sessionKey: session.session_key,
-    salt: randomString(6)
+  // 先读取是否有已经保存的 session
+  const serverSessionKey = wechatSession.openid + wechatSession.session_key
+  let serverSession: WechatSession | undefined = await redis.get(serverSessionKey)
+  if (serverSession == null) {
+    // 生成并保存新的 session
+    serverSession = {
+      id: '',
+      openid: wechatSession.openid,
+      sessionKey: wechatSession.session_key,
+      salt: randomString(6),
+      token: ''
+    }
+
+    serverSession.id = sha1(serverSessionKey + serverSession.salt)
+    serverSession.token = jwt.sign({ sub: serverSession.id }, config.secret, { expiresIn: wechatSession.expires_in })
+
+    await redis.set(serverSessionKey, serverSession, 'EX', wechatSession.expires_in)
+    await redis.set(serverSession.id, serverSession, 'EX', wechatSession.expires_in)
   }
 
-  newSession.id = sha1(newSession.openid + newSession.sessionKey + newSession.salt)
-  await redis.set(newSession.id, newSession, 'EX', session.expires_in)
-
   // 签发 jwt 并返回
-  ctx.result = jwt.sign({ sub: newSession.id }, config.secret, { expiresIn: session.expires_in })
+  ctx.result = serverSession.token
 })
 
 export default router

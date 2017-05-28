@@ -37,5 +37,6 @@ declare interface WechatSession {
   id: string,
   openid: string,
   sessionKey: string,
-  salt: string
+  salt: string,
+  token: string
 }
