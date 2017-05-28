@@ -18,8 +18,8 @@ declare interface WechatUserInfo {
   avatarUrl: string,
   unionId: string,
   watermark: {
-      appid: string,
-      timestamp: number
+    appid: string,
+    timestamp: number
   }
 }
 
