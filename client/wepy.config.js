@@ -26,7 +26,7 @@ module.exports = {
       filter: /\.js$/,
       config: {
         find: 'API_HOST',
-        replace: 'localhost'
+        replace: 'localhost:3000'
       }
     }
   }
