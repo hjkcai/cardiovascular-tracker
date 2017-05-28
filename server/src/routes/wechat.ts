@@ -20,7 +20,7 @@ router.post('login', async (ctx, next) => {
     userinfo: WechatUserInfoRaw
   }
 
-  const data: LoginData = ctx.body
+  const data: LoginData = ctx.request.body
   const session = await wechat.getSession(data.code)
   const userinfo = await wechat.decodeUserInfo(session.session_key, data.userinfo)
 
