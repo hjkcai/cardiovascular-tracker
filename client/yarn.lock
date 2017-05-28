@@ -3008,6 +3008,10 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "http://registry.npm.taobao.org/preserve/download/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
+pretty-data@^0.40.0:
+  version "0.40.0"
+  resolved "http://registry.npm.taobao.org/pretty-data/download/pretty-data-0.40.0.tgz#572aa8ea23467467ab94b6b5266a6fd9c8fddd72"
+
 private@^0.1.6:
   version "0.1.7"
   resolved "http://registry.npm.taobao.org/private/download/private-0.1.7.tgz#68ce5e8a1ef0a23bb570cc28537b5332aba63ef1"
@@ -3892,6 +3896,12 @@ wepy-plugin-imagemin@^1.5.2:
     imagemin "^5.2.2"
     imagemin-mozjpeg "^6.0.0"
     imagemin-pngquant "^5.0.0"
+
+wepy-plugin-replace@^1.5.6:
+  version "1.5.6"
+  resolved "http://registry.npm.taobao.org/wepy-plugin-replace/download/wepy-plugin-replace-1.5.6.tgz#c4e073a720ef3425d71601407cfd066821c64681"
+  dependencies:
+    pretty-data "^0.40.0"
 
 wepy-plugin-uglifyjs@^1.3.6:
   version "1.3.6"

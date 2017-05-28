@@ -7,9 +7,6 @@ module.exports = {
     less: {
       compress: true
     },
-    /*sass: {
-      outputStyle: 'compressed'
-    },*/
     babel: {
       sourceMap: true,
       presets: [
@@ -24,21 +21,22 @@ module.exports = {
     }
   },
   plugins: {
-    axios: {}
+    axios: {},
+    replace: {
+      filter: /./,
+      config: {
+        find: 'API_HOST',
+        replace: 'localhost'
+      }
+    }
   }
 }
 
 if (prod) {
-
-  delete module.exports.compilers.babel.sourcesMap;
-  // 压缩sass
-  // module.exports.compilers['sass'] = {outputStyle: 'compressed'}
-
-  // 压缩less
-  module.exports.compilers['less'] = {compress: true}
+  delete module.exports.compilers.babel.sourcesMap
 
   // 压缩js
-  module.exports.plugins = {
+  Object.assign(module.exports.plugins, {
     uglifyjs: {
       filter: /\.js$/,
       config: {
@@ -55,5 +53,5 @@ if (prod) {
         }
       }
     }
-  }
+  })
 }
