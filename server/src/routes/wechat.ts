@@ -1,5 +1,6 @@
 'use strict'
 
+import User from '../models/user'
 import * as jwt from 'jsonwebtoken'
 import * as redis from '../lib/redis'
 import * as Router from 'koa-router'
@@ -9,16 +10,24 @@ import { randomString, sha1 } from '../lib/util'
 const config = require('../../config')
 const router = new Router()
 
-// 微信登录 (wx.login 后执行)
+// 微信登录 (wx.login 和 wx.getUserinfo 后执行)
 router.post('login', async (ctx, next) => {
   interface LoginData {
     /** 微信登录获得的 code */
-    code: string
+    code: string,
+
+    /** 从微信获得的用户信息 */
+    userinfo: WechatUserInfoRaw
   }
 
   const data: LoginData = ctx.body
   const session = await wechat.getSession(data.code)
+  const userinfo = await wechat.decodeUserInfo(session.session_key, data.userinfo)
 
+  // 保存用户信息
+  await User.update({ _id: userinfo.openId }, { $set: userinfo }, { upsert: true })
+
+  // 生成并保存 3rd session
   const newSession: WechatSession = {
     id: '',
     openid: session.openid,
@@ -26,7 +35,6 @@ router.post('login', async (ctx, next) => {
     salt: randomString(6)
   }
 
-  // 生成 3rd session
   newSession.id = sha1(newSession.openid + newSession.sessionKey + newSession.salt)
   await redis.set(newSession.id, newSession, 'EX', session.expires_in)
 
