@@ -1,13 +1,25 @@
 'use strict'
 
 import app from './app'
-import { app as appLogger } from './lib/logger'
+import * as fs from 'fs'
 import * as http from 'http'
+import * as https from 'https'
+import { app as appLogger } from './lib/logger'
 
-// 创建服务器并启动
 const config = require('../config')
 const port = Number.parseInt(process.env.PORT || config.port || '3000')
-const server = http.createServer(app.callback())
+
+// 在开发环境下使用 https 服务器
+// 因为小程序一定要使用 https
+let server: http.Server | https.Server
+if (process.env.NODE_ENV === 'development') {
+  server = https.createServer({
+    key: fs.readFileSync(config.ssl.key),
+    cert: fs.readFileSync(config.ssl.cert)
+  }, app.callback())
+} else {
+  server = http.createServer(app.callback())
+}
 
 server.listen(port)
 server.on('listening', () => {
