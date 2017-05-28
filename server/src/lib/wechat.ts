@@ -24,7 +24,7 @@ export function decodeUserInfo (sessionKey: string, userinfo: WechatUserInfoRaw)
 
 /** 获得微信 session */
 export async function getSession (code: string) {
-  const session: WechatSession = (await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
+  const session: WechatSessionRaw = (await axios.get('https://api.weixin.qq.com/sns/jscode2session', {
     params: {
       appid: appId,
       secret: appSecret,
