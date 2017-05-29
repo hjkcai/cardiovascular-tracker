@@ -33,6 +33,10 @@ export default (async function AuthMiddleware (ctx, next) {
     if (tokenContent) {
       // 获取 session
       ctx.session = await session.get(tokenContent.sub)
+
+      // 额外保存 token 信息
+      ctx.state.user = tokenContent
+
       return next()
     }
   }
