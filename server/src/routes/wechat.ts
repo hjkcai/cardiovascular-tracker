@@ -25,9 +25,9 @@ router.post('login', async (ctx, next) => {
   await User.updateWechatUserInfo(userinfo)
 
   // 读取或生成 3rd session
-  let serverSession = await session.checkSession(wechatSession)
+  let serverSession = await session.get(wechatSession)
   if (serverSession == null) {
-    serverSession = await session.newSession(wechatSession)
+    serverSession = await session.generate(wechatSession)
   }
 
   // 返回 jwt token
