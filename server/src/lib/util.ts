@@ -59,3 +59,16 @@ export function randomString (length: number) {
 
   return result
 }
+
+/** 移除对象中 undefined 的属性 */
+export function removeUndefined (obj: any) {
+  if (obj != null && typeof obj === 'object') {
+    Object.keys(obj).forEach(key => {
+      if (obj[key] === undefined) {
+        delete obj[key]
+      }
+    })
+  }
+
+  return obj
+}
