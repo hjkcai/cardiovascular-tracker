@@ -23,26 +23,33 @@ function verify (token: string) {
   })
 }
 
-export default (async function AuthMiddleware (ctx, next) {
-  // 从 headers 中读取 token
-  const tokenMatchResult = (ctx.headers['Authorization'] as string).match(/^Bearer (.*)$/)
-  if (tokenMatchResult) {
-    // 验证 token 是否有效
-    const token = tokenMatchResult[1]
-    const tokenContent = await verify(token)
-    if (tokenContent) {
-      // 获取 session
-      const savedSession = await session.get(tokenContent.sub)
-      if (savedSession) {
-        ctx.session = savedSession
-      }
-
-      // 额外保存 token 信息
-      ctx.state.user = tokenContent
-
+export default function AuthMiddlewareFactory (skips: RegExp[]) {
+  return (async function AuthMiddleware (ctx, next) {
+    // 跳过符合 skips 规则的路由
+    if (skips.some(rule => rule.test(ctx.url))) {
       return next()
     }
-  }
 
-  throw new TokenAuthorizationError()
-}) as Middleware
+    // 从 headers 中读取 token
+    const tokenMatchResult = (ctx.headers['Authorization'] as string).match(/^Bearer (.*)$/)
+    if (tokenMatchResult) {
+      // 验证 token 是否有效
+      const token = tokenMatchResult[1]
+      const tokenContent = await verify(token)
+      if (tokenContent) {
+        // 获取 session
+        const savedSession = await session.get(tokenContent.sub)
+        if (savedSession) {
+          ctx.session = savedSession
+        }
+
+        // 额外保存 token 信息
+        ctx.state.user = tokenContent
+
+        return next()
+      }
+    }
+
+    throw new TokenAuthorizationError()
+  }) as Middleware
+}
