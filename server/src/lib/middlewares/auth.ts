@@ -32,7 +32,7 @@ export default (async function AuthMiddleware (ctx, next) {
     const tokenContent = await verify(token)
     if (tokenContent) {
       // 获取 session
-      ctx.state.session = await session.get(tokenContent.sub)
+      ctx.session = await session.get(tokenContent.sub)
       return next()
     }
   }
