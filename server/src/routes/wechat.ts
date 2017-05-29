@@ -1,7 +1,7 @@
 'use strict'
 
-import User from '../models/user'
 import * as jwt from 'jsonwebtoken'
+import * as User from '../models/user'
 import * as redis from '../lib/redis'
 import * as Router from 'koa-router'
 import * as wechat from '../lib/wechat'
@@ -25,7 +25,7 @@ router.post('login', async (ctx, next) => {
   const userinfo = await wechat.decodeUserInfo(wechatSession.session_key, data.userinfo)
 
   // 保存用户信息
-  await User.update({ _id: userinfo.openId }, { $set: userinfo }, { upsert: true })
+  await User.updateWechatUserInfo(userinfo)
 
   // 先读取是否有已经保存的 session
   const serverSessionKey = wechatSession.openid + wechatSession.session_key

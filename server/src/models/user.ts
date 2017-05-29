@@ -1,6 +1,7 @@
 'use strict'
 
 import db from '../lib/db'
+import { removeUndefined } from '../lib/util'
 import { Document, Schema } from 'mongoose'
 
 export interface User extends Document {
@@ -49,4 +50,22 @@ export const schema = new Schema({
   avatarUrl: String
 })
 
-export default db.model<User>('user', schema)
+const model = db.model<User>('user', schema)
+export default model
+
+/** 获取用户信息 */
+export function getUserInfo (openid: string): Promise<User> {
+  return model.findById(openid).then()
+}
+
+/** 修改用户信息 (只能修改不是从微信获取的用户信息) */
+export function setUserInfo (openid: string, { birthday, height, disease }: Partial<User>) {
+  return model.findByIdAndUpdate(openid, {
+    $set: removeUndefined({ birthday, height, disease })
+  })
+}
+
+/** 更新微信用户信息. 如果用户不存在则新建 */
+export function updateWechatUserInfo (userinfo: WechatUserInfo) {
+  return model.findByIdAndUpdate(userinfo.openId, { $set: userinfo }, { upsert: true })
+}
