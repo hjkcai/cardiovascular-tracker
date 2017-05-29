@@ -7,8 +7,12 @@ import { randomString, sha1 } from '../lib/util'
 const config = require('../../config')
 
 /** 检查 session 是否存在, 存在则返回 */
-export function checkSession (wechatSession: WechatSessionRaw): Promise<WechatSession | null> {
-  return redis.get(wechatSession.openid + wechatSession.session_key)
+export function checkSession (data: WechatSessionRaw | string): Promise<WechatSession | null> {
+  if (typeof data === 'string') {
+    return redis.get(data)
+  } else {
+    return redis.get(data.openid + data.session_key)
+  }
 }
 
 /** 新建一个 session */
