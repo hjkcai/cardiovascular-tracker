@@ -32,7 +32,10 @@ export default (async function AuthMiddleware (ctx, next) {
     const tokenContent = await verify(token)
     if (tokenContent) {
       // 获取 session
-      ctx.session = await session.get(tokenContent.sub)
+      const savedSession = await session.get(tokenContent.sub)
+      if (savedSession) {
+        ctx.session = savedSession
+      }
 
       // 额外保存 token 信息
       ctx.state.user = tokenContent
