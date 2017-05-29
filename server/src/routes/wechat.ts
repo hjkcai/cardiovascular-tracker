@@ -1,13 +1,10 @@
 'use strict'
 
-import * as jwt from 'jsonwebtoken'
 import * as User from '../models/user'
-import * as redis from '../lib/redis'
 import * as Router from 'koa-router'
 import * as wechat from '../lib/wechat'
-import { randomString, sha1 } from '../lib/util'
+import * as session from '../lib/session'
 
-const config = require('../../config')
 const router = new Router()
 
 // 微信登录 (wx.login 和 wx.getUserinfo 后执行)
@@ -27,27 +24,13 @@ router.post('login', async (ctx, next) => {
   // 保存用户信息
   await User.updateWechatUserInfo(userinfo)
 
-  // 先读取是否有已经保存的 session
-  const serverSessionKey = wechatSession.openid + wechatSession.session_key
-  let serverSession: WechatSession | undefined = await redis.get(serverSessionKey)
+  // 读取或生成 3rd session
+  let serverSession = await session.checkSession(wechatSession)
   if (serverSession == null) {
-    // 生成并保存新的 session
-    serverSession = {
-      id: '',
-      openid: wechatSession.openid,
-      sessionKey: wechatSession.session_key,
-      salt: randomString(6),
-      token: ''
-    }
-
-    serverSession.id = sha1(serverSessionKey + serverSession.salt)
-    serverSession.token = jwt.sign({ sub: serverSession.id }, config.secret, { expiresIn: wechatSession.expires_in })
-
-    await redis.set(serverSessionKey, serverSession, 'EX', wechatSession.expires_in)
-    await redis.set(serverSession.id, serverSession, 'EX', wechatSession.expires_in)
+    serverSession = await session.newSession(wechatSession)
   }
 
-  // 签发 jwt 并返回
+  // 返回 jwt token
   ctx.result = serverSession.token
 })
 
