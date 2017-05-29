@@ -5,6 +5,6 @@ declare module 'koa' {
     /** 自定义的 RESTful API 返回接口 */
     result?: any,
 
-    session?: WechatSession | null
+    session: WechatSession
   }
 }
