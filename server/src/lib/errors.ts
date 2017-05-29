@@ -16,16 +16,23 @@ export default class UserError extends Error {
   }
 }
 
+/** token 验证失败 */
+export class TokenAuthorizationError extends UserError {
+  constructor () {
+    super('Invalid token', 1, 401)
+  }
+}
+
 /** 微信用户信息验证失败 */
 export class WechatUserInfoError extends UserError {
   constructor () {
-    super('Invalid wechat userinfo', 1, 400)
+    super('Invalid wechat userinfo', 100, 400)
   }
 }
 
 /** 微信 session 获取失败 */
 export class WechatSessionError extends UserError {
   constructor (message: string) {
-    super(message, 2, 401)
+    super(message, 101, 401)
   }
 }
