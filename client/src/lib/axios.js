@@ -17,5 +17,5 @@ let token = ''
 export function getToken () { return token }
 export function setToken (newToken) {
   token = newToken
-  instance.defaults.headers.common['Authorization'] = 'Bearer ' + token
+  instance.defaults.headers['Authorization'] = 'Bearer ' + token
 }
