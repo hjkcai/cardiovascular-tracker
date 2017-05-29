@@ -31,7 +31,8 @@ export default function AuthMiddlewareFactory (skips: RegExp[]) {
     }
 
     // 从 headers 中读取 token
-    const tokenMatchResult = (ctx.headers['Authorization'] as string).match(/^Bearer (.*)$/)
+    const authorization: string = ctx.headers['authorization']
+    const tokenMatchResult = authorization && authorization.match(/^Bearer (.*)$/)
     if (tokenMatchResult) {
       // 验证 token 是否有效
       const token = tokenMatchResult[1]
