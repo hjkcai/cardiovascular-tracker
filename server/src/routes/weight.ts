@@ -10,11 +10,11 @@ const router = new Router()
 router.get('weight', async (ctx, next) => {
   interface WeightQuery {
     from: Date,
-    to: Date
+    to?: Date
   }
 
   const data: WeightQuery = ctx.query
-  data.from = validators.validateDate('from', data)
+  data.from = validators.validateDate('from', data, true)
   data.to = validators.validateDate('to', data)
 
   ctx.result = await Weight.getWeightRecords(ctx.session.openid, data.from, data.to)

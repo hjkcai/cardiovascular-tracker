@@ -14,9 +14,9 @@ router.get('userinfo', async (ctx, next) => {
 // 修改用户信息
 router.post('userinfo', async (ctx, next) => {
   interface UserInfoData {
-    birthday: Date,
-    height: number,
-    disease: string[]
+    birthday?: Date,
+    height?: number,
+    disease?: string[]
   }
 
   const data: UserInfoData = ctx.request.body
