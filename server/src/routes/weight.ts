@@ -32,7 +32,7 @@ router.post('weight', async (ctx, next) => {
   data.value = validators.validateNumber('value', data, true)
   data.date = validators.validateDate('date', data)
 
-  ctx.result = await Weight.addWeightRecord(ctx.session.openid, data.value, data.date)
+  ctx.result = (await Weight.addWeightRecord(ctx.session.openid, data.value, data.date))._id
 })
 
 // 删除某一天的体重记录
