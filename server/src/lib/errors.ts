@@ -36,3 +36,10 @@ export class WechatSessionError extends UserError {
     super(message, 101, 401)
   }
 }
+
+/** 无效的日期 */
+export class InvalidDateError extends UserError {
+  constructor (field: string, value: any) {
+    super(`Invalid date in ${field}: ${value}`, 102, 400)
+  }
+}
