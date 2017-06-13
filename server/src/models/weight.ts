@@ -33,3 +33,16 @@ export const schema = new Schema({
 })
 
 export const model = db.model<Weight>('weight', schema)
+
+/** 获取某用户某时间范围的体重记录 */
+export function getWeightRecords (openid: string, from: Date, to: Date = new Date()) {
+  let $gte = from
+  let $lte = to
+
+  if (from > to) {
+    $gte = to
+    $lte = from
+  }
+
+  return model.find({ openid, date: { $gte, $lte } }, { openid: false }).exec()
+}
