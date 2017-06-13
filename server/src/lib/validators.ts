@@ -27,6 +27,11 @@ export function validate<T> (
   transformer: Transformer<T> | null,
   validator: Validator<T> | null
 ) {
+  if (value == null) {
+    if (!throwIfFalsy) return value as T
+    else throw new InvalidUserInputError(field, value)
+  }
+
   const transformedValue: T = transformer ? transformer(value) : value
 
   if (
@@ -50,6 +55,6 @@ export function validateNumber (field: string, obj: any, throwIfFalsy: boolean =
 }
 
 /** 验证并转换数组型数据 */
-export function validateArray (field: string, obj: any) {
-  return validate<any[]>(field, obj[field], true, null, Array.isArray)
+export function validateArray (field: string, obj: any, throwIfFalsy: boolean = false) {
+  return validate<any[]>(field, obj[field], throwIfFalsy, null, Array.isArray)
 }
