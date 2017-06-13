@@ -32,5 +32,4 @@ export const schema = new Schema({
   }
 })
 
-const model = db.model<Weight>('weight', schema)
-export default model
+export const model = db.model<Weight>('weight', schema)

@@ -50,8 +50,7 @@ export const schema = new Schema({
   avatarUrl: String
 })
 
-const model = db.model<User>('user', schema)
-export default model
+export const model = db.model<User>('user', schema)
 
 /** 获取用户信息 */
 export function getUserInfo (openid: string) {
