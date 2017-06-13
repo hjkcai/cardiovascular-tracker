@@ -20,4 +20,18 @@ router.get('weight', async (ctx, next) => {
   ctx.result = await Weight.getWeightRecords(ctx.session.openid, data.from, data.to)
 })
 
+// 增加体重记录
+router.post('weight', async (ctx, next) => {
+  interface WeightData {
+    value: number,
+    date?: Date
+  }
+
+  const data: WeightData = ctx.request.body
+  data.value = validators.validateNumber('value', data, true)
+  data.date = validators.validateDate('date', data)
+
+  ctx.result = await Weight.addWeightRecord(ctx.session.openid, data.value, data.date)
+})
+
 export default router
