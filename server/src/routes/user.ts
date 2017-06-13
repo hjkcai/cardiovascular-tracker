@@ -16,7 +16,7 @@ router.post('userinfo', async (ctx, next) => {
   interface UserInfoData {
     birthday: Date,
     height: number,
-    disease: string,
+    disease: string[],
   }
 
   const data: UserInfoData = ctx.request.body

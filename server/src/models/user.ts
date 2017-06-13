@@ -15,7 +15,7 @@ export interface User extends Document {
   height: number | null,
 
   /** 疾病情况 */
-  disease: string,
+  disease: string[],
 
   // 从微信获得的信息
   nickName: string,
@@ -38,8 +38,8 @@ export const schema = new Schema({
     default: null
   },
   disease: {
-    type: String,
-    default: ''
+    type: [String],
+    default: []
   },
   nickName: String,
   gender: Number,
