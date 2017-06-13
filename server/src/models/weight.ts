@@ -43,7 +43,7 @@ export function getWeightRecords (openid: string, from: Date, to: Date = new Dat
     $lte = from
   }
 
-  return model.find({ openid, date: { $gte, $lte } }, { openid: false }).exec()
+  return model.find({ openid, date: { $gte, $lte } }, { openid: false }).sort({ date: -1 }).exec()
 }
 
 /** 删除某一天的体重记录 */
