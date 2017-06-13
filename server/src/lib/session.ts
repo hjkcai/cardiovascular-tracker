@@ -27,7 +27,7 @@ export async function generate (wechatSession: WechatSessionRaw) {
   }
 
   serverSession.id = sha1(serverSessionKey + serverSession.salt)
-  serverSession.token = jwt.sign({ sub: serverSession.id }, config.secret, { expiresIn: wechatSession.expires_in })
+  serverSession.token = jwt.sign({ sub: serverSession.id } as any, config.secret, { expiresIn: wechatSession.expires_in })
 
   await redis.set(serverSessionKey, serverSession, 'EX', wechatSession.expires_in)
   await redis.set(serverSession.id, serverSession, 'EX', wechatSession.expires_in)
