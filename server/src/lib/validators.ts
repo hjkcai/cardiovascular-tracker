@@ -54,7 +54,7 @@ export function validateDate (field: string, obj: any, throwIfFalsy: boolean = f
 
 /** 验证并转换数字型数据 */
 export function validateNumber (field: string, obj: any, throwIfFalsy: boolean = false) {
-  return validate(field, obj[field], throwIfFalsy, Number, v => !Number.isNaN(v))
+  return validate(field, obj[field], throwIfFalsy, Number, v => !Number.isNaN(v) && Number.isFinite(v))
 }
 
 /** 验证并转换数组型数据 */
