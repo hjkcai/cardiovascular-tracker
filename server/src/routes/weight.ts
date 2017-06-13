@@ -3,6 +3,7 @@
 import * as Router from 'koa-router'
 import * as Weight from '../models/weight'
 import * as validators from '../lib/validators'
+import { WeightRecordNotFoundError } from '../lib/errors'
 
 const router = new Router()
 
@@ -32,6 +33,16 @@ router.post('weight', async (ctx, next) => {
   data.date = validators.validateDate('date', data)
 
   ctx.result = await Weight.addWeightRecord(ctx.session.openid, data.value, data.date)
+})
+
+// 删除某一天的体重记录
+router.delete('weight', async (ctx, next) => {
+  const date = validators.validateDate('date', ctx.query, true)
+  if (!(await Weight.removeWeightRecord(ctx.session.openid, date))) {
+    throw new WeightRecordNotFoundError(date)
+  }
+
+  ctx.result = null
 })
 
 export default router

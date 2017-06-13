@@ -43,3 +43,10 @@ export class InvalidUserInputError extends UserError {
     super(`Invalid ${field}: ${value}`, 102, 400)
   }
 }
+
+/** 没有某一天的体重记录 */
+export class WeightRecordNotFoundError extends UserError {
+  constructor (date: Date) {
+    super('No weight records on ' + date.toString())
+  }
+}
