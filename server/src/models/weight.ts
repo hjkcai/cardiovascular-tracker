@@ -33,6 +33,7 @@ export const schema = new Schema({
 
 export const model = db.model<Weight>('weight', schema)
 
+// WARNING: 代码与 ./heart-state.ts getHeartStateRecords 重复
 /** 获取某用户某时间范围的体重记录 */
 export function getWeightRecords (openid: string, from: Date, to: Date = new Date()) {
   let $gte = from

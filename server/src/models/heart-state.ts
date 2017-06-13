@@ -60,3 +60,13 @@ export function getHeartStateRecords (openid: string, from: Date, to: Date = new
 
   return model.find({ openid, date: { $gte, $lte } }, { openid: false }).sort({ date: -1 }).exec()
 }
+
+/** 添加心率血压记录 */
+export function addHeartStateRecord (openid: string, { heartRate, systolic, diastolic, date }: Partial<HeartState>) {
+  return new model({ openid, heartRate, systolic, diastolic, date }).save()
+}
+
+/** 删除心率血压记录 */
+export function removeHeartStateRecord (_id: string) {
+  return model.findByIdAndRemove(_id).exec()
+}
