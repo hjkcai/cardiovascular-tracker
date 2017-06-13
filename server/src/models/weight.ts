@@ -46,3 +46,19 @@ export function getWeightRecords (openid: string, from: Date, to: Date = new Dat
 
   return model.find({ openid, date: { $gte, $lte } }, { openid: false }).exec()
 }
+
+/** 添加一条体重记录 */
+export async function addWeightRecord (openid: string, value: number, date: Date = new Date()) {
+  // 查找是否已有当天的记录
+  const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
+  const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)
+  const existingRecords = await getWeightRecords(openid, dayStart, dayEnd)
+
+  // 如果有, 删除所有记录
+  if (existingRecords.length > 0) {
+    await model.remove({ _id: { $in: existingRecords.map(r => r._id) } })
+  }
+
+  // 创建新记录
+  return new model({ openid, value, date }).save()
+}
