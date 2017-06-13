@@ -23,7 +23,7 @@ function verify (token: string) {
   })
 }
 
-export default function AuthMiddlewareFactory (skips: RegExp[]) {
+export default function AuthMiddlewareFactory (...skips: RegExp[]) {
   return (async function AuthMiddleware (ctx, next) {
     // 跳过符合 skips 规则的路由
     if (skips.some(rule => rule.test(ctx.url))) {

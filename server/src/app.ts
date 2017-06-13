@@ -13,7 +13,7 @@ const app = new Koa()
 app.use(LoggerMiddleware)
 app.use(bodyParser())
 app.use(ApiResponserMiddleware)
-app.use(AuthMiddleware([/\/login$/]))
+app.use(AuthMiddleware(/\/login$/))
 app.use(router.prefix('/api').routes())
 
 export default app
