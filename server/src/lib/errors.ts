@@ -47,6 +47,6 @@ export class InvalidUserInputError extends UserError {
 /** 没有某一天的体重记录 */
 export class WeightRecordNotFoundError extends UserError {
   constructor (date: Date) {
-    super('No weight records on ' + date.toString())
+    super('No weight records on ' + date.toString(), 103, 404)
   }
 }
