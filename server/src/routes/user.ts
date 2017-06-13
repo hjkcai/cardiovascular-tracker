@@ -2,7 +2,6 @@
 
 import * as User from '../models/user'
 import * as Router from 'koa-router'
-import * as session from '../lib/session'
 
 const router = new Router()
 

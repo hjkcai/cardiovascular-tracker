@@ -1,7 +1,6 @@
 'use strict'
 
 import db from '../lib/db'
-import { removeUndefined } from '../lib/util'
 import { Document, Schema } from 'mongoose'
 
 /** 体重记录 */
