@@ -12,7 +12,10 @@ export interface Validator<T> {
 
 /**
  * 验证某个值经过转换后是否符合某个条件.
- * 如果符合则返回这个值, 否则抛出异常
+ * 如果符合则返回这个值, 否则抛出异常.
+ *
+ * 注: 此函数有可能返回 undefined, 视 value 的值而定.
+ * 但为了方便使用, 让 typescript 认为此函数一定返回 T 类型的值而不会返回 undefined.
  *
  * @param field 要验证的值的名称 (用于显示在错误信息中)
  * @param value 要验证的值
@@ -27,7 +30,7 @@ export function validate<T> (
   transformer: Transformer<T> | null,
   validator: Validator<T> | null
 ) {
-  if (value == null) {
+  if (value === undefined) {
     if (!throwIfFalsy) return value as T
     else throw new InvalidUserInputError(field, value)
   }
