@@ -1,5 +1,8 @@
 <template>
-  <view id="add-button" class="{{ addClasses }}">
+  <view id="add-button" class="{{ addExpanded ? 'expanded' : '' }}">
+    <view class="add-color-shade"></view>
+    <view class="add-tap-shade" @tap="toggleExpanded"></view>
+    <view class="add-sub-buttons"></view>
     <button class="add-fab" @tap="toggleExpanded">
       <image src="../assets/images/ic_add_white_24px.svg"></image>
     </button>
@@ -14,16 +17,8 @@
       addExpanded: false
     }
 
-    computed = {
-      addClasses () {
-        const classes = []
-        if (this.addExpanded) classes.push('expanded')
-
-        return classes.join(' ')
-      }
-    }
-
     methods = {
+      // 切换子按钮的展开状态, 并显示展开动画
       toggleExpanded () {
         this.addExpanded = !this.addExpanded
       }
@@ -50,6 +45,43 @@
     image {
       width: $add-fab-icon-size;
       height: $add-fab-icon-size;
+      transition: transform $transition;
+      transform: $add-fab-icon-normal-rotate;
+    }
+  }
+
+  .add-color-shade, .add-tap-shade {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .add-color-shade {
+    background-color: $add-shade-background;
+    opacity: 0;
+    transition: $add-shade-transition;
+    pointer-events: none;
+  }
+
+  .add-tap-shade {
+    display: none;
+  }
+
+  #add-button {
+    &.expanded {
+      .add-color-shade {
+        opacity: $add-shade-expanded-opacity;
+      }
+
+      .add-tap-shade {
+        display: block;
+      }
+
+      .add-fab image {
+        transform: $add-fab-icon-expanded-rotate;
+      }
     }
   }
 </style>

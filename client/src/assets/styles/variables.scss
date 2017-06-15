@@ -11,6 +11,12 @@ $title-shadow-height: 2px;
 $font-size-classes: small, normal, large, x-large;
 $font-size-levels: 14px, 16px, 18px, 20px;
 
+// 常用的半透明黑色
+$transparent-black: rgba(0, 0, 0, 0.33);
+
+// 常用的过渡定义
+$transition: 0.33s ease;
+
 // 主页 ------------------------------------------------------------------------
 
 // 底部导航栏
@@ -30,3 +36,10 @@ $add-fab-icon-size: 32px;
 $add-fab-margin: 24px;
 $add-fab-shadow: 0 2px 6px rgba(0, 0, 0, 0.33);
 $add-fab-size: 56px;
+$add-fab-icon-normal-rotate: rotate(0deg);
+$add-fab-icon-expanded-rotate: rotate(135deg);
+
+$add-shade-background: $transparent-black;
+$add-shade-hidden-opacity: 0;
+$add-shade-expanded-opacity: 1;
+$add-shade-transition: opacity $transition;
