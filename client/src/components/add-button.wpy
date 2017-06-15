@@ -1,0 +1,54 @@
+<template>
+  <view id="add-button" class="{{ addClasses }}">
+    <button class="add-fab" @tap="toggleExpanded">
+      <image src="../assets/images/ic_add_white_24px.svg"></image>
+    </button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class DataViewer extends wepy.component {
+    data = {
+      addExpanded: false
+    }
+
+    computed = {
+      addClasses () {
+        const classes = []
+        if (this.addExpanded) classes.push('expanded')
+
+        return classes.join(' ')
+      }
+    }
+
+    methods = {
+      toggleExpanded () {
+        this.addExpanded = !this.addExpanded
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  .add-fab {
+    position: fixed;
+    right: $add-fab-margin;
+    width: $add-fab-size;
+    height: $add-fab-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $add-fab-color;
+    border-radius: 50%;
+    box-shadow: $add-fab-shadow;
+
+    image {
+      width: $add-fab-icon-size;
+      height: $add-fab-icon-size;
+    }
+  }
+</style>

@@ -1,37 +1,20 @@
 <template>
   <view id="data-viewer">
-    <view class="add-fab">
-      <image src="../assets/images/ic_add_white_24px.svg"></image>
-    </view>
+    <addbutton></addbutton>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import addbutton from './add-button'
 
   export default class DataViewer extends wepy.component {
-
+    components = {
+      addbutton
+    }
   }
 </script>
 
 <style lang="scss">
   @import '../assets/styles/variables';
-
-  .add-fab {
-    position: fixed;
-    right: $add-fab-margin;
-    width: $add-fab-size;
-    height: $add-fab-size;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $add-fab-color;
-    border-radius: 50%;
-    box-shadow: $add-fab-shadow;
-
-    image {
-      width: $add-fab-icon-size;
-      height: $add-fab-icon-size;
-    }
-  }
 </style>
