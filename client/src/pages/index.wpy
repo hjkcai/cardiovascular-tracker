@@ -1,8 +1,8 @@
 <template>
   <view id="index">
-    <view class="nav-shadow"></view>
+    <view class="title-shadow"></view>
     <view class="bottom-nav">
-      <view class="nav-item data">
+      <view class="nav-item data active">
         <view class="icon"></view>
         <view class="label">数据</view>
       </view>
@@ -20,40 +20,37 @@
   export default class Index extends wepy.page {}
 </script>
 
-<style lang="less">
-  #index {
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 56px;
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    border-top: 1px solid $bottom-nav-border;
+    box-shadow: $bottom-nav-shadow;
+
+    .nav-item {
+      @include bottom-nav-icons;
+      flex: 1;
       display: flex;
-      border-top: 1px solid #e0e0e0;
-      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+      align-items: center;
 
-      .nav-item {
-        flex: 1;
+      color: $bottom-nav-item-normal;
+      &.active { color: $bottom-nav-item-active; }
+
+      .icon {
+        margin: 6px 0 4px;
+      }
+
+      .label {
+        height: 16px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .icon {
-          width: 24px;
-          height: 24px;
-          margin-top: 6px;
-          margin-bottom: 4px;
-          background-image: url("data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGc+CiAgICA8cGF0aCBkPSJNMTIgMTJjMi4yMSAwIDQtMS43OSA0LTRzLTEuNzktNC00LTQtNCAxLjc5LTQgNCAxLjc5IDQgNCA0em0wIDJjLTIuNjcgMC04IDEuMzQtOCA0djJoMTZ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+CiAgPC9nPgogIDxnIHN0eWxlPSJ0cmFuc2Zvcm06dHJhbnNsYXRlWCgyNHB4KSI+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+CiAgICA8cGF0aCBkPSJNMTMgMi4wNXYzLjAzYzMuMzkuNDkgNiAzLjM5IDYgNi45MiAwIC45LS4xOCAxLjc1LS40OCAyLjU0bDIuNiAxLjUzYy41Ni0xLjI0Ljg4LTIuNjIuODgtNC4wNyAwLTUuMTgtMy45NS05LjQ1LTktOS45NXpNMTIgMTljLTMuODcgMC03LTMuMTMtNy03IDAtMy41MyAyLjYxLTYuNDMgNi02LjkyVjIuMDVjLTUuMDYuNS05IDQuNzYtOSA5Ljk1IDAgNS41MiA0LjQ3IDEwIDkuOTkgMTAgMy4zMSAwIDYuMjQtMS42MSA4LjA2LTQuMDlsLTIuNi0xLjUzQzE2LjE3IDE3Ljk4IDE0LjIxIDE5IDEyIDE5eiIvPgogIDwvZz4KPC9zdmc+");
-        }
-
-        .label {
-          height: 16px;
-          line-height: 16px;
-        }
-
-        &.data .icon {
-          background-position: 24px 0;
-        }
+        align-items: flex-end;
       }
     }
   }
