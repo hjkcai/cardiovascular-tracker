@@ -4,7 +4,7 @@ module.exports = {
   wpyExt: '.wpy',
   eslint: true,
   compilers: {
-    less: {
+    sass: {
       compress: true
     },
     babel: {
