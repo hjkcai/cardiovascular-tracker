@@ -13,8 +13,8 @@
           font-size: nth($font-size-levels, $index);
         }
 
-        .add-fab {
-          bottom: $add-fab-margin + nth($bottom-nav-height, $index);
+        .main {
+          bottom: nth($bottom-nav-height, $index);
         }
 
         .bottom-nav {

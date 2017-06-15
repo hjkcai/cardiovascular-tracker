@@ -35,8 +35,9 @@
   @import '../assets/styles/variables';
 
   .add-fab {
-    position: fixed;
+    position: absolute;
     right: $add-fab-margin;
+    bottom: $add-fab-margin;
     width: $add-fab-size;
     height: $add-fab-size;
     display: flex;
