@@ -1,5 +1,8 @@
 <template>
   <view id="index" class="normal">
+    <view class="main">
+      <dataviewer></dataviewer>
+    </view>
     <view class="bottom-nav">
       <view class="nav-item data active">
         <view class="icon"></view>
@@ -16,8 +19,13 @@
 
 <script>
   import wepy from 'wepy'
+  import dataviewer from '../components/data-viewer'
 
-  export default class Index extends wepy.page {}
+  export default class Index extends wepy.page {
+    components = {
+      dataviewer
+    }
+  }
 </script>
 
 <style lang="scss">
