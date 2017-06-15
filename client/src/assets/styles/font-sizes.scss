@@ -1,0 +1,21 @@
+@import './variables';
+
+@mixin font-size-defs ($target) {
+  @each $font-size-class in $font-size-classes {
+    $index: index($font-size-classes, $font-size-class);
+
+    // 首页
+    @if $target == index {
+      #index.#{$font-size-class} {
+        .bottom-nav {
+          height: nth($bottom-nav-height, $index);
+
+          .label {
+            height: nth($bottom-nav-label-height, $index);
+            font-size: nth($font-size-levels, $index);
+          }
+        }
+      }
+    }
+  }
+}

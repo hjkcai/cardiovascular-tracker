@@ -1,5 +1,5 @@
 <template>
-  <view id="index">
+  <view id="index" class="normal">
     <view class="title-shadow"></view>
     <view class="bottom-nav">
       <view class="nav-item data active">
@@ -22,13 +22,14 @@
 
 <style lang="scss">
   @import '../assets/styles/variables';
+  @import '../assets/styles/font-sizes';
+  @include font-size-defs(index);
 
   .bottom-nav {
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 56px;
     display: flex;
     border-top: 1px solid $bottom-nav-border;
     box-shadow: $bottom-nav-shadow;
@@ -40,15 +41,14 @@
       flex-direction: column;
       align-items: center;
 
-      color: $bottom-nav-item-normal;
-      &.active { color: $bottom-nav-item-active; }
+      color: $bottom-nav-item-color-normal;
+      &.active { color: $bottom-nav-item-color-active; }
 
       .icon {
-        margin: 6px 0 4px;
+        margin: $bottom-nav-icon-margin;
       }
 
       .label {
-        height: 16px;
         display: flex;
         align-items: flex-end;
       }

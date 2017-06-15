@@ -7,10 +7,18 @@ $primary: #d32f2f;
 $title-shadow: 0 0 6px black;
 $title-shadow-height: 2px;
 
+// 可用的字体大小级别
+$font-size-classes: small, normal, large, x-large;
+$font-size-levels: 0.9em, 1em, 1.1em, 1.25em;
+
 // 主页 ------------------------------------------------------------------------
 
 // 底部导航栏
 $bottom-nav-border: #e0e0e0;
 $bottom-nav-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-$bottom-nav-item-active: $primary;
-$bottom-nav-item-normal: #757575;
+$bottom-nav-item-color-active: $primary;
+$bottom-nav-item-color-normal: #757575;
+$bottom-nav-icon-margin: 6px 0 4px;
+
+$bottom-nav-height: 56px, 56px, 64px, 64px;
+$bottom-nav-label-height: 16px, 16px, 24px, 24px;
