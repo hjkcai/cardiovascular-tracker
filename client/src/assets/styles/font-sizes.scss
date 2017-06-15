@@ -7,12 +7,14 @@
     // 首页
     @if $target == index {
       #index.#{$font-size-class} {
+        font-size: nth($font-size-levels, $index);
+
+        button, input {
+          font-size: nth($font-size-levels, $index);
+        }
+
         .bottom-nav {
           height: nth($bottom-nav-height, $index);
-
-          .label {
-            font-size: nth($font-size-levels, $index);
-          }
         }
       }
     }
