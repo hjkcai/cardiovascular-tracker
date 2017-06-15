@@ -23,18 +23,18 @@
 </script>
 
 <style lang="scss">
-  $nav-shwdow: 0 0 6px black;
+  @import './assets/styles/variables';
 
   view, navigator, textarea, input {
     box-sizing: border-box;
   }
 
-  .nav-shadow {
+  .title-shadow {
     position: fixed;
     left: 0;
-    top: -2px;
+    top: -$title-shadow-height;
     width: 100%;
-    height: 2px;
-    box-shadow: $nav-shwdow;
+    height: $title-shadow-height;
+    box-shadow: $title-shadow;
   }
 </style>
