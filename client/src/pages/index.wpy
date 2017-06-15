@@ -1,6 +1,5 @@
 <template>
   <view id="index" class="normal">
-    <view class="title-shadow"></view>
     <view class="bottom-nav">
       <view class="nav-item data active">
         <view class="icon"></view>
@@ -11,6 +10,7 @@
         <view class="label">我的信息</view>
       </view>
     </view>
+    <view class="title-shadow"></view>
   </view>
 </template>
 
