@@ -17,6 +17,18 @@ $transparent-black: rgba(0, 0, 0, 0.33);
 // 常用的过渡定义
 $transition: 0.33s ease;
 
+// 重置微信内置按钮样式
+@mixin button-reset {
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background-color: transparent;
+
+  &::after {
+    border: 0;
+  }
+}
+
 // 主页 ------------------------------------------------------------------------
 
 // 底部导航栏
@@ -24,7 +36,7 @@ $bottom-nav-border: #e0e0e0;
 $bottom-nav-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
 $bottom-nav-item-color-active: $primary;
 $bottom-nav-item-color-normal: #757575;
-$bottom-nav-icon-margin: 6px 0 2px;
+$bottom-nav-icon-margin: 8px 0 4px;
 
 $bottom-nav-height: 58px, 60px, 62px, 64px;
 

@@ -19,6 +19,10 @@
 
         .bottom-nav {
           height: nth($bottom-nav-height, $index);
+
+          .label {
+            height: nth($font-size-levels, $index);
+          }
         }
       }
     }

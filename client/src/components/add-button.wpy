@@ -95,20 +95,15 @@
   }
 
   .add-sub-button {
+    @include button-reset;
     height: $add-sub-button-height;
     padding-right: ($add-fab-size - $add-sub-button-icon-outer-size) / 2;
-    margin: 0;
     display: flex;
     align-items: center;
     flex-direction: row-reverse;
-    background-color: transparent;
     opacity: 0;
     transition: $transition;
     pointer-events: none;
-
-    &::after {
-      border: 0;
-    }
 
     .icon {
       width: $add-sub-button-icon-outer-size;
