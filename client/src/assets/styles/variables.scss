@@ -43,3 +43,14 @@ $add-shade-background: $transparent-black;
 $add-shade-hidden-opacity: 0;
 $add-shade-expanded-opacity: 1;
 $add-shade-transition: opacity $transition;
+
+// 添加记录 FAB 子按钮
+$add-sub-buttons: 2;
+$add-sub-button-height: $add-fab-size;
+$add-sub-button-icon-outer-size: 40px;
+$add-sub-button-icon-inner-size: 24px;
+$add-sub-button-icon-label-margin: 16px;
+$add-sub-button-label-color: #212121;
+$add-sub-button-label-background: white;
+$add-sub-button-label-padding: 6px 8px;
+$add-sub-button-label-border-radius: 2px;

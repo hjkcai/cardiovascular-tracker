@@ -2,7 +2,20 @@
   <view id="add-button" class="{{ addExpanded ? 'expanded' : '' }}">
     <view class="add-color-shade"></view>
     <view class="add-tap-shade" @tap="toggleExpanded"></view>
-    <view class="add-sub-buttons"></view>
+    <view class="add-sub-buttons">
+      <button class="add-sub-button">
+        <view class="icon">
+          <image src="../assets/images/ic_scale_white_24px.svg"></image>
+        </view>
+        <view class="label">体重记录</view>
+      </button>
+      <button class="add-sub-button">
+        <view class="icon">
+          <image src="../assets/images/ic_favorite_white_24px.svg"></image>
+        </view>
+        <view class="label">血压心率记录</view>
+      </button>
+    </view>
     <button class="add-fab" @tap="toggleExpanded">
       <image src="../assets/images/ic_add_white_24px.svg"></image>
     </button>
@@ -69,19 +82,86 @@
     display: none;
   }
 
-  #add-button {
-    &.expanded {
-      .add-color-shade {
-        opacity: $add-shade-expanded-opacity;
-      }
+  .add-sub-buttons {
+    position: absolute;
+    right: $add-fab-margin;
+    bottom: $add-fab-margin;
+    display: flex;
+    flex-direction: column-reverse;
+  }
 
-      .add-tap-shade {
-        display: block;
-      }
+  .add-sub-button {
+    height: $add-sub-button-height;
+    padding-right: ($add-fab-size - $add-sub-button-icon-outer-size) / 2;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    background-color: transparent;
+    opacity: 0;
+    transition: $transition;
+    pointer-events: none;
 
-      .add-fab image {
-        transform: $add-fab-icon-expanded-rotate;
+    &::after {
+      border: 0;
+    }
+
+    .icon {
+      width: $add-sub-button-icon-outer-size;
+      height: $add-sub-button-icon-outer-size;
+      margin-left: $add-sub-button-icon-label-margin;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: $add-fab-color;
+      box-shadow: $add-fab-shadow;
+
+      image {
+        width: $add-sub-button-icon-inner-size;
+        height: $add-sub-button-icon-inner-size;
       }
+    }
+
+    .label {
+      box-sizing: content-box;
+      height: 1em;
+      padding: $add-sub-button-label-padding;
+      display: flex;
+      align-items: center;
+      border-radius: $add-sub-button-label-border-radius;
+      background-color: $add-sub-button-label-background;
+      color: $add-sub-button-label-color;
+    }
+
+    @for $i from 1 through $add-sub-buttons {
+      &:nth-child(#{$i}) {
+        transform: translateY($add-sub-button-height * ($i - 1));
+      }
+    }
+
+    &.button-hover .label {
+      color: $add-sub-button-label-color;
+    }
+  }
+
+  #add-button.expanded {
+    .add-color-shade {
+      opacity: $add-shade-expanded-opacity;
+    }
+
+    .add-tap-shade {
+      display: block;
+    }
+
+    .add-fab image {
+      transform: $add-fab-icon-expanded-rotate;
+    }
+
+    .add-sub-button {
+      opacity: 1;
+      transform: translateY(-$add-sub-button-height - ($add-fab-size - $add-sub-button-icon-outer-size) / 2);
+      pointer-events: all;
     }
   }
 </style>
