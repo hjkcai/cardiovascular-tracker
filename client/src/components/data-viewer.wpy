@@ -89,7 +89,7 @@
         if (endTime - this.tapStartTime <= 300 && Math.abs(this.tapStartY - clientY) < 50) {
           if (this.tapStartX - clientX > 5 && this.activeTab < this.tabs.length - 1) {
             this.activeTab += 1
-          } else if (this.activeTab > 0) {
+          } else if (this.tapStartX - clientX < -5 && this.activeTab > 0) {
             this.activeTab -= 1
           }
 
