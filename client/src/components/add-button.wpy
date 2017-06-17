@@ -61,6 +61,10 @@
       transition: transform $transition;
       transform: $add-fab-icon-normal-rotate;
     }
+
+    &.button-hover {
+      background-color: $add-fab-active-color;
+    }
   }
 
   .add-color-shade, .add-tap-shade {
@@ -140,8 +144,14 @@
       }
     }
 
-    &.button-hover .label {
-      color: $add-sub-button-label-color;
+    &.button-hover {
+      .icon {
+        background-color: $add-fab-active-color;
+      }
+
+      .label {
+        color: $add-sub-button-label-color;
+      }
     }
   }
 
