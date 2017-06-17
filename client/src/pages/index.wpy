@@ -13,7 +13,6 @@
         <view class="label">我的信息</view>
       </button>
     </view>
-    <view class="title-shadow"></view>
   </view>
 </template>
 

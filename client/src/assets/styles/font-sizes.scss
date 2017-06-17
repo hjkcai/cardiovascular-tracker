@@ -17,6 +17,16 @@
           bottom: nth($bottom-nav-height, $index);
         }
 
+        #data-viewer {
+          .title-shadow {
+            top: nth($tabs-height, $index) - $title-shadow-height;
+          }
+
+          .tabs {
+            height: nth($tabs-height, $index);
+          }
+        }
+
         .bottom-nav {
           height: nth($bottom-nav-height, $index);
 

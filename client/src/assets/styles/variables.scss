@@ -37,10 +37,15 @@ $bottom-nav-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
 $bottom-nav-item-color-active: $primary;
 $bottom-nav-item-color-normal: #757575;
 $bottom-nav-icon-margin: 8px 0 4px;
-
 $bottom-nav-height: 58px, 60px, 62px, 64px;
 
 // 患者历史数据查看器 ----------------------------------------------------------
+
+// 顶部导航栏
+$tabs-height: 40px, 40px, 48px, 48px;
+$tabs-line-width: 2px;
+$tab-label-color: rgba(255, 255, 255, 0.5);
+$tab-label-color-active: white;
 
 // 添加记录 FAB
 $add-fab-color: $primary;
