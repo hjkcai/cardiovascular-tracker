@@ -14,7 +14,7 @@
     "axios": "^0.16.1",
     "wepy": "^1.5.5",
     "wepy-async-function": "^1.4.4",
-    "wepy-plugin-axios": "^0.1.5"
+    "wepy-plugin-axios": "^0.1.7"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",

@@ -4006,9 +4006,9 @@ wepy-eslint@^1.5.2:
   version "1.5.2"
   resolved "http://registry.npm.taobao.org/wepy-eslint/download/wepy-eslint-1.5.2.tgz#6ef4225e08c1d9457c9cfcb1631d086992c5466b"
 
-wepy-plugin-axios@^0.1.5:
-  version "0.1.5"
-  resolved "http://registry.npm.taobao.org/wepy-plugin-axios/download/wepy-plugin-axios-0.1.5.tgz#fa7f86b3171f634e0569c2f73c1990e28e9c0e12"
+wepy-plugin-axios@^0.1.7:
+  version "0.1.7"
+  resolved "http://registry.npm.taobao.org/wepy-plugin-axios/download/wepy-plugin-axios-0.1.7.tgz#efc6ae5c7cbb52b004e850af7a9ea1c5954aecb8"
 
 wepy-plugin-imagemin@^1.5.2:
   version "1.5.2"
