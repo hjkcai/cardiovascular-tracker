@@ -43,6 +43,7 @@
   @import '../assets/styles/variables';
 
   .add-fab {
+    @include button-reset;
     position: absolute;
     right: $add-fab-margin;
     bottom: $add-fab-margin;
