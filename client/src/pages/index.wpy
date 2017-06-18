@@ -1,5 +1,5 @@
 <template>
-  <view id="index" class="normal">
+  <view id="index" class="{{ fontSize }}">
     <view class="main">
       <dataviewer></dataviewer>
     </view>
@@ -18,11 +18,16 @@
 
 <script>
   import wepy from 'wepy'
+  import state from '../lib/state'
   import dataviewer from '../components/data-viewer'
 
   export default class Index extends wepy.page {
     components = {
       dataviewer
+    }
+
+    data = {
+      fontSize: state.fontSize
     }
   }
 </script>
