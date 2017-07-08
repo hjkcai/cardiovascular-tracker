@@ -33,6 +33,11 @@
           .label {
             height: nth($font-size-levels, $index);
           }
+
+          .nav-item.add {
+            width: nth($bottom-nav-height, $index) + $add-fab-overflow-size;
+            height: nth($bottom-nav-height, $index) + $add-fab-overflow-size;
+          }
         }
       }
     }
