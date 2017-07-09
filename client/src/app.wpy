@@ -29,6 +29,10 @@
     box-sizing: border-box;
   }
 
+  .canvas-page-wrapper {
+    padding: 16px 12px 0;
+  }
+
   .title-shadow {
     position: fixed;
     left: 0;

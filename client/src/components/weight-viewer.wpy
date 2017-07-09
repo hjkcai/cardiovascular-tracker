@@ -1,0 +1,52 @@
+<template>
+  <view id="weight-viewer" class="canvas-page-wrapper">
+    <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Graph from '../lib/graph'
+  import { timeFormat } from 'd3-time-format'
+
+  export default class WeightViewer extends wepy.component {
+    data = {
+      canvasWidth: 0,
+      canvasHeight: 0
+    }
+
+    onLoad () {
+      const data = [
+        { date: new Date(2017, 5, 10), value: 58.5 },
+        { date: new Date(2017, 5, 11), value: 59 },
+        { date: new Date(2017, 5, 12), value: 57.9 },
+        { date: new Date(2017, 5, 13), value: 58.3 },
+        { date: new Date(2017, 5, 14), value: 58.5 },
+        { date: new Date(2017, 5, 15), value: 58.9 },
+        { date: new Date(2017, 5, 16), value: 59 }
+      ]
+
+      this.graph = new Graph('weight-chart', data, d => d.date, d => d.value)
+      this.canvasWidth = this.graph.rect.width
+      this.canvasHeight = this.graph.rect.height
+    }
+
+    refresh () {
+      this.graph.drawAxisLeft(undefined, true)
+      this.graph.drawAxisBottom(timeFormat('%m/%d'))
+      this.graph.drawDataLine()
+      this.graph.draw()
+    }
+
+    events = {
+      clearGraph () {
+        this.graph.clear()
+        console.log('clear')
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+</style>
