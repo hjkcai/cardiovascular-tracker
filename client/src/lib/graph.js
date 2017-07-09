@@ -1,7 +1,7 @@
 'use strict'
 
 import state from './state'
-import { FONT_SIZES, CANVAS_PADDINGS } from './constants'
+import { GRAPH_FONT_SIZES, CANVAS_PADDINGS } from './constants'
 
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
@@ -63,7 +63,7 @@ export default class Graph {
 
   /** 绘制刻度在左侧的纵坐标轴 */
   drawAxisLeft (tickFormatter = IDENTITY, skipFirstTick = false) {
-    const fontSize = FONT_SIZES[state.fontSize]
+    const fontSize = GRAPH_FONT_SIZES[state.fontSize]
 
     this.ctx.setFontSize(fontSize)
     this.ctx.setTextAlign('right')
@@ -84,7 +84,7 @@ export default class Graph {
 
   /** 绘制刻度在底部的横坐标轴 */
   drawAxisBottom (tickFormatter = IDENTITY) {
-    const fontSize = FONT_SIZES[state.fontSize]
+    const fontSize = GRAPH_FONT_SIZES[state.fontSize]
     const xTicksCount = 3 + Math.round(canvasSizeScale(this.rect.right - this.rect.left)) - Math.round(fontSizeScale(fontSize))
 
     this.ctx.setFontSize(fontSize)

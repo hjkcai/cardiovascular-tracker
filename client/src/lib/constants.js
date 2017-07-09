@@ -7,6 +7,13 @@ export const FONT_SIZES = {
   'x-large': 20
 }
 
+export const GRAPH_FONT_SIZES = {
+  'small': 12,
+  'normal': 14,
+  'large': 16,
+  'x-large': 18
+}
+
 export const CANVAS_PADDINGS = {
   'small': { top: 5, right: 22, bottom: 22, left: 40 },
   'normal': { top: 6, right: 24, bottom: 24, left: 44 },
