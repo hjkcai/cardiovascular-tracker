@@ -34,9 +34,6 @@ export default class Graph {
     this.xAccessor = xAccessor
     this.yAccessor = yAccessor
 
-    // 保证绘制的线条是细的
-    this.ctx.setLineWidth(1)
-
     // 根据当前可视区域大小和字体大小计算一个 16:9 的绘图区域
     const res = wx.getSystemInfoSync()
     const width = res.windowWidth - 12 * 2
@@ -51,6 +48,9 @@ export default class Graph {
       right: width - padding.right,
       bottom: height - padding.bottom
     }
+
+    // 保证绘制的线条是细的
+    this.ctx.setLineWidth(1)
 
     // 计算显示比例
     const xDomain = d3.extent(data, xAccessor)
@@ -114,5 +114,12 @@ export default class Graph {
   /** 执行绘制 */
   draw () {
     this.ctx.draw()
+    this.ctx.setLineWidth(1)
+  }
+
+  /** 清空绘制区域 */
+  clear () {
+    this.ctx.clearRect(this.rect.left, this.rect.top, this.rect.width, this.rect.height)
+    this.draw()
   }
 }
