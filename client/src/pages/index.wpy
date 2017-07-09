@@ -13,7 +13,7 @@
       </view>
       <view class="nav-item add">
         <button class="add-fab">
-          <image src="../assets/images/ic_add_white_24px.svg"></image>
+          <image src="../assets/icons/add.svg"></image>
         </button>
       </view>
       <view class="nav-item userinfo">
