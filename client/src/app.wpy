@@ -45,4 +45,9 @@
     height: $title-shadow-height;
     box-shadow: $title-shadow;
   }
+
+  .hr {
+    margin: $hr-margin-top-bottom (-$page-padding-left-right);
+    border-bottom: 1px solid $hr-color;
+  }
 </style>

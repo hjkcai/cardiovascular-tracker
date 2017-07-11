@@ -1,7 +1,8 @@
 <template>
   <view id="weight-viewer" class="canvas-page-wrapper">
-    <daterangepicker :value.sync="dateRange"></daterangepicker>
     <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
+    <view class="hr"></view>
+    <daterangepicker :value.sync="dateRange"></daterangepicker>
   </view>
 </template>
 

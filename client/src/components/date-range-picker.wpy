@@ -1,5 +1,6 @@
 <template>
   <view class="date-range-picker">
+    <image src="../assets/icons/date-range.svg"></image>
     <picker class="from" mode="date" value="{{ value.from }}" end="{{ value.to }}" @change="updateFrom">{{ value.from }}</picker>
     <view>至</view>
     <picker class="to" mode="date" value="{{ value.to }}" start="{{ value.from }}" end="{{ today }}" @change="updateTo">{{ value.to }}</picker>
@@ -38,27 +39,28 @@
     align-items: center;
     white-space: nowrap;
 
+    image {
+      width: $icon-size;
+      height: $icon-size;
+      margin: 0 $date-range-picker-icon-margin ($date-range-picker-height + $date-range-picker-border-bottom - $icon-size) ($date-range-picker-icon-margin - $page-padding-left-right);
+      flex: none;
+    }
+
     picker {
       height: $date-range-picker-height;
-      padding: $date-range-picker-padding;
+      padding-right: $date-range-picker-padding-right;
+      border-bottom: $date-range-picker-border-bottom solid $date-range-picker-border-bottom-color;
       display: flex;
+      flex: 1;
       align-items: center;
-      border-radius: $date-range-picker-border-radius;
       background-image: $arrow-drop-down;
       background-position: center right;
       background-repeat: no-repeat;
-      box-shadow: $date-range-picker-shadow;
-
-      &.from {
-        margin-left: auto;
-      }
-
-      &.to {
-        margin-right: auto;
-      }
     }
 
     view {
+      position: relative;
+      top: -1px;
       margin: 0 $date-range-picker-text-space;
     }
   }
