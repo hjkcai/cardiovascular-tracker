@@ -30,7 +30,6 @@ export function drawLine (ctx, x1, y1, x2, y2) {
 export default class Graph {
   constructor (canvas, data = [], xAccessor = IDENTITY, yAccessor = IDENTITY) {
     this.ctx = wx.createCanvasContext('weight-chart')
-    this.data = data
     this.xAccessor = xAccessor
     this.yAccessor = yAccessor
 
@@ -52,13 +51,25 @@ export default class Graph {
     // 保证绘制的线条是细的
     this.ctx.setLineWidth(1)
 
+    // 初始化比例尺
+    this.xScale = d3.scaleTime().range([this.rect.left, this.rect.right])
+    this.yScale = d3.scaleLinear().range([this.rect.bottom, this.rect.top])
+
+    // 更新绘制数据
+    this.setData(data)
+  }
+
+  /** 更新绘制数据 */
+  setData (data) {
+    this.data = data
+
     // 计算显示比例
-    const xDomain = d3.extent(data, xAccessor)
-    const yDomain = d3.extent(data, yAccessor)
+    const xDomain = d3.extent(data, this.xAccessor)
+    const yDomain = d3.extent(data, this.yAccessor)
     yDomain[0] -= (yDomain[1] - yDomain[0]) / 10
 
-    this.xScale = d3.scaleTime().domain(xDomain).range([this.rect.left, this.rect.right])
-    this.yScale = d3.scaleLinear().domain(yDomain).range([this.rect.bottom, this.rect.top])
+    this.xScale.domain(xDomain).nice()
+    this.yScale.domain(yDomain).nice()
   }
 
   /** 绘制刻度在左侧的纵坐标轴 */
