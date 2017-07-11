@@ -30,10 +30,10 @@
   }
 
   .canvas-page-wrapper {
-    padding: 16px 12px 0;
+    padding: $page-padding;
 
     .date-range-picker {
-      margin-bottom: 16px;
+      margin-bottom: $date-range-picker-margin-bottom;
     }
   }
 

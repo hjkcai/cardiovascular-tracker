@@ -1,7 +1,7 @@
 <template>
   <view class="date-range-picker">
     <picker class="from" mode="date" value="{{ value.from }}" end="{{ value.to }}" @change="updateFrom">{{ value.from }}</picker>
-    <view>~</view>
+    <view>至</view>
     <picker class="to" mode="date" value="{{ value.to }}" start="{{ value.from }}" end="{{ today }}" @change="updateTo">{{ value.to }}</picker>
   </view>
 </template>
@@ -31,21 +31,35 @@
 </script>
 
 <style lang="scss">
+  @import '../assets/styles/variables';
+
   .date-range-picker {
     display: flex;
+    align-items: center;
+    white-space: nowrap;
 
     picker {
-      flex: 1;
+      height: $date-range-picker-height;
+      padding: $date-range-picker-padding;
       display: flex;
       align-items: center;
+      border-radius: $date-range-picker-border-radius;
+      background-image: $arrow-drop-down;
+      background-position: center right;
+      background-repeat: no-repeat;
+      box-shadow: $date-range-picker-shadow;
 
       &.from {
-        justify-content: flex-end;
+        margin-left: auto;
+      }
+
+      &.to {
+        margin-right: auto;
       }
     }
 
     view {
-      margin: 0 8px;
+      margin: 0 $date-range-picker-text-space;
     }
   }
 </style>
