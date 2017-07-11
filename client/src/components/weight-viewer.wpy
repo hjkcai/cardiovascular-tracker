@@ -1,5 +1,6 @@
 <template>
   <view id="weight-viewer" class="canvas-page-wrapper">
+    <daterangepicker :value.sync="dateRange"></daterangepicker>
     <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
   </view>
 </template>
@@ -7,10 +8,20 @@
 <script>
   import wepy from 'wepy'
   import Graph from '../lib/graph'
+  import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
+  import daterangepicker from './date-range-picker'
 
   export default class WeightViewer extends wepy.component {
+    components = {
+      daterangepicker
+    }
+
     data = {
+      dateRange: {
+        from: formatDate(new Date() - 7 * 24 * 60 * 60 * 1000),
+        to: formatDate()
+      },
       canvasWidth: 0,
       canvasHeight: 0
     }

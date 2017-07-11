@@ -31,6 +31,10 @@
 
   .canvas-page-wrapper {
     padding: 16px 12px 0;
+
+    .date-range-picker {
+      margin-bottom: 16px;
+    }
   }
 
   .title-shadow {
