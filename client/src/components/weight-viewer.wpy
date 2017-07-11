@@ -32,17 +32,10 @@
     }
 
     refresh () {
-      this.graph.drawAxisLeft(undefined, true)
+      this.graph.drawAxisLeft()
       this.graph.drawAxisBottom(timeFormat('%m/%d'))
       this.graph.drawDataLine()
       this.graph.draw()
-    }
-
-    events = {
-      clearGraph () {
-        this.graph.clear()
-        console.log('clear')
-      }
     }
   }
 </script>
