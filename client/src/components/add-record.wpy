@@ -1,0 +1,40 @@
+<template>
+  <view id="add-record" class="tabs-wrapper">
+    <view class="title-shadow"></view>
+    <view class="tabs">
+      <view wx:for="{{ tabs }}" wx:key="{{ index }}" data-index="{{ index }}" @tap="switchTab" class="tab {{ activeTab === index ? 'active' : '' }}">{{ item.name }}</view>
+    </view>
+    <view class="content">
+      <view wx:if="{{ activeTab === 0 }}" class="page">page1</view>
+      <view wx:if="{{ activeTab === 1 }}" class="page">page2</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import TabMixin from '../mixins/tab'
+
+  export default class DataViewer extends wepy.component {
+    mixins = [TabMixin]
+
+    data = {
+      tabs: [
+        {
+          name: '体重',
+          component: null
+        },
+        {
+          name: '血压心率',
+          component: null
+        }
+      ]
+    }
+
+    methods = {
+      refresh () {
+        this.switchTab(this.activeTab)
+      }
+    }
+  }
+</script>

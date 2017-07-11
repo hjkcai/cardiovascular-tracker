@@ -2,7 +2,7 @@
   <view id="index" class="{{ fontSize }}">
     <view class="main">
       <dataviewer wx:if="{{ activeTab === 0 }}"></dataviewer>
-      <view wx:if="{{ activeTab === 1 }}">page2</view>
+      <addrecord wx:if="{{ activeTab === 1 }}"></addrecord>
       <view wx:if="{{ activeTab === 2 }}">page3</view>
     </view>
     <view class="bottom-nav">
@@ -33,17 +33,19 @@
   import wepy from 'wepy'
   import state from '../lib/state'
   import TabMixin from '../mixins/tab'
+  import addrecord from '../components/add-record'
   import dataviewer from '../components/data-viewer'
 
   export default class Index extends wepy.page {
     components = {
+      addrecord,
       dataviewer
     }
 
     mixins = [TabMixin]
 
     data = {
-      tabs: ['dataviewer', null, null].map(component => ({ component })),
+      tabs: ['dataviewer', 'addrecord', null].map(component => ({ component })),
       fontSize: state.fontSize
     }
   }
