@@ -5,12 +5,8 @@
       <view wx:for="{{ tabs }}" wx:key="{{ index }}" data-index="{{ index }}" @tap="switchTab" class="tab {{ activeTab === index ? 'active' : '' }}">{{ item.name }}</view>
     </view>
     <view class="content">
-      <weightviewer wx:if="{{ activeTab === 0 }}" class="page">
-        page1
-      </weightviewer>
-      <view wx:if="{{ activeTab === 1 }}" class="page">
-        page2
-      </view>
+      <weightviewer wx:if="{{ activeTab === 0 }}" class="page"></weightviewer>
+      <view wx:if="{{ activeTab === 1 }}" class="page">page2</view>
     </view>
   </view>
 </template>
@@ -41,6 +37,8 @@
     }
 
     methods = {
+      refresh () {
+        this.switchTab(this.activeTab)
       }
     }
   }

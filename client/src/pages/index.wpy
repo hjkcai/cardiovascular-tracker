@@ -1,22 +1,24 @@
 <template>
   <view id="index" class="{{ fontSize }}">
     <view class="main">
-      <dataviewer></dataviewer>
+      <dataviewer wx:if="{{ activeTab === 0 }}"></dataviewer>
+      <view wx:if="{{ activeTab === 1 }}">page2</view>
+      <view wx:if="{{ activeTab === 2 }}">page3</view>
     </view>
     <view class="bottom-nav">
-      <view class="nav-item data active">
+      <view class="nav-item data {{ activeTab === 0 ? 'active' : '' }}" @tap="switchTab" data-index="0">
         <view class="icon">
           <image src="../assets/icons/chart-line.svg"></image>
           <image src="../assets/icons/chart-line-active.svg"></image>
         </view>
         <view class="label">数据</view>
       </view>
-      <view class="nav-item add">
+      <view class="nav-item add" @tap="switchTab" data-index="1">
         <button class="add-fab">
           <image src="../assets/icons/add.svg"></image>
         </button>
       </view>
-      <view class="nav-item userinfo">
+      <view class="nav-item userinfo {{ activeTab === 2 ? 'active' : '' }}" @tap="switchTab" data-index="2">
         <view class="icon">
           <image src="../assets/icons/userinfo.svg"></image>
           <image src="../assets/icons/userinfo-active.svg"></image>
@@ -30,6 +32,7 @@
 <script>
   import wepy from 'wepy'
   import state from '../lib/state'
+  import TabMixin from '../mixins/tab'
   import dataviewer from '../components/data-viewer'
 
   export default class Index extends wepy.page {
@@ -37,7 +40,10 @@
       dataviewer
     }
 
+    mixins = [TabMixin]
+
     data = {
+      tabs: ['dataviewer', null, null].map(component => ({ component })),
       fontSize: state.fontSize
     }
   }
