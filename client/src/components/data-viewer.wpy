@@ -17,12 +17,15 @@
 
 <script>
   import wepy from 'wepy'
+  import TabMixin from '../mixins/tab'
   import weightviewer from './weight-viewer'
 
   export default class DataViewer extends wepy.component {
     components = {
       weightviewer
     }
+
+    mixins = [TabMixin]
 
     data = {
       tabs: [
@@ -34,23 +37,11 @@
           name: '血压心率',
           component: null
         }
-      ],
-      activeTab: 0
+      ]
     }
 
     methods = {
-      switchTab (e) {
-        this.activeTab = typeof e === 'number' ? e : e.currentTarget.dataset.index
-
-        const activeTab = this.tabs[this.activeTab]
-        if (activeTab.component) {
-          this.$invoke(activeTab.component, 'refresh')
-        }
       }
-    }
-
-    onLoad () {
-      this.methods.switchTab.call(this, 0)
     }
   }
 </script>
