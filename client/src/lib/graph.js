@@ -9,6 +9,8 @@ import * as d3Shape from 'd3-shape'
 
 const d3 = Object.assign({}, d3Array, d3Scale, d3Shape)
 
+const PAGE_PADDING_LEFT_RIGHT = 12
+const CANVAS_RATIO = 18 / 9
 const TICK_SIZE = 4
 const LEFT_TICKS_MARGIN = 8
 const BOTTOM_TICKS_MARGIN = 6
@@ -35,8 +37,8 @@ export default class Graph {
 
     // 根据当前可视区域大小和字体大小计算一个 16:9 的绘图区域
     const res = wx.getSystemInfoSync()
-    const width = res.windowWidth - 12 * 2
-    const height = Math.round(width / 16 * 9)
+    const width = res.windowWidth - PAGE_PADDING_LEFT_RIGHT * 2
+    const height = Math.round(width / CANVAS_RATIO)
     const padding = CANVAS_PADDINGS[state.fontSize]
 
     this.rect = {
