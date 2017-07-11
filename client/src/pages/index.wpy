@@ -6,14 +6,14 @@
       <view wx:if="{{ activeTab === 2 }}">page3</view>
     </view>
     <view class="bottom-nav">
-      <view class="nav-item data {{ activeTab === 0 ? 'active' : '' }}" @tap="switchTab" data-index="0">
+      <view class="nav-item data {{ activeTab === 0 ? 'active' : '' }}" @tap="switchSyncedTab" data-index="0">
         <view class="icon">
           <image src="../assets/icons/chart-line.svg"></image>
           <image src="../assets/icons/chart-line-active.svg"></image>
         </view>
         <view class="label">数据</view>
       </view>
-      <view class="nav-item add" @tap="switchTab" data-index="1">
+      <view class="nav-item add" @tap="switchSyncedTab" data-index="1">
         <button class="add-fab">
           <image src="../assets/icons/add.svg"></image>
         </button>
@@ -46,7 +46,23 @@
 
     data = {
       tabs: ['dataviewer', 'addrecord', null].map(component => ({ component })),
+      syncedTab: 0,
       fontSize: state.fontSize
+    }
+
+    methods = {
+      switchSyncedTab (e) {
+        this.switchTab(e.currentTarget.dataset.index)
+        this.$getComponent(this.tabs[this.activeTab].component).switchTab(this.syncedTab)
+      }
+    }
+
+    events = {
+      tabChanged (newActiveTab, component) {
+        if (this.activeTab !== -1 && this.tabs[this.activeTab].component === component.$name) {
+          this.syncedTab = newActiveTab
+        }
+      }
     }
   }
 </script>
