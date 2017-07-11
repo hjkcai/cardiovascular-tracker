@@ -17,7 +17,7 @@
           bottom: nth($bottom-nav-height, $index);
         }
 
-        #data-viewer {
+        .tabs-wrapper {
           .title-shadow {
             top: nth($tabs-height, $index) - $title-shadow-height;
           }

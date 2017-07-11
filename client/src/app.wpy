@@ -31,10 +31,6 @@
 
   .canvas-page-wrapper {
     padding: $page-padding;
-
-    .date-range-picker {
-      margin-bottom: $date-range-picker-margin-bottom;
-    }
   }
 
   .title-shadow {
@@ -49,5 +45,51 @@
   .hr {
     margin: $hr-margin-top-bottom (-$page-padding-left-right);
     border-bottom: 1px solid $hr-color;
+  }
+
+  .tabs-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .title-shadow {
+      z-index: 1;
+    }
+
+    .tabs {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex: none;
+      color: $tab-label-color;
+      background-color: $primary;
+
+      .tab {
+        padding-bottom: $tabs-line-width;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.active {
+          padding-bottom: 0;
+          border-bottom: $tabs-line-width solid $tab-label-color-active;
+          color: $tab-label-color-active;
+        }
+      }
+    }
+
+    .content {
+      position: relative;
+      flex: 1;
+    }
+
+    .page {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $background-color;
+    }
   }
 </style>
