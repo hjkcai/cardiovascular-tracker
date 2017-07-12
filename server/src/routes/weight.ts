@@ -2,42 +2,37 @@
 
 import * as Router from 'koa-router'
 import * as Weight from '../models/weight'
-import * as validators from '../lib/validators'
+
+import { required } from '../lib/ajv'
+import ValidateMiddleware from '../lib/middlewares/validate'
 
 const router = new Router()
 
 // 获取体重记录
+router.get('weight', ValidateMiddleware({
+  from: required('date-time'),
+  to: 'date-time'
+}, 'query'))
+
 router.get('weight', async (ctx, next) => {
-  interface WeightQuery {
-    from: Date,
-    to?: Date
-  }
-
-  const data: WeightQuery = ctx.query
-  data.from = validators.validateDate('from', data, true)
-  data.to = validators.validateDate('to', data)
-
-  ctx.result = await Weight.getWeightRecords(ctx.session.openid, data.from, data.to)
+  ctx.result = await Weight.getWeightRecords(ctx.session.openid, ctx.query.from, ctx.query.to)
 })
 
 // 增加体重记录
+router.post('weight', ValidateMiddleware({
+  value: required('number'),
+  date: 'date-time'
+}))
+
 router.post('weight', async (ctx, next) => {
-  interface WeightData {
-    value: number,
-    date?: Date
-  }
-
-  const data: WeightData = ctx.request.body
-  data.value = validators.validateNumber('value', data, true)
-  data.date = validators.validateDate('date', data)
-
+  const data = ctx.request.body
   ctx.result = (await Weight.addWeightRecord(ctx.session.openid, data.value, data.date))._id
 })
 
 // 删除某一天的体重记录
+router.delete('weight', ValidateMiddleware({ date: 'date-time' }, 'query'))
 router.delete('weight', async (ctx, next) => {
-  const date = validators.validateDate('date', ctx.query, true)
-  await Weight.removeWeightRecord(ctx.session.openid, date)
+  await Weight.removeWeightRecord(ctx.session.openid, ctx.query.date)
   ctx.result = null
 })
 

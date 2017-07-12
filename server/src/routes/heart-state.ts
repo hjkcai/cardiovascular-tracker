@@ -2,40 +2,32 @@
 
 import * as Router from 'koa-router'
 import * as HeartState from '../models/heart-state'
-import * as validators from '../lib/validators'
+
+import { required } from '../lib/ajv'
+import ValidateMiddleware from '../lib/middlewares/validate'
 
 const router = new Router()
 
 // 获取心率血压记录
+router.get('heart-state', ValidateMiddleware({
+  from: required('date-time'),
+  to: 'date-time'
+}, 'query'))
+
 router.get('heart-state', async (ctx, next) => {
-  interface HeartStateQuery {
-    from: Date,
-    to?: Date
-  }
-
-  const data: HeartStateQuery = ctx.query
-  data.from = validators.validateDate('from', data, true)
-  data.to = validators.validateDate('to', data)
-
-  ctx.result = await HeartState.getHeartStateRecords(ctx.session.openid, data.from, data.to)
+  ctx.result = await HeartState.getHeartStateRecords(ctx.session.openid, ctx.query.from, ctx.query.to)
 })
 
 // 添加心率血压记录
+router.post('heart-state', ValidateMiddleware({
+  heartRate: required('number'),
+  systolic: required('number'),
+  diastolic: required('number'),
+  date: 'date-time'
+}))
+
 router.post('heart-state', async (ctx, next) => {
-  interface HeartStateData {
-    heartRate: number,
-    systolic: number,
-    diastolic: number,
-    date?: Date
-  }
-
-  const data: HeartStateData = ctx.request.body
-  data.heartRate = validators.validateNumber('heartRate', data, true)
-  data.systolic = validators.validateNumber('systolic', data, true)
-  data.diastolic = validators.validateNumber('diastolic', data, true)
-  data.date = validators.validateDate('date', data)
-
-  ctx.result = (await HeartState.addHeartStateRecord(ctx.session.openid, data))._id
+  ctx.result = (await HeartState.addHeartStateRecord(ctx.session.openid, ctx.request.body))._id
 })
 
 // 删除心率血压记录
