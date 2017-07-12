@@ -4,6 +4,12 @@ import db from '../lib/db'
 import { removeUndefined } from '../lib/util'
 import { Document, Schema } from 'mongoose'
 
+export interface Disease {
+  name: string,
+  onset: Date,
+  cure: Date
+}
+
 export interface User extends Document {
   /** 等同于 openid */
   _id: string,
@@ -15,7 +21,7 @@ export interface User extends Document {
   height: number | null,
 
   /** 疾病情况 */
-  disease: string[],
+  disease: Disease[],
 
   // 从微信获得的信息
   nickName: string,
@@ -38,7 +44,12 @@ export const schema = new Schema({
     default: null
   },
   disease: {
-    type: [String],
+    type: [{
+      _id: false,
+      name: String,
+      onset: Date,
+      cure: Date
+    }],
     default: []
   },
   nickName: String,
