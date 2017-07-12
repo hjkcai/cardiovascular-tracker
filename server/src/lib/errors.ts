@@ -43,3 +43,10 @@ export class InvalidUserInputError extends UserError {
     super(`Invalid ${field}: ${value}`, 102, 400)
   }
 }
+
+/** 用户输入验证失败 */
+export class ValidationFailureError extends UserError {
+  constructor (message: string) {
+    super(message, 103, 400)
+  }
+}
