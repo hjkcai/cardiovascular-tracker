@@ -12,7 +12,10 @@ export interface Weight extends Document {
   value: number,
 
   /** 体重记录时间 */
-  date: Date
+  date: Date,
+
+  /** 备注 */
+  note: string
 }
 
 export const schema = new Schema({
@@ -28,6 +31,10 @@ export const schema = new Schema({
   date: {
     type: Date,
     required: true
+  },
+  note: {
+    type: String,
+    default: ''
   }
 }, { toJSON: { versionKey: false } })
 
@@ -55,10 +62,10 @@ export async function removeWeightRecord (openid: string, date: Date) {
 }
 
 /** 添加一条体重记录 */
-export async function addWeightRecord (openid: string, value: number, date: Date = new Date()) {
+export async function addWeightRecord (openid: string, { value, date = new Date(), note = '' }: Partial<Weight>) {
   // 删除当天的记录
   await removeWeightRecord(openid, date)
 
   // 创建新记录
-  return new model({ openid, value, date }).save()
+  return new model({ openid, value, date, note }).save()
 }

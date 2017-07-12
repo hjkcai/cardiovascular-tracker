@@ -21,12 +21,13 @@ router.get('weight', async (ctx, next) => {
 // 增加体重记录
 router.post('weight', ValidateMiddleware({
   value: required('number'),
-  date: 'date-time'
+  date: 'date-time',
+  note: 'string'
 }))
 
 router.post('weight', async (ctx, next) => {
   const data = ctx.request.body
-  ctx.result = (await Weight.addWeightRecord(ctx.session.openid, data.value, data.date))._id
+  ctx.result = (await Weight.addWeightRecord(ctx.session.openid, data))._id
 })
 
 // 删除某一天的体重记录
