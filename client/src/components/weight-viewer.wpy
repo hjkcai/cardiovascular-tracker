@@ -2,7 +2,12 @@
   <view id="weight-viewer" class="canvas-page-wrapper">
     <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
     <view class="hr"></view>
-    <daterangepicker :value.sync="dateRange"></daterangepicker>
+    <scroll-view scroll-y>
+      <view class="section">
+        <text class="title">日期选择</text>
+        <daterangepicker :value.sync="dateRange"></daterangepicker>
+      </view>
+    </scroll-view>
   </view>
 </template>
 

@@ -30,7 +30,14 @@
   }
 
   .canvas-page-wrapper {
+    height: 100%;
     padding: $page-padding;
+    display: flex;
+    flex-direction: column;
+
+    scroll-view {
+      flex: 1;
+    }
   }
 
   .title-shadow {
@@ -44,10 +51,23 @@
 
   .hr {
     margin: $hr-margin-top-bottom (-$page-padding-left-right);
-    border-bottom: 1px solid $hr-color;
+    border-top: 1px solid $hr-color;
+  }
+
+  .section .title {
+    display: block;
+    padding-left: $section-title-padding-left;
+    margin-bottom: $section-title-margin-bottom;
+    color: $section-title-color;
+    font-size: $section-title-font-size;
   }
 
   .tabs-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
 
