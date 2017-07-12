@@ -109,41 +109,54 @@
       padding: 0 $page-padding-left-right;
     }
 
-    scroll-view {
+    .md-list {
       flex: 1;
       margin-top: $hr-margin-top-bottom;
       border-top: 1px solid $hr-color;
       overflow: hidden;
 
       .section {
-        padding: $hr-margin-top-bottom $page-padding-left-right;
+        padding: $hr-margin-top-bottom 0;
         border-top: 1px solid $hr-color;
 
         &:first-child {
           border-top: 0;
         }
+
+        & > view {
+          padding-left: $page-padding-left-right;
+          padding-right: $page-padding-left-right;
+        }
       }
 
       .title {
         display: block;
-        padding-left: $section-title-padding-left;
+        padding-left: $section-title-padding-left + $page-padding-left-right;
         margin-bottom: $section-title-margin-bottom;
         color: $section-title-color;
         font-size: $section-title-font-size;
       }
 
-      .row {
-        padding: 12px 4px 12px 44px;
+      .md-list-item {
+        padding: $md-list-item-pading-top-bottom 0;
+
+        .caption, .content {
+          margin-left: $md-list-item-extra-pading-left + $icon-size;
+        }
 
         .content {
-          margin-top: 8px;
+          margin-top: $md-list-item-line-space;
           display: flex;
-          color: #757575;
-          font-size: 0.9em;
+          color: $md-list-item-content-color;
+          font-size: $md-list-item-font-size;
 
           .right {
             margin-left: auto;
           }
+        }
+
+        &.hover {
+          background-color: #eee;
         }
       }
     }

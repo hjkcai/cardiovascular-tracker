@@ -1,43 +1,37 @@
 <template>
   <view id="weight-viewer" class="canvas-page-wrapper">
     <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
-    <scroll-view scroll-y>
+    <scroll-view class="md-list" scroll-y>
       <view class="section">
         <text class="title">日期选择</text>
         <daterangepicker :value.sync="dateRange"></daterangepicker>
       </view>
       <view class="section">
         <text class="title">摘要</text>
-        <view class="row">
-          <view class="caption">最重体重</view>
-          <view class="content">
-            <view class="left">{{ summary.max.value }}kg</view>
-            <view class="right">{{ summary.max.dateValue }}</view>
-          </view>
-        </view>
-        <view class="row">
-          <view class="caption">最轻体重</view>
-          <view class="content">
-            <view class="left">{{ summary.min.value }}kg</view>
-            <view class="right">{{ summary.min.dateValue }}</view>
-          </view>
-        </view>
-        <view class="row">
-          <view class="caption">平均体重</view>
-          <view class="content">
-            <view class="left">{{ summary.average }}kg</view>
-          </view>
-        </view>
+        <mdlistitem>
+          <text slot="caption">最重体重</text>
+          <text slot="left">{{ summary.max.value }}kg</text>
+          <text slot="right">{{ summary.max.dateValue }}</text>
+        </mdlistitem>
+        <mdlistitem>
+          <text slot="caption">最轻体重</text>
+          <text slot="left">{{ summary.min.value }}kg</text>
+          <text slot="right">{{ summary.min.dateValue }}</text>
+        </mdlistitem>
+        <mdlistitem>
+          <text slot="caption">平均体重</text>
+          <text slot="left">{{ summary.average }}kg</text>
+        </mdlistitem>
       </view>
       <view class="section">
         <text class="title">详细信息</text>
-        <view wx:for="{{ weightData }}" wx:key="{{ index }}" class="row">
-          <view class="caption">{{ item.dateValue }}</view>
-          <view class="content">
-            <view class="left">{{ item.value }}kg</view>
-            <view class="right">{{ item.delta }}</view>
-          </view>
-        </view>
+        <repeat for="{{ weightData }}" key="{{ index }}">
+          <mdlistitem>
+            <text slot="caption">{{ item.dateValue }}</text>
+            <text slot="left">{{ item.value }}kg</text>
+            <text slot="right">{{ item.delta }}</text>
+          </mdlistitem>
+        </repeat>
       </view>
     </scroll-view>
   </view>
@@ -46,12 +40,14 @@
 <script>
   import wepy from 'wepy'
   import Graph from '../lib/graph'
+  import mdlistitem from './md-list-item'
   import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
   import daterangepicker from './date-range-picker'
 
   export default class WeightViewer extends wepy.component {
     components = {
+      mdlistitem,
       daterangepicker
     }
 

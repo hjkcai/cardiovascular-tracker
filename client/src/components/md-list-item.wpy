@@ -1,0 +1,21 @@
+<template>
+  <view class="md-list-item" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+    <view class="caption">
+      <slot name="caption"></slot>
+    </view>
+    <view class="content">
+      <view class="left">
+        <slot name="left"></slot>
+      </view>
+      <view class="right">
+        <slot name="right"></slot>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class MdListItem extends wepy.component {}
+</script>
