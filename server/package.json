@@ -16,6 +16,7 @@
     "@types/koa-bodyparser": "^3.0.23",
     "@types/koa-jwt": "^3.2.0",
     "@types/koa-router": "^7.0.22",
+    "@types/lodash": "^4.14.68",
     "@types/log4js": "^0.0.32",
     "@types/mongoose": "^4.7.12",
     "@types/node": "^7.0.18",
@@ -28,6 +29,7 @@
     "koa-bodyparser": "^4.2.0",
     "koa-jwt": "^3.2.2",
     "koa-router": "^7.2.0",
+    "lodash": "^4.17.4",
     "log4js": "^1.1.1",
     "mongoose": "^4.10.2",
     "redis": "^2.7.1"
