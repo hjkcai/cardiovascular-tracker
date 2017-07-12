@@ -20,6 +20,7 @@
     "@types/mongoose": "^4.7.12",
     "@types/node": "^7.0.18",
     "@types/redis": "^0.12.36",
+    "ajv": "^5.2.2",
     "axios": "^0.16.1",
     "glob": "^7.1.2",
     "jsonwebtoken": "^7.4.1",
