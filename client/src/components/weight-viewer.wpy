@@ -114,6 +114,7 @@
       this.graph.drawAxisLeft()
       this.graph.drawAxisBottom(timeFormat('%m/%d'))
       this.graph.drawDataLine()
+      this.graph.drawLinearRegression()
       this.graph.draw()
     }
   }

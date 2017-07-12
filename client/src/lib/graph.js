@@ -6,6 +6,7 @@ import { GRAPH_FONT_SIZES, CANVAS_PADDINGS } from './constants'
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
 import * as d3Shape from 'd3-shape'
+import linearRegression from 'simple-statistics/src/linear_regression'
 
 const d3 = Object.assign({}, d3Array, d3Scale, d3Shape)
 
@@ -25,6 +26,24 @@ const yTicksCount = 4
 export function drawLine (ctx, x1, y1, x2, y2) {
   ctx.moveTo(x1, y1)
   ctx.lineTo(x2, y2)
+  ctx.stroke()
+}
+
+export function drawDashLine (ctx, x1, y1, x2, y2, dashLength = 5) {
+  const xpos = x2 - x1    // 横向的宽度
+  const ypos = y2 - y1    // 纵向的高度
+  const numDashes = Math.floor(Math.sqrt(xpos * xpos + ypos * ypos) / dashLength)
+
+  // 利用正切获取斜边的长度除以虚线长度，得到要分为多少段
+  for (var i = 0; i < numDashes; i++) {
+    if (i % 2 === 0) {
+      // 有了横向宽度和多少段，得出每一段是多长，起点 + 每段长度 * i = 要绘制的起点；
+      ctx.moveTo(x1 + (xpos / numDashes) * i, y1 + (ypos / numDashes) * i)
+    } else {
+      ctx.lineTo(x1 + (xpos / numDashes) * i, y1 + (ypos / numDashes) * i)
+    }
+  }
+
   ctx.stroke()
 }
 
@@ -72,6 +91,11 @@ export default class Graph {
 
     this.xScale.domain(xDomain).nice()
     this.yScale.domain(yDomain).nice()
+
+    // 计算线性回归
+    const points = this.data.map(item => [this.xScale(this.xAccessor(item)), this.yScale(this.yAccessor(item))])
+    this.linearRegression = linearRegression(points)
+    console.log(points, this.linearRegression)
   }
 
   /** 绘制刻度在左侧的纵坐标轴 */
@@ -122,6 +146,15 @@ export default class Graph {
     const line = d3.line().curve(d3.curveCatmullRom).x(d => this.xScale(this.xAccessor(d))).y(d => this.yScale(this.yAccessor(d)))
     line.context(this.ctx)(this.data)
     this.ctx.stroke()
+  }
+
+  /** 绘制线性回归线 */
+  drawLinearRegression () {
+    const [x1, x2] = this.xScale.range()
+    const y1 = this.linearRegression.m * x1 + this.linearRegression.b
+    const y2 = this.linearRegression.m * x2 + this.linearRegression.b
+
+    drawDashLine(this.ctx, x1, y1, x2, y2)
   }
 
   /** 执行绘制 */
