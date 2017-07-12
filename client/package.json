@@ -15,6 +15,7 @@
     "d3-array": "^1.2.0",
     "d3-scale": "^1.0.6",
     "d3-shape": "^1.2.0",
+    "simple-statistics": "^4.1.0",
     "wepy": "^1.5.7",
     "wepy-async-function": "^1.4.4",
     "wepy-plugin-axios": "^0.1.7"
