@@ -69,26 +69,3 @@ export async function addWeightRecord (openid: string, { value, date = new Date(
   // 创建新记录
   return new model({ openid, value, date, note }).save()
 }
-
-/** 生成最近 30 天的体重报告 */
-export async function generateWeightMonthlySummary (openid: string) {
-  const now = new Date()
-  const lastMonth = new Date(+now - 30 * 24 * 7 * 60 * 60 * 1000)
-  const records = await getWeightRecords(openid, lastMonth)
-
-  let max = records[0].value
-  let min = records[0].value
-  let sum = 0
-
-  for (const record of records) {
-    max = Math.max(max, record.value)
-    min = Math.min(min, record.value)
-    sum += record.value
-  }
-
-  return {
-    max,
-    min,
-    average: sum / records.length
-  }
-}
