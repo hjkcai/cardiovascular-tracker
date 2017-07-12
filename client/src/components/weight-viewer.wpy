@@ -11,21 +11,31 @@
         <view class="row">
           <view class="caption">最重体重</view>
           <view class="content">
-            <view class="left">60.123kg</view>
-            <view class="right">2016-08-23</view>
+            <view class="left">{{ summary.max.value }}kg</view>
+            <view class="right">{{ summary.max.dateValue }}</view>
           </view>
         </view>
         <view class="row">
           <view class="caption">最轻体重</view>
           <view class="content">
-            <view class="left">60.123kg</view>
-            <view class="right">2016-08-23</view>
+            <view class="left">{{ summary.min.value }}kg</view>
+            <view class="right">{{ summary.min.dateValue }}</view>
           </view>
         </view>
         <view class="row">
           <view class="caption">平均体重</view>
           <view class="content">
-            <view class="left">60.123kg</view>
+            <view class="left">{{ summary.average }}kg</view>
+          </view>
+        </view>
+      </view>
+      <view class="section">
+        <text class="title">详细信息</text>
+        <view wx:for="{{ weightData }}" wx:key="{{ index }}" class="row">
+          <view class="caption">{{ item.dateValue }}</view>
+          <view class="content">
+            <view class="left">{{ item.value }}kg</view>
+            <view class="right">{{ item.delta }}</view>
           </view>
         </view>
       </view>
@@ -46,6 +56,12 @@
     }
 
     data = {
+      weightData: [],
+      summary: {
+        min: { dateValue: '', value: 0 },
+        max: { dateValue: '', value: 0 },
+        average: 0
+      },
       dateRange: {
         from: formatDate(new Date() - 7 * 24 * 60 * 60 * 1000),
         to: formatDate()
@@ -55,19 +71,47 @@
     }
 
     onLoad () {
-      const data = [
-        { date: new Date(2017, 5, 10), value: 58.5 },
-        { date: new Date(2017, 5, 11), value: 59 },
-        { date: new Date(2017, 5, 12), value: 57.9 },
-        { date: new Date(2017, 5, 13), value: 58.3 },
-        { date: new Date(2017, 5, 14), value: 58.5 },
-        { date: new Date(2017, 5, 15), value: 58.9 },
-        { date: new Date(2017, 5, 16), value: 59 }
-      ]
-
-      this.graph = new Graph('weight-chart', data, d => d.date, d => d.value)
+      this.fetchWeightData()
+      this.graph = new Graph('weight-chart', this.weightData, d => d.date, d => d.value)
       this.canvasWidth = this.graph.rect.width
       this.canvasHeight = this.graph.rect.height
+    }
+
+    fetchWeightData () {
+      // TODO: 请求后端数据
+      this.weightData = [
+        { date: new Date(2017, 5, 16), value: 59 },
+        { date: new Date(2017, 5, 15), value: 58.9 },
+        { date: new Date(2017, 5, 14), value: 58.5 },
+        { date: new Date(2017, 5, 13), value: 58.3 },
+        { date: new Date(2017, 5, 12), value: 57.9 },
+        { date: new Date(2017, 5, 11), value: 59 },
+        { date: new Date(2017, 5, 10), value: 58.5 }
+      ]
+
+      let max = 0     // 数组下标
+      let min = 0     // 数组下标
+      let sum = 0     // 数值
+
+      this.weightData.forEach((item, index) => {
+        if (item.value > this.weightData[max].value) max = index
+        if (item.value < this.weightData[min].value) min = index
+        sum += item.value
+
+        item.dateValue = formatDate(item.date)
+        if (this.weightData[index + 1]) {
+          const delta = this.weightData[index + 1].value - item.value
+          item.delta = (delta > 0 ? '+' : '') + Math.round(delta * 100) / 100 + 'kg'
+        }
+      })
+
+      this.summary = {
+        max: this.weightData[max],
+        min: this.weightData[min],
+        average: Math.round(sum / this.weightData.length * 100) / 100
+      }
+
+      this.$apply()
     }
 
     refresh () {
