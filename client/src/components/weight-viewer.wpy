@@ -1,11 +1,33 @@
 <template>
   <view id="weight-viewer" class="canvas-page-wrapper">
     <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
-    <view class="hr"></view>
     <scroll-view scroll-y>
       <view class="section">
         <text class="title">日期选择</text>
         <daterangepicker :value.sync="dateRange"></daterangepicker>
+      </view>
+      <view class="section">
+        <text class="title">摘要</text>
+        <view class="row">
+          <view class="caption">最重体重</view>
+          <view class="content">
+            <view class="left">60.123kg</view>
+            <view class="right">2016-08-23</view>
+          </view>
+        </view>
+        <view class="row">
+          <view class="caption">最轻体重</view>
+          <view class="content">
+            <view class="left">60.123kg</view>
+            <view class="right">2016-08-23</view>
+          </view>
+        </view>
+        <view class="row">
+          <view class="caption">平均体重</view>
+          <view class="content">
+            <view class="left">60.123kg</view>
+          </view>
+        </view>
       </view>
     </scroll-view>
   </view>

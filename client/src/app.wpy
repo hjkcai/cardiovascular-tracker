@@ -29,25 +29,6 @@
     box-sizing: border-box;
   }
 
-  .canvas-page-wrapper {
-    height: 100%;
-    padding-top: $page-padding-top;
-    display: flex;
-    flex-direction: column;
-
-    & > view, & > canvas {
-      padding: 0 $page-padding-left-right;
-    }
-
-    scroll-view {
-      flex: 1;
-
-      .section {
-        padding: 0 $page-padding-left-right;
-      }
-    }
-  }
-
   .title-shadow {
     position: fixed;
     left: 0;
@@ -58,16 +39,8 @@
   }
 
   .hr {
-    margin: $hr-margin-top-bottom 0 !important;
+    margin: $hr-margin-top-bottom 0;
     border-top: 1px solid $hr-color;
-  }
-
-  .section .title {
-    display: block;
-    padding-left: $section-title-padding-left;
-    margin-bottom: $section-title-margin-bottom;
-    color: $section-title-color;
-    font-size: $section-title-font-size;
   }
 
   .tabs-wrapper {
@@ -106,18 +79,73 @@
       }
     }
 
-    .content {
+    & > .content {
       position: relative;
       flex: 1;
+      overflow: hidden;
     }
 
-    .page {
+    & > .page {
       position: absolute;
       top: 0;
       bottom: 0;
       width: 100%;
       height: 100%;
       background-color: $background-color;
+    }
+  }
+
+  .canvas-page-wrapper {
+    height: 100%;
+    padding-top: $page-padding-top;
+    display: flex;
+    flex-direction: column;
+
+    & > canvas {
+      flex: none;
+    }
+
+    & > view, & > canvas {
+      padding: 0 $page-padding-left-right;
+    }
+
+    scroll-view {
+      flex: 1;
+      margin-top: $hr-margin-top-bottom;
+      border-top: 1px solid $hr-color;
+      overflow: hidden;
+
+      .section {
+        padding: $hr-margin-top-bottom $page-padding-left-right;
+        border-top: 1px solid $hr-color;
+
+        &:first-child {
+          border-top: 0;
+        }
+      }
+
+      .title {
+        display: block;
+        padding-left: $section-title-padding-left;
+        margin-bottom: $section-title-margin-bottom;
+        color: $section-title-color;
+        font-size: $section-title-font-size;
+      }
+
+      .row {
+        padding: 12px 4px 12px 44px;
+
+        .content {
+          margin-top: 8px;
+          display: flex;
+          color: #757575;
+          font-size: 0.9em;
+
+          .right {
+            margin-left: auto;
+          }
+        }
+      }
     }
   }
 </style>
