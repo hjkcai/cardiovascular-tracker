@@ -23,7 +23,8 @@ router.post('heart-state', ValidateMiddleware({
   heartRate: required('number'),
   systolic: required('number'),
   diastolic: required('number'),
-  date: 'date-time'
+  date: 'date-time',
+  note: 'string'
 }))
 
 router.post('heart-state', async (ctx, next) => {

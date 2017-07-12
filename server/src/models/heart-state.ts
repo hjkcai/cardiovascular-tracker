@@ -18,7 +18,10 @@ export interface HeartState extends Document {
   diastolic: number,
 
   /** 心率血压记录时间 */
-  date: Date
+  date: Date,
+
+  /** 备注 */
+  note: string
 }
 
 export const schema = new Schema({
@@ -42,6 +45,10 @@ export const schema = new Schema({
   date: {
     type: Date,
     required: true
+  },
+  note: {
+    type: String,
+    default: ''
   }
 }, { toJSON: { versionKey: false } })
 
@@ -62,8 +69,8 @@ export function getHeartStateRecords (openid: string, from: Date, to: Date = new
 }
 
 /** 添加心率血压记录 */
-export function addHeartStateRecord (openid: string, { heartRate, systolic, diastolic, date }: Partial<HeartState>) {
-  return new model({ openid, heartRate, systolic, diastolic, date }).save()
+export function addHeartStateRecord (openid: string, { heartRate, systolic, diastolic, date = new Date(), note = '' }: Partial<HeartState>) {
+  return new model({ openid, heartRate, systolic, diastolic, date, note }).save()
 }
 
 /** 删除心率血压记录 */
