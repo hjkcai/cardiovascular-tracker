@@ -37,4 +37,9 @@ router.delete('weight', async (ctx, next) => {
   ctx.result = null
 })
 
+// 获取最近 30 天的体重报告
+router.get('weight/summary', async (ctx, next) => {
+  ctx.result = await Weight.generateWeightMonthlySummary(ctx.session.openid)
+})
+
 export default router
