@@ -31,12 +31,20 @@
 
   .canvas-page-wrapper {
     height: 100%;
-    padding: $page-padding;
+    padding-top: $page-padding-top;
     display: flex;
     flex-direction: column;
 
+    & > view, & > canvas {
+      padding: 0 $page-padding-left-right;
+    }
+
     scroll-view {
       flex: 1;
+
+      .section {
+        padding: 0 $page-padding-left-right;
+      }
     }
   }
 
@@ -50,7 +58,7 @@
   }
 
   .hr {
-    margin: $hr-margin-top-bottom (-$page-padding-left-right);
+    margin: $hr-margin-top-bottom 0 !important;
     border-top: 1px solid $hr-color;
   }
 
