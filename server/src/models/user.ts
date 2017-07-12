@@ -59,7 +59,7 @@ export const schema = new Schema({
   province: String,
   country: String,
   avatarUrl: String
-})
+}, { toJSON: { versionKey: false } })
 
 export const model = db.model<User>('user', schema)
 

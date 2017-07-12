@@ -43,7 +43,7 @@ export const schema = new Schema({
     type: Date,
     required: true
   }
-})
+}, { toJSON: { versionKey: false } })
 
 export const model = db.model<HeartState>('heart-state', schema)
 

@@ -29,7 +29,7 @@ export const schema = new Schema({
     type: Date,
     required: true
   }
-})
+}, { toJSON: { versionKey: false } })
 
 export const model = db.model<Weight>('weight', schema)
 
