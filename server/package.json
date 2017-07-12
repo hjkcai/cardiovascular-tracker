@@ -32,8 +32,8 @@
     "redis": "^2.7.1"
   },
   "devDependencies": {
-    "tslint": "^5.2.0",
+    "tslint": "^5.5.0",
     "tslint-config-standard": "^5.0.2",
-    "typescript": "^2.3.2"
+    "typescript": "^2.4.1"
   }
 }
