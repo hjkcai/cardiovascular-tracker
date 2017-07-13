@@ -9,7 +9,7 @@
       #index.#{$font-size-class} {
         font-size: nth($font-size-levels, $index);
 
-        button, input {
+        button, input, textarea {
           font-size: nth($font-size-levels, $index);
         }
 
