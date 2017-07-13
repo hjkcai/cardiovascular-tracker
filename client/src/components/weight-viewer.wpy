@@ -111,6 +111,11 @@
     }
 
     refresh () {
+      if (!this.coldStart) {
+        this.coldStart = true
+        return
+      }
+
       this.graph.drawAxisLeft()
       this.graph.drawAxisBottom(timeFormat('%m/%d'))
       this.graph.drawDataLine()
