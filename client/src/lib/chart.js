@@ -176,14 +176,14 @@ export default class Chart {
   }
 
   /** 执行绘制 */
-  draw (func) {
+  draw (func, reserve = true) {
     if (typeof func === 'function') {
       this.ctx.save()
       func()
       this.ctx.restore()
     }
 
-    this.ctx.draw(true)
+    this.ctx.draw(reserve)
     this.ctx.setLineWidth(1)
   }
 }

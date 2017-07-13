@@ -6,7 +6,7 @@
       <view class="section report-switcher">
         <text class="title">报告选择</text>
         <daterangepicker :value.sync="dateRange"></daterangepicker>
-        <button class="switch-chart">切换至{{ currentChart === '心率' ? '血压' : '心率' }}报告</button>
+        <button class="switch-chart" @tap="switchReport">切换至{{ currentChart === '心率' ? '血压' : '心率' }}报告</button>
       </view>
       <view class="section">
         <text class="title">摘要</text>
@@ -42,6 +42,15 @@
       dateRange: {
         from: formatDate(new Date() - 7 * 24 * 60 * 60 * 1000),
         to: formatDate()
+      }
+    }
+
+    methods = {
+      switchReport () {
+        if (this.currentChart === '血压') this.currentChart = '心率'
+        else this.currentChart = '血压'
+
+        this.refresh(true)
       }
     }
 
@@ -84,16 +93,17 @@
       this.$apply()
     }
 
-    refresh () {
+    refresh (clearCanvas = false) {
       if (this.currentChart === '血压') {
         this.systolicChart.drawAxisLeft()
         this.systolicChart.drawAxisBottom(timeFormat('%m/%d'))
         this.systolicChart.drawDataLine()
-        this.systolicChart.draw()
+        this.systolicChart.draw(undefined, false)
 
         this.diastolicChart.drawDataLine()
-        this.diastolicChart.draw()
+        this.diastolicChart.draw(!clearCanvas)
       } else if (this.currentChart === '心率') {
+        this.heartRateChart.draw(undefined, false)
         this.heartRateChart.drawAxisLeft()
         this.heartRateChart.drawAxisBottom(timeFormat('%m/%d'))
         this.heartRateChart.drawDataLine()
