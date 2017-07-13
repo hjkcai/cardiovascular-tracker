@@ -29,6 +29,7 @@ $arrow-drop-down: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWln
   padding: 0;
   margin: 0;
   border-radius: 0;
+  line-height: 1;
   background-color: transparent;
 
   &::after {
@@ -49,10 +50,12 @@ $section-title-margin-bottom: 16px;
 $section-title-font-size: 0.9em;
 
 $md-list-item-pading-top-bottom: 12px;
-$md-list-item-extra-pading-left: 20px;
+$md-list-item-pading-left-right: 16px;
+$md-list-item-extra-pading-left: 16px;
 $md-list-item-line-space: 8px;
 $md-list-item-content-color: #757575;
 $md-list-item-font-size: 0.9em;
+$md-list-item-hover-color: #eee;
 
 // 底部导航栏
 $bottom-nav-border: #e0e0e0;
@@ -90,3 +93,5 @@ $date-range-picker-text-space: 12px;
 
 // 体重数据编辑器
 $weight-editor-input-text-paddding: 12px;
+$weight-editor-note-height: 4em;
+$weight-editor-note-line-height: 1.2em;

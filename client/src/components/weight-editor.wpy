@@ -1,6 +1,6 @@
 <template>
   <view id="weight-editor" class="canvas-page-wrapper">
-    <view class="md-list">
+    <form class="md-list">
       <view class="section">
         <text class="title">详细信息</text>
         <view class="md-icon-item weight-input">
@@ -15,7 +15,16 @@
           </picker>
         </view>
       </view>
-    </view>
+      <view class="section">
+        <text class="title">备注</text>
+        <view class="textarea-wrapper md-list-item">
+          <textarea placeholder="点此添加备注"></textarea>
+        </view>
+      </view>
+      <view class="section submit">
+        <button formType="submit">提交</button>
+      </view>
+    </form>
   </view>
 </template>
 
@@ -36,6 +45,33 @@
   #weight-editor {
     .weight-input text {
       margin-left: $weight-editor-input-text-paddding;
+    }
+
+    .textarea-wrapper {
+      display: flex;
+      padding-top: 0;
+
+      textarea {
+        flex: 1;
+        height: $weight-editor-note-height;
+        line-height: $weight-editor-note-line-height;
+      }
+    }
+
+    .submit {
+      padding-top: 0;
+
+      button {
+        @include button-reset;
+        padding: $md-list-item-pading-top-bottom 0;
+        text-align: center;
+        font-weight: bold;
+        color: $primary;
+
+        &.button-hover {
+          background-color: $md-list-item-hover-color;
+        }
+      }
     }
   }
 </style>
