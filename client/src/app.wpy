@@ -199,6 +199,33 @@
         }
       }
 
+      .textarea-wrapper {
+        display: flex;
+        padding-top: 0;
+
+        textarea {
+          flex: 1;
+          height: $weight-editor-note-height;
+          line-height: $weight-editor-note-line-height;
+        }
+      }
+
+      .submit {
+        padding-top: 0;
+
+        button {
+          @include button-reset;
+          padding: $md-list-item-pading-top-bottom 0;
+          text-align: center;
+          font-weight: bold;
+          color: $primary;
+
+          &.button-hover {
+            background-color: $md-list-item-hover-color;
+          }
+        }
+      }
+
       &:first-child {
         margin-top: 0;
         border-top: 0;
