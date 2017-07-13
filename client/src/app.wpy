@@ -43,6 +43,19 @@
     border-top: 1px solid $hr-color;
   }
 
+  .md-button {
+    @include button-reset;
+    border-radius: $md-button-border-radius;
+    box-shadow: $md-button-shadow;
+    text-align: center;
+    color: $md-button-foreground;
+    background-color: $md-button-background;
+
+    &.button-hover {
+      background-color: #b71c1c;
+    }
+  }
+
   .tabs-wrapper {
     position: absolute;
     left: 0;
@@ -214,15 +227,8 @@
         padding-top: 0;
 
         button {
-          @include button-reset;
+          margin: 12px;
           padding: $md-list-item-pading-top-bottom 0;
-          text-align: center;
-          font-weight: bold;
-          color: $primary;
-
-          &.button-hover {
-            background-color: $md-list-item-hover-color;
-          }
         }
       }
 

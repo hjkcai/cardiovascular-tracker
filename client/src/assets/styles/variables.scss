@@ -49,6 +49,12 @@ $section-title-padding-left: 4px;
 $section-title-margin-bottom: 16px;
 $section-title-font-size: 0.9em;
 
+$md-button-background: $primary;
+$md-button-foreground: $background-color;
+$md-button-border-radius: 2px;
+$md-button-shadow: 0 2px 6px $transparent-black;
+$md-button-hover-background: #b71c1c;
+
 $md-list-item-pading-top-bottom: 12px;
 $md-list-item-pading-left-right: 16px;
 $md-list-item-extra-pading-left: 16px;
