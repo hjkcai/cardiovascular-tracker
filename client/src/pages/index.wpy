@@ -141,7 +141,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: $add-fab-color;
+      background-color: $primary;
       border-radius: 50%;
       box-shadow: $shadow-2px;
 

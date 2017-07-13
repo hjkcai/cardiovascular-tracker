@@ -40,10 +40,10 @@
 <script>
   import wepy from 'wepy'
   import Graph from '../lib/graph'
-  import mdlistitem from './md-list-item'
+  import mdlistitem from '../components/md-list-item'
   import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
-  import daterangepicker from './date-range-picker'
+  import daterangepicker from '../components/date-range-picker'
 
   export default class WeightViewer extends wepy.component {
     components = {
