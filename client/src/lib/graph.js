@@ -95,7 +95,6 @@ export default class Graph {
     // 计算线性回归
     const points = this.data.map(item => [this.xScale(this.xAccessor(item)), this.yScale(this.yAccessor(item))])
     this.linearRegression = linearRegression(points)
-    console.log(points, this.linearRegression)
   }
 
   /** 绘制刻度在左侧的纵坐标轴 */
@@ -154,18 +153,22 @@ export default class Graph {
     const y1 = this.linearRegression.m * x1 + this.linearRegression.b
     const y2 = this.linearRegression.m * x2 + this.linearRegression.b
 
-    drawDashLine(this.ctx, x1, y1, x2, y2)
+    this.draw()
+    this.draw(() => {
+      this.ctx.setStrokeStyle('#D32F2F')
+      drawDashLine(this.ctx, x1, y1, x2, y2)
+    })
   }
 
   /** 执行绘制 */
-  draw () {
-    this.ctx.draw()
-    this.ctx.setLineWidth(1)
-  }
+  draw (func) {
+    if (typeof func === 'function') {
+      this.ctx.save()
+      func()
+      this.ctx.restore()
+    }
 
-  /** 清空绘制区域 */
-  clear () {
-    this.ctx.clearRect(this.rect.left, this.rect.top, this.rect.width, this.rect.height)
-    this.draw()
+    this.ctx.draw(true)
+    this.ctx.setLineWidth(1)
   }
 }
