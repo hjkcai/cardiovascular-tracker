@@ -92,6 +92,12 @@
 
         this.diastolicChart.drawDataLine()
         this.diastolicChart.draw()
+      } else if (this.currentChart === 'heart-rate') {
+        this.heartRateChart.drawAxisLeft()
+        this.heartRateChart.drawAxisBottom(timeFormat('%m/%d'))
+        this.heartRateChart.drawDataLine()
+        this.heartRateChart.drawLinearRegression()
+        this.heartRateChart.draw()
       }
     }
   }
