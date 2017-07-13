@@ -1,0 +1,30 @@
+<template>
+  <view class="md-icon-item" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+    <view class="icon">
+      <slot name="icon"></slot>
+    </view>
+    <view class="content-wrapper">
+      <view class="caption">
+        <slot name="caption"></slot>
+      </view>
+      <view class="content">
+        <view class="left">
+          <slot name="left"></slot>
+        </view>
+        <view class="right">
+          <slot name="right"></slot>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class MdIconItem extends wepy.component {
+    props = {
+      icon: String
+    }
+  }
+</script>

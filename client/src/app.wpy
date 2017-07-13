@@ -156,11 +156,7 @@
       padding: 12px 16px;
     }
 
-    view.md-list-item {
-      .caption, .content {
-        margin-left: 16px + $icon-size;
-      }
-
+    view.md-list-item, view.md-icon-item {
       .content {
         margin-top: 8px;
         display: flex;
@@ -181,11 +177,28 @@
       display: flex;
       align-items: center;
 
-      & > image:first-child {
+      & > image:first-child, & > .icon {
         width: $icon-size;
         height: $icon-size;
         margin-right: 16px;
         flex: none;
+      }
+
+      .icon > image {
+        width: $icon-size;
+        height: $icon-size;
+      }
+    }
+
+    view.md-list-item {
+      .caption, .content {
+        margin-left: 16px + $icon-size;
+      }
+    }
+
+    view.md-icon-item {
+      .content-wrapper {
+        flex: 1;
       }
     }
 
