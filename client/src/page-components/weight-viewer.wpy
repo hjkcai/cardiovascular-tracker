@@ -4,7 +4,7 @@
     <scroll-view class="md-list" scroll-y>
       <view class="section">
         <text class="title">报告选择</text>
-        <daterangepicker :value.sync="dateRange"></daterangepicker>
+        <daterangepicker :value.sync="dateRange" @change.user="dateRangeChanged"></daterangepicker>
       </view>
       <view class="section">
         <text class="title">摘要</text>
@@ -64,6 +64,12 @@
       },
       canvasWidth: 0,
       canvasHeight: 0
+    }
+
+    methods = {
+      dateRangeChanged (newRange) {
+        this.dateRange = newRange
+      }
     }
 
     onLoad () {

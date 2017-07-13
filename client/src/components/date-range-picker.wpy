@@ -27,9 +27,11 @@
     methods = {
       updateFrom (e) {
         this.value.from = e.detail.value
+        this.$emit('change', this.value)
       },
       updateTo (e) {
         this.value.to = e.detail.value
+        this.$emit('change', this.value)
       }
     }
   }

@@ -5,7 +5,7 @@
     <scroll-view class="md-list" scroll-y>
       <view class="section report-switcher">
         <text class="title">报告选择</text>
-        <daterangepicker :value.sync="dateRange"></daterangepicker>
+        <daterangepicker :value.sync="dateRange" @change.user="dateRangeChanged"></daterangepicker>
         <button class="switch-chart" @tap="switchReport">切换至{{ currentChart === '心率' ? '血压' : '心率' }}报告</button>
       </view>
       <view class="section" wx:if="{{ currentChart === '血压' }}">
@@ -125,6 +125,9 @@
         else this.currentChart = '血压'
 
         this.refresh()
+      },
+      dateRangeChanged (newRange) {
+        this.dateRange = newRange
       }
     }
 
