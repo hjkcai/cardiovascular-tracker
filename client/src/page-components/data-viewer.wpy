@@ -6,7 +6,7 @@
     </view>
     <view class="content">
       <weightviewer wx:if="{{ activeTab === 0 }}" class="page"></weightviewer>
-      <view wx:if="{{ activeTab === 1 }}" class="page">page2</view>
+      <heartstateviewer wx:if="{{ activeTab === 1 }}" class="page"></heartstateviewer>
     </view>
   </view>
 </template>
@@ -15,10 +15,12 @@
   import wepy from 'wepy'
   import TabMixin from '../mixins/tab'
   import weightviewer from './weight-viewer'
+  import heartstateviewer from './heart-state-viewer'
 
   export default class DataViewer extends wepy.component {
     components = {
-      weightviewer
+      weightviewer,
+      heartstateviewer
     }
 
     mixins = [TabMixin]
@@ -31,7 +33,7 @@
         },
         {
           name: '血压心率',
-          component: null
+          component: 'heartstateviewer'
         }
       ]
     }
