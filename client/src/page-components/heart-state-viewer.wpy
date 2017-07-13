@@ -57,6 +57,13 @@
       </view>
       <view class="section">
         <text class="title">详细信息</text>
+        <repeat for="{{ heartStateData }}" key="{{ index }}">
+          <mdiconitem>
+            <image slot="icon" src="{{ item.warning }}"></image>
+            <text slot="caption">{{ item.dateValue }}</text>
+            <text slot="left">{{ item.systolic }}mmHg / {{ item.diastolic }}mmHg, {{ item.heartRate }}bpm</text>
+          </mdiconitem>
+        </repeat>
       </view>
     </scroll-view>
   </view>
