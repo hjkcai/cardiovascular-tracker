@@ -8,8 +8,52 @@
         <daterangepicker :value.sync="dateRange"></daterangepicker>
         <button class="switch-chart" @tap="switchReport">切换至{{ currentChart === '心率' ? '血压' : '心率' }}报告</button>
       </view>
-      <view class="section">
+      <view class="section" wx:if="{{ currentChart === '血压' }}">
         <text class="title">摘要</text>
+        <mdiconitem>
+          <image slot="icon" src="{{ summary.systolic.max.warning }}"></image>
+          <text slot="caption">最高收缩压</text>
+          <text slot="left">{{ summary.systolic.max.systolic }}mmHg</text>
+          <text slot="right">{{ summary.systolic.max.dateValue }}</text>
+        </mdiconitem>
+        <mdiconitem>
+          <image slot="icon" src="{{ summary.systolic.average.warning }}"></image>
+          <text slot="caption">平均收缩压</text>
+          <text slot="left">{{ summary.systolic.average.systolic }}mmHg</text>
+        </mdiconitem>
+        <mdiconitem>
+          <image slot="icon" src="{{ summary.diastolic.max.warning }}"></image>
+          <text slot="caption">最高舒张压</text>
+          <text slot="left">{{ summary.diastolic.max.diastolic }}mmHg</text>
+          <text slot="right">{{ summary.diastolic.max.dateValue }}</text>
+        </mdiconitem>
+        <mdiconitem>
+          <image slot="icon" src="{{ summary.diastolic.average.warning }}"></image>
+          <text slot="caption">平均舒张压</text>
+          <text slot="left">{{ summary.diastolic.average.diastolic }}mmHg</text>
+        </mdiconitem>
+        <mdiconitem>
+          <text slot="caption">达标率</text>
+          <text slot="left">{{ summary.bloodPresure.rate }}%</text>
+          <text slot="right">{{ summary.bloodPresure.regular }} / {{ heartStateData.length }}</text>
+        </mdiconitem>
+      </view>
+      <view class="section" wx:if="{{ currentChart === '心率' }}">
+        <text class="title">摘要</text>
+        <mdiconitem>
+          <text slot="caption">最高心率</text>
+          <text slot="left">{{ summary.heartRate.max.heartRate }}bpm</text>
+          <text slot="right">{{ summary.heartRate.max.dateValue }}</text>
+        </mdiconitem>
+        <mdiconitem>
+          <text slot="caption">最低心率</text>
+          <text slot="left">{{ summary.heartRate.min.heartRate }}bpm</text>
+          <text slot="right">{{ summary.heartRate.min.dateValue }}</text>
+        </mdiconitem>
+        <mdiconitem>
+          <text slot="caption">平均心率</text>
+          <text slot="left">{{ summary.heartRate.average }}bpm</text>
+        </mdiconitem>
       </view>
       <view class="section">
         <text class="title">详细信息</text>
@@ -21,6 +65,7 @@
 <script>
   import wepy from 'wepy'
   import Chart from '../lib/chart'
+  import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
   import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
@@ -28,8 +73,11 @@
 
   import * as d3Array from 'd3-array'
 
+  const WARNING_ICON = '../assets/icons/warning.svg'
+
   export default class HeartStateViewer extends wepy.component {
     components = {
+      mdiconitem,
       mdlistitem,
       daterangepicker
     }
@@ -45,12 +93,16 @@
       },
       summary: {
         systolic: {
-          max: { systolic: 0, dateValue: '' },
-          average: 0
+          max: { systolic: 0, dateValue: '', warning: '' },
+          average: { systolic: 0, warning: '' }
         },
         diastolic: {
           max: { diastolic: 0, dateValue: '' },
-          average: 0
+          average: { diastolic: 0, warning: '' }
+        },
+        bloodPresure: {
+          regular: 0,
+          rate: 0
         },
         heartRate: {
           max: { heartRate: 0, dateValue: '' },
@@ -114,6 +166,7 @@
     generateSummary () {
       let systolicMax = 0, systolicSum = 0
       let diastolicMax = 0, diastolicSum = 0
+      let regularBloodPresure = 0
       let heartRateMax = 0, heartRateMin = 0, heartRateSum = 0
 
       const data = this.heartStateData
@@ -128,17 +181,34 @@
         heartRateSum += item.heartRate
 
         item.dateValue = formatDate(item.date)
-        item.warning = item.systolic > 140 || item.diastolic > 90
+        if (item.systolic > 140 || item.diastolic > 90) {
+          item.warning = WARNING_ICON
+        } else {
+          regularBloodPresure += 1
+        }
       })
+
+      const systolicAverage = Math.round(systolicSum / data.length)
+      const diastolicAverage = Math.round(diastolicSum / data.length)
 
       this.summary = {
         systolic: {
           max: data[systolicMax],
-          average: Math.round(systolicSum / data.length)
+          average: {
+            systolic: systolicAverage,
+            warning: systolicAverage > 140 ? WARNING_ICON : ''
+          }
         },
         diastolic: {
           max: data[diastolicMax],
-          average: Math.round(diastolicSum / data.length)
+          average: {
+            diastolic: diastolicAverage,
+            warning: diastolicAverage > 90 ? WARNING_ICON : ''
+          }
+        },
+        bloodPresure: {
+          regular: regularBloodPresure,
+          rate: Math.round(regularBloodPresure / data.length * 10000) / 100
         },
         heartRate: {
           max: data[heartRateMax],
