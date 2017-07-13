@@ -1,0 +1,41 @@
+<template>
+  <view id="weight-editor" class="canvas-page-wrapper">
+    <view class="md-list">
+      <view class="section">
+        <text class="title">详细信息</text>
+        <view class="md-icon-item weight-input">
+          <image src="../assets/icons/scale-bathroom.svg"></image>
+          <input type="digit" placeholder="体重" />
+          <text>kg</text>
+        </view>
+        <view class="md-icon-item">
+          <image src="../assets/icons/calendar.svg"></image>
+          <picker mode="date">
+            <view>{{ date }}</view>
+          </picker>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { formatDate } from '../lib/util'
+
+  export default class WeightEditor extends wepy.component {
+    data = {
+      date: formatDate()
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  #weight-editor {
+    .weight-input text {
+      margin-left: $weight-editor-input-text-paddding;
+    }
+  }
+</style>

@@ -5,7 +5,7 @@
       <view wx:for="{{ tabs }}" wx:key="{{ index }}" data-index="{{ index }}" @tap="switchTab" class="tab {{ activeTab === index ? 'active' : '' }}">{{ item.name }}</view>
     </view>
     <view class="content">
-      <view wx:if="{{ activeTab === 0 }}" class="page">add page1</view>
+      <weighteditor wx:if="{{ activeTab === 0 }}" class="page"></weighteditor>
       <view wx:if="{{ activeTab === 1 }}" class="page">add page2</view>
     </view>
   </view>
@@ -14,8 +14,13 @@
 <script>
   import wepy from 'wepy'
   import TabMixin from '../mixins/tab'
+  import weighteditor from './weight-editor'
 
   export default class DataViewer extends wepy.component {
+    components = {
+      weighteditor
+    }
+
     mixins = [TabMixin]
 
     data = {
@@ -38,3 +43,7 @@
     }
   }
 </script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+</style>
