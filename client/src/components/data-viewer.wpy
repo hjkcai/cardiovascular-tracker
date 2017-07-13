@@ -46,4 +46,11 @@
 
 <style lang="scss">
   @import '../assets/styles/variables';
+
+  #data-viewer {
+    .date-range-picker {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
 </style>

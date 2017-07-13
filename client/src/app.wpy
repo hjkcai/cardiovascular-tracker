@@ -112,6 +112,7 @@
     .md-list {
       flex: 1;
       margin-top: $hr-margin-top-bottom;
+      padding: 0;
       border-top: 1px solid $hr-color;
       overflow: hidden;
 
@@ -157,6 +158,53 @@
 
         &.hover {
           background-color: #eee;
+        }
+      }
+
+      .md-icon-item {
+        padding: $md-list-item-pading-top-bottom 0;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+
+        & > image:first-child {
+          width: $icon-size;
+          height: $icon-size;
+          margin: 0 $icon-item-icon-margin ($input-border-bottom * 2) ($icon-item-icon-margin - $page-padding-left-right);
+          flex: none;
+        }
+      }
+
+      input, picker {
+        position: relative;
+        height: $input-height;
+        border-bottom: $input-border-bottom solid $input-border-bottom-color;
+        flex: 1;
+      }
+
+      picker {
+        padding-right: $date-range-picker-padding-right;
+        background-image: $arrow-drop-down;
+        background-position: center right;
+        background-repeat: no-repeat;
+
+        view {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      &:first-child {
+        margin-top: 0;
+        border-top: 0;
+
+        .section:first-child {
+          padding-top: 0;
         }
       }
     }

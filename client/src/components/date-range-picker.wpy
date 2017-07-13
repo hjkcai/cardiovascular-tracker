@@ -1,10 +1,10 @@
 <template>
-  <view class="date-range-picker">
+  <view class="date-range-picker md-icon-item">
     <image src="../assets/icons/date-range.svg"></image>
     <picker class="from" mode="date" value="{{ value.from }}" end="{{ value.to }}" @change="updateFrom">
       <view>{{ value.from }}</view>
     </picker>
-    <view>至</view>
+    <view class="middle-text">至</view>
     <picker class="to" mode="date" value="{{ value.to }}" start="{{ value.from }}" end="{{ today }}" @change="updateTo">
       <view>{{ value.to }}</view>
     </picker>
@@ -39,39 +39,7 @@
   @import '../assets/styles/variables';
 
   .date-range-picker {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-
-    image {
-      width: $icon-size;
-      height: $icon-size;
-      margin: 0 $date-range-picker-icon-margin ($date-range-picker-height + $date-range-picker-border-bottom - $icon-size) ($date-range-picker-icon-margin - $page-padding-left-right);
-      flex: none;
-    }
-
-    picker {
-      position: relative;
-      height: $date-range-picker-height;
-      padding-right: $date-range-picker-padding-right;
-      border-bottom: $date-range-picker-border-bottom solid $date-range-picker-border-bottom-color;
-      flex: 1;
-      background-image: $arrow-drop-down;
-      background-position: center right;
-      background-repeat: no-repeat;
-
-      view {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
-    }
-
-    & > view {
+    .middle-text {
       position: relative;
       top: -1px;
       margin: 0 $date-range-picker-text-space;

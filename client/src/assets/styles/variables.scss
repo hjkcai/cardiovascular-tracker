@@ -70,18 +70,23 @@ $add-fab-icon-size: 32px;
 $add-fab-shadow: 0 2px 6px $transparent-black;
 $add-fab-overflow-size: 16px;
 
-// 患者历史数据查看器 ----------------------------------------------------------
-
 // 顶部导航栏
 $tabs-height: 40px, 40px, 48px, 48px;
 $tabs-line-width: 2px;
 $tab-label-color: rgba(255, 255, 255, 0.5);
 $tab-label-color-active: white;
 
-// 时间范围选择器 --------------------------------------------------------------
-$date-range-picker-height: 27px;
+// 通用输入框
+$input-height: 27px;
+$input-border-bottom: 1px;
+$input-border-bottom-color: #bdbdbd;
+
+// md-icon-item
+$icon-item-icon-margin: 16px;
+
+// 时间范围选择器
 $date-range-picker-padding-right: 24px;
-$date-range-picker-border-bottom: 1px;
-$date-range-picker-border-bottom-color: #bdbdbd;
-$date-range-picker-icon-margin: 16px;
 $date-range-picker-text-space: 12px;
+
+// 体重数据编辑器
+$weight-editor-input-text-paddding: 12px;
