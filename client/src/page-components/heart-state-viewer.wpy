@@ -22,7 +22,10 @@
   import Chart from '../lib/chart'
   import mdlistitem from '../components/md-list-item'
   import { formatDate } from '../lib/util'
+  import { timeFormat } from 'd3-time-format'
   import daterangepicker from '../components/date-range-picker'
+
+  import * as d3Array from 'd3-array'
 
   export default class HeartStateViewer extends wepy.component {
     components = {
@@ -31,6 +34,7 @@
     }
 
     data = {
+      heartStateData: [],
       canvasWidth: 0,
       canvasHeight: 0,
       currentChart: 'blood-presure',
@@ -46,8 +50,49 @@
       this.systolicChart = new Chart(ctx, [], d => d.date, d => d.systolic)
       this.diastolicChart = new Chart(ctx, [], d => d.date, d => d.diastolic)
 
-      this.canvasWidth = this.chart.rect.width
-      this.canvasHeight = this.chart.rect.height
+      this.fetchHeartStateData()
+
+      this.canvasWidth = this.heartRateChart.rect.width
+      this.canvasHeight = this.heartRateChart.rect.height
+    }
+
+    fetchHeartStateData () {
+      // TODO: 请求后端数据
+      this.heartStateData = [
+        { date: new Date(2017, 5, 16), heartRate: 80, systolic: 140, diastolic: 90 },
+        { date: new Date(2017, 5, 15), heartRate: 83, systolic: 144, diastolic: 88 },
+        { date: new Date(2017, 5, 14), heartRate: 79, systolic: 143, diastolic: 93 },
+        { date: new Date(2017, 5, 13), heartRate: 85, systolic: 148, diastolic: 94 },
+        { date: new Date(2017, 5, 12), heartRate: 82, systolic: 138, diastolic: 88 },
+        { date: new Date(2017, 5, 11), heartRate: 89, systolic: 137, diastolic: 88 },
+        { date: new Date(2017, 5, 10), heartRate: 88, systolic: 141, diastolic: 89 }
+      ]
+
+      this.heartRateChart.setData(this.heartStateData)
+
+      // 手动计算血压图表的定义域
+      const bloodPresureDomain = [d3Array.min(this.heartStateData, d => d.diastolic), d3Array.max(this.heartStateData, d => d.systolic)]
+      this.systolicChart.setData(this.heartStateData, false)
+      this.systolicChart.updateXScale()
+      this.systolicChart.updateYScale(bloodPresureDomain)
+
+      this.diastolicChart.setData(this.heartStateData, false)
+      this.diastolicChart.updateXScale()
+      this.diastolicChart.updateYScale(bloodPresureDomain)
+
+      this.$apply()
+    }
+
+    refresh () {
+      if (this.currentChart === 'blood-presure') {
+        this.systolicChart.drawAxisLeft()
+        this.systolicChart.drawAxisBottom(timeFormat('%m/%d'))
+        this.systolicChart.drawDataLine()
+        this.systolicChart.draw()
+
+        this.diastolicChart.drawDataLine()
+        this.diastolicChart.draw()
+      }
     }
   }
 </script>
