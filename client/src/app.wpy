@@ -248,6 +248,13 @@
     .submit {
       padding-top: 0;
 
+      .note {
+        margin-top: 16px;
+        text-align: center;
+        font-size: 0.9em;
+        color: $gray;
+      }
+
       button {
         margin: 12px;
         padding: 12px 0;

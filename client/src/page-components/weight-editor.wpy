@@ -23,6 +23,7 @@
       </view>
       <view class="section submit">
         <button class="md-button" formType="submit">提交</button>
+        <view class="note">建议在晨起排便后、进食前测量</view>
       </view>
     </form>
   </view>
