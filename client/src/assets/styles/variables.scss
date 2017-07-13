@@ -1,5 +1,14 @@
 // 主颜色
 $primary: #d32f2f;
+$primary-dark: #b71c1c;
+
+// 灰色
+$gray: #757575;
+$light-gray: #bdbdbd;
+
+// 白色
+$dark-white: #eee;
+$darker-white: #e0e0e0;
 
 // 背景色
 $background-color: white;
@@ -17,6 +26,10 @@ $icon-size: 24px;
 
 // 常用的半透明黑色
 $transparent-black: rgba(0, 0, 0, 0.33);
+
+// 阴影
+$shadow-2px: 0 2px 6px $transparent-black;
+$bottom-nav-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
 
 // 常用的过渡定义
 $transition: 0.33s ease;
@@ -37,65 +50,26 @@ $arrow-drop-down: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWln
   }
 }
 
-// 主页 ------------------------------------------------------------------------
+// 页面
 $page-padding-left-right: 12px;
 $page-padding-top: 16px;
 
-$hr-color: #e0e0e0;
-$hr-margin-top-bottom: 16px;
+// 分隔线
+$sperator-color: #e0e0e0;
+$sperator-margin: 16px;
 
-$section-title-color: #757575;
-$section-title-padding-left: 4px;
-$section-title-margin-bottom: 16px;
-$section-title-font-size: 0.9em;
-
-$md-button-background: $primary;
-$md-button-foreground: $background-color;
-$md-button-border-radius: 2px;
-$md-button-shadow: 0 2px 6px $transparent-black;
-$md-button-hover-background: #b71c1c;
-
-$md-list-item-pading-top-bottom: 12px;
-$md-list-item-pading-left-right: 16px;
-$md-list-item-extra-pading-left: 16px;
-$md-list-item-line-space: 8px;
-$md-list-item-content-color: #757575;
-$md-list-item-font-size: 0.9em;
-$md-list-item-hover-color: #eee;
-
-// 底部导航栏
-$bottom-nav-border: #e0e0e0;
-$bottom-nav-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-$bottom-nav-item-color-active: $primary;
-$bottom-nav-item-color-normal: #757575;
-$bottom-nav-icon-size: 24px;
-$bottom-nav-icon-margin: 8px 0 4px;
+// 底部导航栏高度
 $bottom-nav-height: 58px, 60px, 62px, 64px;
-
-// 添加记录 FAB
-$add-fab-color: $primary;
-$add-fab-active-color: #b71c1c;
-$add-fab-icon-size: 32px;
-$add-fab-shadow: 0 2px 6px $transparent-black;
 $add-fab-overflow-size: 16px;
 
 // 顶部导航栏
 $tabs-height: 40px, 40px, 48px, 48px;
 $tabs-line-width: 2px;
 $tab-label-color: rgba(255, 255, 255, 0.5);
-$tab-label-color-active: white;
 
 // 通用输入框
 $input-height: 27px;
 $input-border-bottom: 1px;
-$input-border-bottom-color: #bdbdbd;
-
-// md-icon-item
-$icon-item-icon-margin: 16px;
-
-// 时间范围选择器
-$date-range-picker-padding-right: 24px;
-$date-range-picker-text-space: 12px;
 
 // 体重数据编辑器
 $weight-editor-input-text-paddding: 12px;

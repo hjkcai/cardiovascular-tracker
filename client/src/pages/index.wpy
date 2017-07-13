@@ -78,7 +78,7 @@
     bottom: 0;
     width: 100%;
     display: flex;
-    border-top: 1px solid $bottom-nav-border;
+    border-top: 1px solid $darker-white;
     box-shadow: $bottom-nav-shadow;
 
     .nav-item {
@@ -87,16 +87,16 @@
       flex-direction: column;
       align-items: center;
 
-      color: $bottom-nav-item-color-normal;
-      &.active { color: $bottom-nav-item-color-active; }
+      color: $gray;
+      &.active { color: $primary; }
 
       .icon {
         flex: none;
-        margin: $bottom-nav-icon-margin;
+        margin: 8px 0 4px;
 
         image {
-          width: $bottom-nav-icon-size;
-          height: $bottom-nav-icon-size;
+          width: $icon-size;
+          height: $icon-size;
 
           &:first-child {
             display: block;
@@ -143,7 +143,7 @@
       justify-content: center;
       background-color: $add-fab-color;
       border-radius: 50%;
-      box-shadow: $add-fab-shadow;
+      box-shadow: $shadow-2px;
 
       image {
         width: 50%;
@@ -151,7 +151,7 @@
       }
 
       &.button-hover {
-        background-color: $add-fab-active-color;
+        background-color: $primary-dark;
       }
     }
   }

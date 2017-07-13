@@ -39,20 +39,20 @@
   }
 
   .hr {
-    margin: $hr-margin-top-bottom 0;
-    border-top: 1px solid $hr-color;
+    margin: $sperator-margin 0;
+    border-top: 1px solid $sperator-color;
   }
 
   .md-button {
     @include button-reset;
-    border-radius: $md-button-border-radius;
-    box-shadow: $md-button-shadow;
+    border-radius: 2px;
+    box-shadow: $shadow-2px;
     text-align: center;
-    color: $md-button-foreground;
-    background-color: $md-button-background;
+    color: white;
+    background-color: $primary;
 
     &.button-hover {
-      background-color: #b71c1c;
+      background-color: $primary-dark;
     }
   }
 
@@ -86,8 +86,8 @@
 
         &.active {
           padding-bottom: 0;
-          border-bottom: $tabs-line-width solid $tab-label-color-active;
-          color: $tab-label-color-active;
+          border-bottom: $tabs-line-width solid white;
+          color: white;
         }
       }
     }
@@ -124,14 +124,14 @@
 
     .md-list {
       flex: 1;
-      margin-top: $hr-margin-top-bottom;
+      margin-top: $sperator-margin;
       padding: 0;
-      border-top: 1px solid $hr-color;
+      border-top: 1px solid $sperator-color;
       overflow: hidden;
 
       .section {
-        padding: $hr-margin-top-bottom 0;
-        border-top: 1px solid $hr-color;
+        padding: $sperator-margin 0;
+        border-top: 1px solid $sperator-color;
 
         &:first-child {
           border-top: 0;
@@ -145,24 +145,26 @@
 
       .title {
         display: block;
-        padding-left: $section-title-padding-left + $page-padding-left-right;
-        margin-bottom: $section-title-margin-bottom;
-        color: $section-title-color;
-        font-size: $section-title-font-size;
+        padding-left: $page-padding-left-right + 4px;
+        margin-bottom: 16px;
+        color: $gray;
+        font-size: 16px;
+      }
+
+      view.md-list-item, view.md-icon-item {
+        padding: 12px 16px;
       }
 
       view.md-list-item {
-        padding: $md-list-item-pading-top-bottom $md-list-item-pading-left-right;
-
         .caption, .content {
-          margin-left: $md-list-item-extra-pading-left + $icon-size;
+          margin-left: 16px + $icon-size;
         }
 
         .content {
-          margin-top: $md-list-item-line-space;
+          margin-top: 8px;
           display: flex;
-          color: $md-list-item-content-color;
-          font-size: $md-list-item-font-size;
+          color: $gray;
+          font-size: 0.9em;
 
           .right {
             margin-left: auto;
@@ -170,12 +172,11 @@
         }
 
         &.hover {
-          background-color: $md-list-item-hover-color;
+          background-color: $dark-white;
         }
       }
 
       view.md-icon-item {
-        padding: $md-list-item-pading-top-bottom $md-list-item-pading-left-right;
         display: flex;
         align-items: center;
         white-space: nowrap;
@@ -183,7 +184,7 @@
         & > image:first-child {
           width: $icon-size;
           height: $icon-size;
-          margin: 0 $icon-item-icon-margin ($input-border-bottom * 2) 0;
+          margin: 0 16px ($input-border-bottom * 2) 0;
           flex: none;
         }
       }
@@ -191,12 +192,12 @@
       input, picker {
         position: relative;
         height: $input-height;
-        border-bottom: $input-border-bottom solid $input-border-bottom-color;
+        border-bottom: $input-border-bottom solid $light-gray;
         flex: 1;
       }
 
       picker {
-        padding-right: $date-range-picker-padding-right;
+        padding-right: $icon-size;
         background-image: $arrow-drop-down;
         background-position: center right;
         background-repeat: no-repeat;
@@ -228,7 +229,7 @@
 
         button {
           margin: 12px;
-          padding: $md-list-item-pading-top-bottom 0;
+          padding: 12px 0;
         }
       }
 
