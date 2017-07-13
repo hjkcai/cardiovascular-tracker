@@ -3,12 +3,12 @@
     <form class="md-list">
       <view class="section">
         <text class="title">详细信息</text>
-        <view class="md-icon-item weight-input">
+        <view class="md-form-item weight-input">
           <image src="../assets/icons/scale-bathroom.svg"></image>
           <input type="digit" placeholder="体重" />
           <text>kg</text>
         </view>
-        <view class="md-icon-item">
+        <view class="md-form-item">
           <image src="../assets/icons/calendar.svg"></image>
           <picker mode="date">
             <view>{{ date }}</view>

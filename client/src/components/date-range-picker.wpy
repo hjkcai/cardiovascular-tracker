@@ -1,5 +1,5 @@
 <template>
-  <view class="date-range-picker md-icon-item">
+  <view class="date-range-picker md-form-item">
     <image src="../assets/icons/date-range.svg"></image>
     <picker class="from" mode="date" value="{{ value.from }}" end="{{ value.to }}" @change="updateFrom">
       <view>{{ value.from }}</view>

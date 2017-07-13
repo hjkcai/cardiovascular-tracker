@@ -152,7 +152,7 @@
       font-size: 16px;
     }
 
-    view.md-list-item, view.md-icon-item {
+    view.md-list-item, view.md-icon-item, view.md-form-item {
       padding: 12px 16px;
     }
 
@@ -177,16 +177,23 @@
       }
     }
 
-    view.md-icon-item {
+    view.md-icon-item, view.md-form-item {
       display: flex;
       align-items: center;
-      white-space: nowrap;
 
       & > image:first-child {
         width: $icon-size;
         height: $icon-size;
-        margin: 0 16px ($input-border-bottom * 2) 0;
+        margin-right: 16px;
         flex: none;
+      }
+    }
+
+    view.md-form-item {
+      white-space: nowrap;
+
+      & > image:first-child {
+        margin-bottom: $input-border-bottom * 2;
       }
     }
 
