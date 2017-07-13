@@ -1,11 +1,12 @@
 <template>
   <view id="heart-state-viewer" class="canvas-page-wrapper">
-    <button class="switch-chart">切换至{{ currentChart === 'heart-rate' ? '血压' : '心率' }}报告</button>
+    <view class="report-title">{{ currentChart }}报告</view>
     <canvas canvas-id="heart-state-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
     <scroll-view class="md-list" scroll-y>
-      <view class="section">
-        <text class="title">日期选择</text>
+      <view class="section report-switcher">
+        <text class="title">报告选择</text>
         <daterangepicker :value.sync="dateRange"></daterangepicker>
+        <button class="switch-chart">切换至{{ currentChart === '心率' ? '血压' : '心率' }}报告</button>
       </view>
       <view class="section">
         <text class="title">摘要</text>
@@ -37,7 +38,7 @@
       heartStateData: [],
       canvasWidth: 0,
       canvasHeight: 0,
-      currentChart: 'blood-presure',
+      currentChart: '血压',
       dateRange: {
         from: formatDate(new Date() - 7 * 24 * 60 * 60 * 1000),
         to: formatDate()
@@ -84,7 +85,7 @@
     }
 
     refresh () {
-      if (this.currentChart === 'blood-presure') {
+      if (this.currentChart === '血压') {
         this.systolicChart.drawAxisLeft()
         this.systolicChart.drawAxisBottom(timeFormat('%m/%d'))
         this.systolicChart.drawDataLine()
@@ -92,7 +93,7 @@
 
         this.diastolicChart.drawDataLine()
         this.diastolicChart.draw()
-      } else if (this.currentChart === 'heart-rate') {
+      } else if (this.currentChart === '心率') {
         this.heartRateChart.drawAxisLeft()
         this.heartRateChart.drawAxisBottom(timeFormat('%m/%d'))
         this.heartRateChart.drawDataLine()
@@ -107,16 +108,24 @@
   @import '../assets/styles/variables';
 
   #heart-state-viewer {
-    padding-top: 0;
+    .report-title {
+      margin-bottom: 16px;
+      text-align: center;
+    }
 
     .switch-chart {
       @include button-reset;
+      margin-top: 12px;
       padding: 12px 0;
       color: $primary;
 
       &.button-hover {
         background-color: $dark-white;
       }
+    }
+
+    .report-switcher {
+      padding-bottom: 4px;
     }
   }
 </style>
