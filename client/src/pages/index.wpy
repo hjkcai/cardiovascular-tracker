@@ -33,8 +33,8 @@
   import wepy from 'wepy'
   import state from '../lib/state'
   import TabMixin from '../mixins/tab'
-  import addrecord from '../components/add-record'
-  import dataviewer from '../components/data-viewer'
+  import addrecord from '../page-components/add-record'
+  import dataviewer from '../page-components/data-viewer'
 
   export default class Index extends wepy.page {
     components = {
