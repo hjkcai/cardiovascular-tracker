@@ -42,6 +42,21 @@
       dateRange: {
         from: formatDate(new Date() - 7 * 24 * 60 * 60 * 1000),
         to: formatDate()
+      },
+      summary: {
+        systolic: {
+          max: { systolic: 0, dateValue: '' },
+          average: 0
+        },
+        diastolic: {
+          max: { diastolic: 0, dateValue: '' },
+          average: 0
+        },
+        heartRate: {
+          max: { heartRate: 0, dateValue: '' },
+          min: { heartRate: 0, dateValue: '' },
+          average: 0
+        }
       }
     }
 
@@ -90,7 +105,47 @@
       this.diastolicChart.updateXScale()
       this.diastolicChart.updateYScale(bloodPresureDomain)
 
+      // 生成摘要信息
+      this.generateSummary()
+
       this.$apply()
+    }
+
+    generateSummary () {
+      let systolicMax = 0, systolicSum = 0
+      let diastolicMax = 0, diastolicSum = 0
+      let heartRateMax = 0, heartRateMin = 0, heartRateSum = 0
+
+      const data = this.heartStateData
+      data.forEach((item, index) => {
+        if (item.systolic > data[systolicMax].systolic) systolicMax = index
+        if (item.diastolic > data[diastolicMax].diastolic) diastolicMax = index
+        if (item.heartRate > data[heartRateMax].heartRate) heartRateMax = index
+        if (item.heartRate < data[heartRateMin].heartRate) heartRateMin = index
+
+        systolicSum += item.systolic
+        diastolicSum += item.diastolic
+        heartRateSum += item.heartRate
+
+        item.dateValue = formatDate(item.date)
+        item.warning = item.systolic > 140 || item.diastolic > 90
+      })
+
+      this.summary = {
+        systolic: {
+          max: data[systolicMax],
+          average: Math.round(systolicSum / data.length)
+        },
+        diastolic: {
+          max: data[diastolicMax],
+          average: Math.round(diastolicSum / data.length)
+        },
+        heartRate: {
+          max: data[heartRateMax],
+          min: data[heartRateMin],
+          average: Math.round(heartRateSum / data.length)
+        }
+      }
     }
 
     refresh () {
