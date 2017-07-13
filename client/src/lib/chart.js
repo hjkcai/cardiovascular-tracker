@@ -86,18 +86,28 @@ export default class Chart {
   }
 
   /** 更新绘制数据 */
-  setData (data) {
+  setData (data, update = true) {
     this.data = data
 
-    // 计算显示比例
-    const xDomain = d3.extent(data, this.xAccessor)
-    const yDomain = d3.extent(data, this.yAccessor)
-    yDomain[0] -= (yDomain[1] - yDomain[0]) / 10
+    if (update) {
+      this.updateXScale()
+      this.updateYScale()
+      this.updateLinearRegression()
+    }
+  }
 
+  /** 更新横坐标比例尺 */
+  updateXScale (xDomain = d3.extent(this.data, this.xAccessor)) {
     this.xScale.domain(xDomain).nice()
-    this.yScale.domain(yDomain).nice()
+  }
 
-    // 计算线性回归
+  /** 更新纵坐标比例尺 */
+  updateYScale (yDomain = d3.extent(this.data, this.yAccessor)) {
+    this.yScale.domain(yDomain).nice()
+  }
+
+  /** 更新线性回归线数据 */
+  updateLinearRegression () {
     const points = this.data.map(item => [this.xScale(this.xAccessor(item)), this.yScale(this.yAccessor(item))])
     this.linearRegression = linearRegression(points)
   }
