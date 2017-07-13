@@ -10,20 +10,27 @@ import linearRegression from 'simple-statistics/src/linear_regression'
 
 const d3 = Object.assign({}, d3Array, d3Scale, d3Shape)
 
-const PAGE_PADDING_LEFT_RIGHT = 12
-const CANVAS_RATIO = 18 / 9
+const CANVAS_RATIO = 21 / 9
 const TICK_SIZE = 4
 const LEFT_TICKS_MARGIN = 8
 const BOTTOM_TICKS_MARGIN = 6
+const LEFT_AXIS_BOTTOM_PADDING = 10
 const IDENTITY = a => a
 
 // 用于决定坐标轴上有多少个 tick 要显示出来
 const canvasSizeScale = d3.scaleLinear().domain([220, 325]).range([0, 2]).clamp(true)
 const fontSizeScale = d3.scaleLinear().domain([14, 20]).range([0, 1]).clamp(true)
-const yTicksCount = 4
+const yTicksCount = 3
 
 /** 绘制直线 */
-export function drawLine (ctx, x1, y1, x2, y2) {
+export function drawLine (ctx, x1, y1, x2, y2, adjust = true) {
+  if (adjust) {
+    x1 = Math.floor(x1) + 0.5
+    y1 = Math.floor(y1) + 0.5
+    x2 = Math.floor(x2) + 0.5
+    y2 = Math.floor(y2) + 0.5
+  }
+
   ctx.moveTo(x1, y1)
   ctx.lineTo(x2, y2)
   ctx.stroke()
@@ -61,7 +68,7 @@ export default class Chart {
 
     // 根据当前可视区域大小和字体大小计算一个 16:9 的绘图区域
     const res = wx.getSystemInfoSync()
-    const width = res.windowWidth - PAGE_PADDING_LEFT_RIGHT * 2
+    const width = res.windowWidth
     const height = Math.round(width / CANVAS_RATIO)
     const padding = CANVAS_PADDINGS[state.fontSize]
 
@@ -79,7 +86,7 @@ export default class Chart {
 
     // 初始化比例尺
     this.xScale = d3.scaleTime().range([this.rect.left, this.rect.right])
-    this.yScale = d3.scaleLinear().range([this.rect.bottom, this.rect.top])
+    this.yScale = d3.scaleLinear().range([this.rect.bottom - LEFT_AXIS_BOTTOM_PADDING, this.rect.top])
 
     // 更新绘制数据
     this.setData(data)
@@ -103,7 +110,7 @@ export default class Chart {
 
   /** 更新纵坐标比例尺 */
   updateYScale (yDomain = d3.extent(this.data, this.yAccessor)) {
-    this.yScale.domain(yDomain).nice()
+    this.yScale.domain(yDomain).nice(yTicksCount)
   }
 
   /** 更新线性回归线数据 */
@@ -184,6 +191,13 @@ export default class Chart {
     }
 
     this.ctx.draw(reserve)
+    this.ctx.setLineWidth(1)
+  }
+
+  /** 清空画布 */
+  clear () {
+    this.ctx.clearActions()
+    this.ctx.draw()
     this.ctx.setLineWidth(1)
   }
 }

@@ -15,8 +15,8 @@ export const CHART_FONT_SIZES = {
 }
 
 export const CANVAS_PADDINGS = {
-  'small': { top: 5, right: 22, bottom: 22, left: 40 },
-  'normal': { top: 6, right: 24, bottom: 24, left: 44 },
-  'large': { top: 7, right: 26, bottom: 26, left: 48 },
-  'x-large': { top: 8, right: 28, bottom: 28, left: 52 }
+  'small': { top: 5, right: 26, bottom: 22, left: 44 },
+  'normal': { top: 6, right: 28, bottom: 24, left: 48 },
+  'large': { top: 7, right: 30, bottom: 26, left: 52 },
+  'x-large': { top: 8, right: 32, bottom: 28, left: 56 }
 }

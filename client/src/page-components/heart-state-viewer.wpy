@@ -50,7 +50,7 @@
         if (this.currentChart === '血压') this.currentChart = '心率'
         else this.currentChart = '血压'
 
-        this.refresh(true)
+        this.refresh()
       }
     }
 
@@ -93,21 +93,23 @@
       this.$apply()
     }
 
-    refresh (clearCanvas = false) {
+    refresh () {
+      // 三个图表使用同一个 canvas, 所以清除其中任意一个都可以清除整个 canvas
+      this.heartRateChart.clear()
+
       if (this.currentChart === '血压') {
-        this.systolicChart.drawAxisLeft()
         this.systolicChart.drawAxisBottom(timeFormat('%m/%d'))
+        this.systolicChart.drawAxisLeft()
         this.systolicChart.drawDataLine()
-        this.systolicChart.draw(undefined, false)
+        this.systolicChart.draw()
 
         this.diastolicChart.drawDataLine()
-        this.diastolicChart.draw(!clearCanvas)
+        this.diastolicChart.draw()
       } else if (this.currentChart === '心率') {
-        this.heartRateChart.draw(undefined, false)
-        this.heartRateChart.drawAxisLeft()
         this.heartRateChart.drawAxisBottom(timeFormat('%m/%d'))
         this.heartRateChart.drawDataLine()
         this.heartRateChart.drawLinearRegression()
+        this.heartRateChart.drawAxisLeft()
         this.heartRateChart.draw()
       }
     }

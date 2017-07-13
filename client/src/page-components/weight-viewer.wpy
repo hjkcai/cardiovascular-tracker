@@ -3,7 +3,7 @@
     <canvas canvas-id="weight-chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
     <scroll-view class="md-list" scroll-y>
       <view class="section">
-        <text class="title">日期选择</text>
+        <text class="title">报告选择</text>
         <daterangepicker :value.sync="dateRange"></daterangepicker>
       </view>
       <view class="section">
@@ -67,10 +67,11 @@
     }
 
     onLoad () {
-      this.fetchWeightData()
       this.chart = new Chart('weight-chart', this.weightData, d => d.date, d => d.value)
       this.canvasWidth = this.chart.rect.width
       this.canvasHeight = this.chart.rect.height
+
+      this.fetchWeightData()
     }
 
     fetchWeightData () {
@@ -85,6 +86,9 @@
         { date: new Date(2017, 5, 10), value: 58.5 }
       ]
 
+      this.chart.setData(this.weightData)
+
+      // 生成摘要
       let max = 0     // 数组下标
       let min = 0     // 数组下标
       let sum = 0     // 数值
@@ -116,10 +120,11 @@
         return
       }
 
-      this.chart.drawAxisLeft()
+      this.chart.clear()
       this.chart.drawAxisBottom(timeFormat('%m/%d'))
       this.chart.drawDataLine()
       this.chart.drawLinearRegression()
+      this.chart.drawAxisLeft()
       this.chart.draw()
     }
   }

@@ -118,7 +118,7 @@
       flex: none;
     }
 
-    & > view, & > canvas {
+    & > view {
       padding: 0 $page-padding-left-right;
     }
 
