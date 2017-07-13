@@ -39,7 +39,7 @@
 
 <script>
   import wepy from 'wepy'
-  import Graph from '../lib/graph'
+  import Chart from '../lib/chart'
   import mdlistitem from '../components/md-list-item'
   import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
@@ -68,9 +68,9 @@
 
     onLoad () {
       this.fetchWeightData()
-      this.graph = new Graph('weight-chart', this.weightData, d => d.date, d => d.value)
-      this.canvasWidth = this.graph.rect.width
-      this.canvasHeight = this.graph.rect.height
+      this.chart = new Chart('weight-chart', this.weightData, d => d.date, d => d.value)
+      this.canvasWidth = this.chart.rect.width
+      this.canvasHeight = this.chart.rect.height
     }
 
     fetchWeightData () {
@@ -116,11 +116,11 @@
         return
       }
 
-      this.graph.drawAxisLeft()
-      this.graph.drawAxisBottom(timeFormat('%m/%d'))
-      this.graph.drawDataLine()
-      this.graph.drawLinearRegression()
-      this.graph.draw()
+      this.chart.drawAxisLeft()
+      this.chart.drawAxisBottom(timeFormat('%m/%d'))
+      this.chart.drawDataLine()
+      this.chart.drawLinearRegression()
+      this.chart.draw()
     }
   }
 </script>

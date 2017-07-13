@@ -1,7 +1,7 @@
 'use strict'
 
 import state from './state'
-import { GRAPH_FONT_SIZES, CANVAS_PADDINGS } from './constants'
+import { CHART_FONT_SIZES, CANVAS_PADDINGS } from './constants'
 
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
@@ -48,9 +48,14 @@ export function drawDashLine (ctx, x1, y1, x2, y2, dashLength = 5) {
 }
 
 /** 图表 */
-export default class Graph {
+export default class Chart {
   constructor (canvas, data = [], xAccessor = IDENTITY, yAccessor = IDENTITY) {
-    this.ctx = wx.createCanvasContext('weight-chart')
+    if (typeof canvas === 'string') {
+      this.ctx = wx.createCanvasContext(canvas)
+    } else {
+      this.ctx = canvas
+    }
+
     this.xAccessor = xAccessor
     this.yAccessor = yAccessor
 
@@ -99,7 +104,7 @@ export default class Graph {
 
   /** 绘制刻度在左侧的纵坐标轴 */
   drawAxisLeft (tickFormatter = IDENTITY, skipFirstTick = false) {
-    const fontSize = GRAPH_FONT_SIZES[state.fontSize]
+    const fontSize = CHART_FONT_SIZES[state.fontSize]
 
     this.ctx.setFontSize(fontSize)
     this.ctx.setTextAlign('right')
@@ -120,7 +125,7 @@ export default class Graph {
 
   /** 绘制刻度在底部的横坐标轴 */
   drawAxisBottom (tickFormatter = IDENTITY) {
-    const fontSize = GRAPH_FONT_SIZES[state.fontSize]
+    const fontSize = CHART_FONT_SIZES[state.fontSize]
     const xTicksCount = 3 + Math.round(canvasSizeScale(this.rect.right - this.rect.left)) - Math.round(fontSizeScale(fontSize))
 
     this.ctx.setFontSize(fontSize)

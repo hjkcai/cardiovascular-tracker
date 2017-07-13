@@ -7,7 +7,7 @@ export const FONT_SIZES = {
   'x-large': 20
 }
 
-export const GRAPH_FONT_SIZES = {
+export const CHART_FONT_SIZES = {
   'small': 12,
   'normal': 14,
   'large': 16,
