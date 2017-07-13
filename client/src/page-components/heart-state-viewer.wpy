@@ -34,8 +34,8 @@
         </mdiconitem>
         <mdiconitem>
           <text slot="caption">达标率</text>
-          <text slot="left">{{ summary.bloodPresure.rate }}%</text>
-          <text slot="right">{{ summary.bloodPresure.regular }} / {{ heartStateData.length }}</text>
+          <text slot="left">{{ summary.bloodPressure.rate }}%</text>
+          <text slot="right">{{ summary.bloodPressure.regular }} / {{ heartStateData.length }}</text>
         </mdiconitem>
       </view>
       <view class="section" wx:if="{{ currentChart === '心率' }}">
@@ -107,7 +107,7 @@
           max: { diastolic: 0, dateValue: '' },
           average: { diastolic: 0, warning: '' }
         },
-        bloodPresure: {
+        bloodPressure: {
           regular: 0,
           rate: 0
         },
@@ -158,14 +158,14 @@
       this.heartRateChart.setData(this.heartStateData)
 
       // 手动计算血压图表的定义域
-      const bloodPresureDomain = [d3Array.min(this.heartStateData, d => d.diastolic), d3Array.max(this.heartStateData, d => d.systolic)]
+      const bloodPressureDomain = [d3Array.min(this.heartStateData, d => d.diastolic), d3Array.max(this.heartStateData, d => d.systolic)]
       this.systolicChart.setData(this.heartStateData, false)
       this.systolicChart.updateXScale()
-      this.systolicChart.updateYScale(bloodPresureDomain)
+      this.systolicChart.updateYScale(bloodPressureDomain)
 
       this.diastolicChart.setData(this.heartStateData, false)
       this.diastolicChart.updateXScale()
-      this.diastolicChart.updateYScale(bloodPresureDomain)
+      this.diastolicChart.updateYScale(bloodPressureDomain)
 
       // 生成摘要信息
       this.generateSummary()
@@ -176,7 +176,7 @@
     generateSummary () {
       let systolicMax = 0, systolicSum = 0
       let diastolicMax = 0, diastolicSum = 0
-      let regularBloodPresure = 0
+      let regularBloodPressure = 0
       let heartRateMax = 0, heartRateMin = 0, heartRateSum = 0
 
       const data = this.heartStateData
@@ -194,7 +194,7 @@
         if (item.systolic > 140 || item.diastolic > 90) {
           item.warning = WARNING_ICON
         } else {
-          regularBloodPresure += 1
+          regularBloodPressure += 1
         }
       })
 
@@ -216,9 +216,9 @@
             warning: diastolicAverage > 90 ? WARNING_ICON : ''
           }
         },
-        bloodPresure: {
-          regular: regularBloodPresure,
-          rate: Math.round(regularBloodPresure / data.length * 10000) / 100
+        bloodPressure: {
+          regular: regularBloodPressure,
+          rate: Math.round(regularBloodPressure / data.length * 10000) / 100
         },
         heartRate: {
           max: data[heartRateMax],
