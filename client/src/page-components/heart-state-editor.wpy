@@ -1,12 +1,19 @@
 <template>
-  <view id="weight-editor" class="canvas-page-wrapper">
+  <view id="heart-state-editor" class="canvas-page-wrapper">
     <form class="md-list">
       <view class="section">
         <text class="title">详细信息</text>
         <view class="md-form-item labelled">
-          <image src="../assets/icons/scale-bathroom.svg"></image>
-          <input type="digit" placeholder="体重" />
-          <text>kg</text>
+          <image src="../assets/icons/heart.svg"></image>
+          <input type="number" placeholder="收缩压" />
+          <text>mmHg /</text>
+          <input type="number" placeholder="舒张压" />
+          <text>mmHg</text>
+        </view>
+        <view class="md-form-item labelled">
+          <image src="../assets/icons/heart-pulse.svg"></image>
+          <input type="number" placeholder="心率" />
+          <text>bpm</text>
         </view>
         <view class="md-form-item">
           <image src="../assets/icons/calendar.svg"></image>
@@ -23,7 +30,7 @@
       </view>
       <view class="section submit">
         <button class="md-button" formType="submit">提交</button>
-        <view class="note">建议在晨起排便后、进食前测量</view>
+        <view class="note">建议测量前安静休息至少5分钟</view>
       </view>
     </form>
   </view>

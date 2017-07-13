@@ -208,6 +208,16 @@
       & > image:first-child {
         margin-bottom: $input-border-bottom * 2;
       }
+
+      &.labelled {
+        text {
+          margin: 0 12px;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
     }
 
     input, picker {
@@ -240,8 +250,8 @@
 
       textarea {
         flex: 1;
-        height: $weight-editor-note-height;
-        line-height: $weight-editor-note-line-height;
+        height: 4em;
+        line-height: 1.2em;
       }
     }
 
