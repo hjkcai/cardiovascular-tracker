@@ -1,0 +1,76 @@
+<template>
+  <view id="report" class="tabs-wrapper">
+    <view class="title-shadow"></view>
+    <view class="tabs collapsed">
+      <view
+        wx:for="{{ tabs }}" wx:key="{{ index }}"
+        @tap="switchTab" data-index="{{ index }}"
+        class="tab {{ activeTab === index ? 'active' : '' }}"
+        hover-class="hover" hover-start-time="20" hover-stay-time="70"
+      >{{ item.name }}</view>
+      <view class="date-range tab" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+        <picker value="{{ dateRange }}" range="{{ dateRanges }}" range-key="name" @change="changeDateRange">
+          <view class="content">{{ dateRanges[dateRange].name }}</view>
+          <view class="hot-area"></view>
+        </picker>
+      </view>
+    </view>
+    <view class="content">
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import TabMixin from '../mixins/tab'
+
+  export default class DataViewer extends wepy.component {
+    mixins = [TabMixin]
+
+    data = {
+      tabs: ['体重', '血压', '心率'].map(name => ({ name })),
+      dateRange: 1,
+      dateRanges: [
+        { name: '一周', length: 7 },
+        { name: '两周', length: 14 },
+        { name: '一个月', length: 30 },
+        { name: '三个月', length: 90 }
+      ]
+    }
+
+    methods = {
+      changeDateRange (e) {
+        this.dateRange = e.detail.value
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  #report {
+    .date-range {
+      position: relative;
+      margin-left: auto;
+      padding: 0 0 0 8px;
+      border-bottom: 0;
+
+      .content {
+        padding: 0 $icon-size $tabs-line-width 0;
+        color: white;
+        background-image: $arrow-drop-down-white;
+        background-position: center right;
+        background-repeat: no-repeat;
+      }
+
+      .hot-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+</style>
