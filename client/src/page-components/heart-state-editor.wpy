@@ -15,10 +15,13 @@
           <input type="number" placeholder="心率" />
           <text>bpm</text>
         </view>
-        <view class="md-form-item">
+        <view class="md-form-item date-time-picker">
           <image src="../assets/icons/calendar.svg"></image>
           <picker mode="date">
             <view>{{ date }}</view>
+          </picker>
+          <picker mode="time">
+            <view>{{ time }}</view>
           </picker>
         </view>
       </view>
@@ -38,15 +41,22 @@
 
 <script>
   import wepy from 'wepy'
-  import { formatDate } from '../lib/util'
+  import { formatDate, formatTime } from '../lib/util'
 
   export default class WeightEditor extends wepy.component {
     data = {
-      date: formatDate()
+      date: formatDate(),
+      time: formatTime()
     }
   }
 </script>
 
 <style lang="scss">
   @import '../assets/styles/variables';
+
+  .date-time-picker {
+    picker:last-child {
+      margin-left: 12px;
+    }
+  }
 </style>
