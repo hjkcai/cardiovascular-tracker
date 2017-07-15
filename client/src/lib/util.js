@@ -18,11 +18,18 @@ export function trimDate (date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 
-/** 预定义的日期格式 */
+// 预定义的日期时间格式
 const dateFormat = d3TimeFormat.timeFormat('%Y-%m-%d')
+const timeFormat = d3TimeFormat.timeFormat('%H:%M')
 
 /** 格式化日期 */
 export function formatDate (date) {
   const d = parseDate(date)
   return dateFormat(d)
+}
+
+/** 格式化时间 */
+export function formatTime (date) {
+  const d = parseDate(date)
+  return timeFormat(d)
 }
