@@ -19,10 +19,7 @@ export default class TabMixin extends wepy.mixin {
   refreshActiveTab () {
     const activeTab = this.tabs[this.activeTab]
     if (activeTab && activeTab.component) {
-      try {
-        // 如果组件没有 refresh 函数则会报错
-        this.$invoke(activeTab.component, 'refresh')
-      } catch (err) {}
+      this.$invoke(activeTab.component, 'refresh')
     }
   }
 

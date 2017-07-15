@@ -37,6 +37,8 @@
     data = {
       date: formatDate()
     }
+
+    refresh () {}
   }
 </script>
 

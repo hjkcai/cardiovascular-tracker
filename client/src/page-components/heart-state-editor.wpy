@@ -49,6 +49,8 @@
       date: formatDate(),
       time: formatTime()
     }
+
+    refresh () {}
   }
 </script>
 
