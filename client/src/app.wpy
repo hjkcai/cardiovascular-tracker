@@ -83,11 +83,24 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        border-bottom: $tabs-line-width solid transparent;
+
+        &.hover {
+          background-color: rgba(255, 255, 255, 0.25);
+        }
 
         &.active {
-          padding-bottom: 0;
-          border-bottom: $tabs-line-width solid white;
+          border-bottom-color: white;
           color: white;
+        }
+      }
+
+      &.collapsed {
+        padding: 0 12px;
+
+        .tab {
+          flex: none;
+          padding: 0 16px;
         }
       }
     }
