@@ -3,7 +3,7 @@
     <form class="md-list">
       <view class="section">
         <text class="title">详细信息</text>
-        <view class="md-form-item labelled">
+        <view class="md-form-item">
           <image src="../assets/icons/scale-bathroom.svg"></image>
           <input type="digit" placeholder="体重" />
           <text>kg</text>

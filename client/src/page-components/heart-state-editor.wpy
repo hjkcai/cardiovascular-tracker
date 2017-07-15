@@ -3,14 +3,15 @@
     <form class="md-list">
       <view class="section">
         <text class="title">详细信息</text>
-        <view class="md-form-item labelled">
+        <view class="md-form-item">
           <image src="../assets/icons/heart.svg"></image>
           <input type="number" placeholder="收缩压" />
-          <text>mmHg /</text>
+          <text>mmHg</text>
+          <text>/</text>
           <input type="number" placeholder="舒张压" />
           <text>mmHg</text>
         </view>
-        <view class="md-form-item labelled">
+        <view class="md-form-item">
           <image src="../assets/icons/heart-pulse.svg"></image>
           <input type="number" placeholder="心率" />
           <text>bpm</text>
@@ -53,10 +54,4 @@
 
 <style lang="scss">
   @import '../assets/styles/variables';
-
-  .date-time-picker {
-    picker:last-child {
-      margin-left: 12px;
-    }
-  }
 </style>
