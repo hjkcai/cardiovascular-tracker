@@ -15,16 +15,57 @@
         </picker>
       </view>
     </view>
-    <view class="content">
+    <view class="content canvas-page-wrapper">
+      <canvas canvas-id="chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
+      <scroll-view class="md-list" scroll-y>
+        <view class="section">
+          <text class="title">摘要</text>
+          <mdlistitem>
+            <text slot="caption">最重体重</text>
+            <text slot="left">{{ summary.weight.max.value }}kg</text>
+            <text slot="right">{{ summary.weight.max.dateValue }}</text>
+          </mdlistitem>
+          <mdlistitem>
+            <text slot="caption">最轻体重</text>
+            <text slot="left">{{ summary.weight.min.value }}kg</text>
+            <text slot="right">{{ summary.weight.min.dateValue }}</text>
+          </mdlistitem>
+          <mdlistitem>
+            <text slot="caption">平均体重</text>
+            <text slot="left">{{ summary.weight.average }}kg</text>
+          </mdlistitem>
+        </view>
+        <view class="section">
+          <text class="title">详细信息</text>
+          <repeat for="{{ _data }}" key="index" index="index" item="item">
+            <mdlistitem>
+              <text slot="caption">{{ item.dateValue }}</text>
+              <text slot="left">{{ item.value }}kg</text>
+              <text slot="right">{{ item.delta }}</text>
+            </mdlistitem>
+          </repeat>
+        </view>
+      </scroll-view>
     </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import Chart from '../lib/chart'
   import TabMixin from '../mixins/tab'
+  import mdlistitem from '../components/md-list-item'
+  import { formatDate } from '../lib/util'
+  import { timeFormat } from 'd3-time-format'
 
-  export default class DataViewer extends wepy.component {
+  const METHODS = ['Weight', 'BloodPressure', 'HeartRate']
+  const xAxisFormat = timeFormat('%m/%d')
+
+  export default class Report extends wepy.component {
+    components = {
+      mdlistitem
+    }
+
     mixins = [TabMixin]
 
     data = {
@@ -35,13 +76,105 @@
         { name: '两周', length: 14 },
         { name: '一个月', length: 30 },
         { name: '三个月', length: 90 }
-      ]
+      ],
+      canvasWidth: 0,
+      canvasHeight: 0,
+      _data: [],
+      summary: {
+        weight: {
+          min: { dateValue: '', value: 0 },
+          max: { dateValue: '', value: 0 },
+          average: 0
+        },
+        systolic: {
+          max: { systolic: 0, dateValue: '', warning: '' },
+          average: { systolic: 0, warning: '' }
+        },
+        diastolic: {
+          max: { diastolic: 0, dateValue: '' },
+          average: { diastolic: 0, warning: '' }
+        },
+        bloodPressure: {
+          regular: 0,
+          rate: 0
+        },
+        heartRate: {
+          max: { heartRate: 0, dateValue: '' },
+          min: { heartRate: 0, dateValue: '' },
+          average: 0
+        }
+      }
     }
 
     methods = {
       changeDateRange (e) {
         this.dateRange = e.detail.value
+      },
+      refresh () {
+        this[`fetch${METHODS[this.activeTab]}Data`]()
+        this[`draw${METHODS[this.activeTab]}Chart`]()
       }
+    }
+
+    onLoad () {
+      // 初始化各个图表
+      this.ctx = wx.createCanvasContext('chart')
+      this.weightChart = new Chart(this.ctx, this._data, d => d.date, d => d.value)
+      this.heartRateChart = new Chart(this.ctx, this._data, d => d.date, d => d.heartRate)
+      this.systolicChart = new Chart(this.ctx, this._data, d => d.date, d => d.systolic)
+      this.diastolicChart = new Chart(this.ctx, this._data, d => d.date, d => d.diastolic)
+
+      this.canvasWidth = this.weightChart.rect.width
+      this.canvasHeight = this.weightChart.rect.height
+    }
+
+    fetchWeightData () {
+      // TODO: 请求后端数据
+      this._data = [
+        { date: new Date(2017, 5, 16), value: 59 },
+        { date: new Date(2017, 5, 15), value: 58.9 },
+        { date: new Date(2017, 5, 14), value: 58.5 },
+        { date: new Date(2017, 5, 13), value: 58.3 },
+        { date: new Date(2017, 5, 12), value: 57.9 },
+        { date: new Date(2017, 5, 11), value: 59 },
+        { date: new Date(2017, 5, 10), value: 58.5 }
+      ]
+
+      this.weightChart.setData(this._data)
+
+      // 生成体重数据摘要
+      let max = 0     // 数组下标
+      let min = 0     // 数组下标
+      let sum = 0     // 数值
+
+      this._data.forEach((item, index) => {
+        if (item.value > this._data[max].value) max = index
+        if (item.value < this._data[min].value) min = index
+        sum += item.value
+
+        item.dateValue = formatDate(item.date)
+        if (this._data[index + 1]) {
+          const delta = this._data[index + 1].value - item.value
+          item.delta = (delta > 0 ? '+' : '') + Math.round(delta * 100) / 100 + 'kg'
+        }
+      })
+
+      this.summary.weight = {
+        max: this._data[max],
+        min: this._data[min],
+        average: Math.round(sum / this._data.length * 100) / 100
+      }
+
+      this.$apply()
+    }
+
+    drawWeightChart () {
+      this.weightChart.clear()
+      this.weightChart.drawAxisBottom(xAxisFormat)
+      this.weightChart.drawDataLine()
+      this.weightChart.drawLinearRegression()
+      this.weightChart.drawAxisLeft()
+      this.weightChart.draw()
     }
   }
 </script>
@@ -50,14 +183,18 @@
   @import '../assets/styles/variables';
 
   #report {
+    .tabs {
+      padding-right: 0;
+    }
+
     .date-range {
       position: relative;
       margin-left: auto;
-      padding: 0 0 0 8px;
+      padding: 0 4px 0 16px;
       border-bottom: 0;
 
       .content {
-        padding: 0 $icon-size $tabs-line-width 0;
+        padding: 0 ($icon-size + 4px) $tabs-line-width 0;
         color: white;
         background-image: $arrow-drop-down-white;
         background-position: center right;
