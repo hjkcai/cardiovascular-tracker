@@ -365,7 +365,7 @@
 
   #report {
     .tabs {
-      padding-right: 0;
+      padding-right: 8px;
     }
 
     .date-range {
@@ -375,7 +375,8 @@
       border-bottom: 0;
 
       .content {
-        padding: 0 ($icon-size + 4px) $tabs-line-width 0;
+        padding: 0 ($icon-size + 4px) 0 0;
+        border-bottom: $tabs-line-width solid transparent;
         color: white;
         background-image: $arrow-drop-down-white;
         background-position: center right;
