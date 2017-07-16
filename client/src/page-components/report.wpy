@@ -3,11 +3,11 @@
     <view class="title-shadow"></view>
     <view class="tabs collapsed">
       <view
-        wx:for="{{ tabs }}" wx:key="{{ index }}"
-        @tap="switchTab" data-index="{{ index }}"
-        class="tab {{ activeTab === index ? 'active' : '' }}"
+        wx:for="{{ tabs }}" wx:key="{{ _tab_index }}" wx:for-item="tab" wx:for-index="_tab_index"
+        @tap="switchTab" data-index="{{ _tab_index }}"
+        class="tab {{ activeTab === _tab_index ? 'active' : '' }}"
         hover-class="hover" hover-start-time="20" hover-stay-time="70"
-      >{{ item.name }}</view>
+      >{{ tab.name }}</view>
       <view class="date-range tab" hover-class="hover" hover-start-time="20" hover-stay-time="70">
         <picker value="{{ dateRange }}" range="{{ dateRanges }}" range-key="name" @change="changeDateRange">
           <view class="content">{{ dateRanges[dateRange].name }}</view>
@@ -37,7 +37,7 @@
         </view>
         <view class="section">
           <text class="title">详细信息</text>
-          <repeat for="{{ _data }}" key="index" index="index" item="item">
+          <repeat for="{{ _data }}" key="{{ index }}">
             <mdlistitem>
               <text slot="caption">{{ item.dateValue }}</text>
               <text slot="left">{{ item.value }}kg</text>
