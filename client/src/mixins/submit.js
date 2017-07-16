@@ -14,6 +14,12 @@ export default class SubmitMixin extends wepy.mixin {
       }
 
       await this.$loading()
+      await wepy.showToast({
+        title: '提交成功',
+        icon: 'success',
+        duration: 1000,
+        mask: true
+      })
     }
   }
 }
