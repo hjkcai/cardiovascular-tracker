@@ -5,7 +5,7 @@ import wepyAxiosAdapter from 'wepy-plugin-axios/dist/adapter.js'
 
 const instance = axios.create({
   adapter: wepyAxiosAdapter(axios),
-  baseURL: 'https://API_HOST/api',
+  baseURL: 'https://API_HOST/ch/api',
   headers: {
     'Authorization': undefined
   },
