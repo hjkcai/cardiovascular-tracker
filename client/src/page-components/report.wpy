@@ -17,7 +17,9 @@
     </view>
     <view class="content canvas-page-wrapper">
       <canvas canvas-id="chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
-      <scroll-view class="md-list" scroll-y>
+
+      <!-- 体重 -->
+      <scroll-view wx:if="{{ activeTab === 0 }}" class="md-list" scroll-y>
         <view class="section">
           <text class="title">摘要</text>
           <mdlistitem>
@@ -46,6 +48,67 @@
           </repeat>
         </view>
       </scroll-view>
+
+      <!-- 血压 -->
+      <scroll-view wx:if="{{ activeTab === 1 || activeTab === 2 }}" class="md-list" scroll-y>
+        <view class="section" wx:if="{{ activeTab === 1 }}">
+          <text class="title">摘要</text>
+          <mdiconitem>
+            <image slot="icon" src="{{ summary.systolic.max.warning }}"></image>
+            <text slot="caption">最高收缩压</text>
+            <text slot="left">{{ summary.systolic.max.systolic }}mmHg</text>
+            <text slot="right">{{ summary.systolic.max.dateValue }}</text>
+          </mdiconitem>
+          <mdiconitem>
+            <image slot="icon" src="{{ summary.systolic.average.warning }}"></image>
+            <text slot="caption">平均收缩压</text>
+            <text slot="left">{{ summary.systolic.average.systolic }}mmHg</text>
+          </mdiconitem>
+          <mdiconitem>
+            <image slot="icon" src="{{ summary.diastolic.max.warning }}"></image>
+            <text slot="caption">最高舒张压</text>
+            <text slot="left">{{ summary.diastolic.max.diastolic }}mmHg</text>
+            <text slot="right">{{ summary.diastolic.max.dateValue }}</text>
+          </mdiconitem>
+          <mdiconitem>
+            <image slot="icon" src="{{ summary.diastolic.average.warning }}"></image>
+            <text slot="caption">平均舒张压</text>
+            <text slot="left">{{ summary.diastolic.average.diastolic }}mmHg</text>
+          </mdiconitem>
+          <mdiconitem>
+            <text slot="caption">达标率</text>
+            <text slot="left">{{ summary.bloodPressure.rate }}%</text>
+            <text slot="right">{{ summary.bloodPressure.regular }} / {{ _data.length }}</text>
+          </mdiconitem>
+        </view>
+        <view class="section" wx:if="{{ activeTab === 2 }}">
+          <text class="title">摘要</text>
+          <mdiconitem>
+            <text slot="caption">最高心率</text>
+            <text slot="left">{{ summary.heartRate.max.heartRate }}bpm</text>
+            <text slot="right">{{ summary.heartRate.max.dateValue }}</text>
+          </mdiconitem>
+          <mdiconitem>
+            <text slot="caption">最低心率</text>
+            <text slot="left">{{ summary.heartRate.min.heartRate }}bpm</text>
+            <text slot="right">{{ summary.heartRate.min.dateValue }}</text>
+          </mdiconitem>
+          <mdiconitem>
+            <text slot="caption">平均心率</text>
+            <text slot="left">{{ summary.heartRate.average }}bpm</text>
+          </mdiconitem>
+        </view>
+        <view class="section">
+          <text class="title">详细信息</text>
+          <repeat for="{{ _data }}" key="{{ index }}">
+            <mdiconitem>
+              <image slot="icon" src="{{ item.warning }}"></image>
+              <text slot="caption">{{ item.dateValue }}</text>
+              <text slot="left">{{ item.systolic }}mmHg / {{ item.diastolic }}mmHg, {{ item.heartRate }}bpm</text>
+            </mdiconitem>
+          </repeat>
+        </view>
+      </scroll-view>
     </view>
   </view>
 </template>
@@ -54,22 +117,27 @@
   import wepy from 'wepy'
   import Chart from '../lib/chart'
   import TabMixin from '../mixins/tab'
+  import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
   import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
 
+  import * as d3Array from 'd3-array'
+
   const METHODS = ['Weight', 'BloodPressure', 'HeartRate']
   const xAxisFormat = timeFormat('%m/%d')
+  const WARNING_ICON = '../assets/icons/warning.svg'
 
   export default class Report extends wepy.component {
     components = {
+      mdiconitem,
       mdlistitem
     }
 
     mixins = [TabMixin]
 
     data = {
-      tabs: ['体重', '血压', '心率'].map(name => ({ name })),
+      tabs: ['体重', '血压', '心率'].map(name => ({ name, component: './' })),
       dateRange: 1,
       dateRanges: [
         { name: '一周', length: 7 },
@@ -168,6 +236,99 @@
       this.$apply()
     }
 
+    fetchBloodPressureData () {
+      this.fetchHeartStateData()
+    }
+
+    fetchHeartRateData () {
+      this.fetchHeartStateData()
+    }
+
+    fetchHeartStateData () {
+      // TODO: 请求后端数据
+      this._data = [
+        { date: new Date(2017, 5, 16), heartRate: 80, systolic: 140, diastolic: 90 },
+        { date: new Date(2017, 5, 15), heartRate: 83, systolic: 144, diastolic: 88 },
+        { date: new Date(2017, 5, 14), heartRate: 79, systolic: 143, diastolic: 93 },
+        { date: new Date(2017, 5, 13), heartRate: 85, systolic: 148, diastolic: 94 },
+        { date: new Date(2017, 5, 12), heartRate: 82, systolic: 138, diastolic: 88 },
+        { date: new Date(2017, 5, 11), heartRate: 89, systolic: 137, diastolic: 88 },
+        { date: new Date(2017, 5, 10), heartRate: 88, systolic: 141, diastolic: 89 }
+      ]
+
+      this.heartRateChart.setData(this._data)
+
+      // 手动计算血压图表的定义域
+      const bloodPressureDomain = [d3Array.min(this._data, d => d.diastolic), d3Array.max(this._data, d => d.systolic)]
+      this.systolicChart.setData(this._data, false)
+      this.systolicChart.updateXScale()
+      this.systolicChart.updateYScale(bloodPressureDomain)
+
+      this.diastolicChart.setData(this._data, false)
+      this.diastolicChart.updateXScale()
+      this.diastolicChart.updateYScale(bloodPressureDomain)
+
+      // 生成摘要信息
+      this.generateHeartStateSummary()
+
+      this.$apply()
+    }
+
+    generateHeartStateSummary () {
+      let systolicMax = 0, systolicSum = 0
+      let diastolicMax = 0, diastolicSum = 0
+      let regularBloodPressure = 0
+      let heartRateMax = 0, heartRateMin = 0, heartRateSum = 0
+
+      const data = this._data
+      data.forEach((item, index) => {
+        if (item.systolic > data[systolicMax].systolic) systolicMax = index
+        if (item.diastolic > data[diastolicMax].diastolic) diastolicMax = index
+        if (item.heartRate > data[heartRateMax].heartRate) heartRateMax = index
+        if (item.heartRate < data[heartRateMin].heartRate) heartRateMin = index
+
+        systolicSum += item.systolic
+        diastolicSum += item.diastolic
+        heartRateSum += item.heartRate
+
+        item.dateValue = formatDate(item.date)
+        if (item.systolic > 140 || item.diastolic > 90) {
+          item.warning = WARNING_ICON
+        } else {
+          regularBloodPressure += 1
+        }
+      })
+
+      const systolicAverage = Math.round(systolicSum / data.length)
+      const diastolicAverage = Math.round(diastolicSum / data.length)
+
+      Object.assign(this.summary, {
+        systolic: {
+          max: data[systolicMax],
+          average: {
+            systolic: systolicAverage,
+            warning: systolicAverage > 140 ? WARNING_ICON : ''
+          }
+        },
+        diastolic: {
+          max: data[diastolicMax],
+          average: {
+            diastolic: diastolicAverage,
+            warning: diastolicAverage > 90 ? WARNING_ICON : ''
+          }
+        },
+        bloodPressure: {
+          regular: regularBloodPressure,
+          rate: Math.round(regularBloodPressure / data.length * 10000) / 100
+        },
+        heartRate: {
+          max: data[heartRateMax],
+          min: data[heartRateMin],
+          average: Math.round(heartRateSum / data.length)
+        }
+      })
+    }
+
     drawWeightChart () {
       this.weightChart.clear()
       this.weightChart.drawAxisBottom(xAxisFormat)
@@ -175,6 +336,26 @@
       this.weightChart.drawLinearRegression()
       this.weightChart.drawAxisLeft()
       this.weightChart.draw()
+    }
+
+    drawBloodPressureChart () {
+      this.systolicChart.clear()
+      this.systolicChart.drawAxisBottom(xAxisFormat)
+      this.systolicChart.drawAxisLeft()
+      this.systolicChart.drawDataLine()
+      this.systolicChart.draw()
+
+      this.diastolicChart.drawDataLine()
+      this.diastolicChart.draw()
+    }
+
+    drawHeartRateChart () {
+      this.heartRateChart.clear()
+      this.heartRateChart.drawAxisBottom(xAxisFormat)
+      this.heartRateChart.drawDataLine()
+      this.heartRateChart.drawLinearRegression()
+      this.heartRateChart.drawAxisLeft()
+      this.heartRateChart.draw()
     }
   }
 </script>
