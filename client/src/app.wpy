@@ -260,11 +260,11 @@
     view.textarea-wrapper {
       display: flex;
       padding-top: 0;
+      padding-bottom: 0;
 
       textarea {
         flex: 1;
-        height: 4em;
-        line-height: 1.2em;
+        line-height: 1.2;
       }
     }
 

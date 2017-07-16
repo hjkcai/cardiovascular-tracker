@@ -29,7 +29,7 @@
       <view class="section">
         <text class="title">备注</text>
         <view class="textarea-wrapper md-list-item">
-          <textarea name="note" placeholder="点此添加备注" @input="noteChanged"></textarea>
+          <textarea name="note" placeholder="点此添加备注" @input="noteChanged" auto-height></textarea>
         </view>
       </view>
       <view class="section submit">
