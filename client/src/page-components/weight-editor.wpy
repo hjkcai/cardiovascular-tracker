@@ -1,16 +1,16 @@
 <template>
   <view id="weight-editor" class="canvas-page-wrapper">
-    <form class="md-list">
+    <form class="md-list" @submit="submit">
       <view class="section">
         <text class="title">详细信息</text>
         <view class="md-form-item">
           <image src="../assets/icons/scale-bathroom.svg"></image>
-          <input type="digit" placeholder="体重" />
+          <input type="digit" name="value" placeholder="体重" />
           <text>kg</text>
         </view>
         <view class="md-form-item">
           <image src="../assets/icons/calendar.svg"></image>
-          <picker mode="date">
+          <picker mode="date" name="date" value="{{ date }}" @change="changeDate">
             <view>{{ date }}</view>
           </picker>
         </view>
@@ -18,7 +18,7 @@
       <view class="section">
         <text class="title">备注</text>
         <view class="textarea-wrapper md-list-item">
-          <textarea placeholder="点此添加备注"></textarea>
+          <textarea name="note" placeholder="点此添加备注"></textarea>
         </view>
       </view>
       <view class="section submit">
@@ -31,11 +31,33 @@
 
 <script>
   import wepy from 'wepy'
+  import axios from '../lib/axios'
+  import SubmitMixin from '../mixins/submit'
   import { formatDate } from '../lib/util'
 
   export default class WeightEditor extends wepy.component {
+    mixins = [SubmitMixin]
+
     data = {
       date: formatDate()
+    }
+
+    methods = {
+      changeDate (e) {
+        this.date = e.detail.value
+      }
+    }
+
+    async submit (data) {
+      if (!/[0-9.]+/.test(data.value)) {
+        await this.$modal('提示', '体重数值无效，请重新输入')
+      } else {
+        data.value = parseFloat(data.value)
+        data.date = new Date(data.date)
+
+        const result = (await axios.post('weight', data)).data
+        if (result.code) throw new Error(`数据提交失败: ${result.message} (${result.code})`)
+      }
     }
 
     refresh () {}
