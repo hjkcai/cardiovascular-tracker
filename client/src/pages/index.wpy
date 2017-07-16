@@ -31,10 +31,10 @@
 
 <script>
   import wepy from 'wepy'
-  import state from '../lib/state'
+  import report from '../page-components/report'
   import TabMixin from '../mixins/tab'
   import addrecord from '../page-components/add-record'
-  import report from '../page-components/report'
+  import state, { login } from '../lib/state'
 
   export default class Index extends wepy.page {
     components = {
@@ -47,6 +47,10 @@
     data = {
       tabs: ['report', 'addrecord', null].map(component => ({ component })),
       fontSize: state.fontSize
+    }
+
+    onLoad () {
+      login()
     }
   }
 </script>
