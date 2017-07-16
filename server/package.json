@@ -4,6 +4,7 @@
   "description": "A daily tracker for cardiovascular patients",
   "main": "dist/app.js",
   "scripts": {
+    "start": "tsc && NODE_ENV=production node dist/main",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
