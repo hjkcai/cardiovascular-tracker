@@ -554,6 +554,13 @@ koa-jwt@^3.2.2:
     jsonwebtoken "7.4.1"
     koa-unless "1.0.0"
 
+koa-rewrite@^2.1.0:
+  version "2.1.0"
+  resolved "http://registry.npm.taobao.org/koa-rewrite/download/koa-rewrite-2.1.0.tgz#812b35f48a860031bc862f88135e5c28318b7aa8"
+  dependencies:
+    debug "*"
+    path-to-regexp "0.0.2"
+
 koa-router@^7.2.0:
   version "7.2.0"
   resolved "http://registry.npm.taobao.org/koa-router/download/koa-router-7.2.0.tgz#cb35ba94fee2614d39736b7fa5381681b7aaf78c"
@@ -739,6 +746,10 @@ path-is-absolute@^1.0.0:
 path-parse@^1.0.5:
   version "1.0.5"
   resolved "http://registry.npm.taobao.org/path-parse/download/path-parse-1.0.5.tgz#3c1adf871ea9cd6c9431b6ea2bd74a0ff055c4c1"
+
+path-to-regexp@0.0.2:
+  version "0.0.2"
+  resolved "http://registry.npm.taobao.org/path-to-regexp/download/path-to-regexp-0.0.2.tgz#489feb060b314443a5494ab1da2efed2040ab24c"
 
 path-to-regexp@^1.1.1:
   version "1.7.0"
