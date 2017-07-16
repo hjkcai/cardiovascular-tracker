@@ -248,25 +248,16 @@
     }
 
     fetchBloodPressureData () {
-      this.fetchHeartStateData()
+      return this.fetchHeartStateData()
     }
 
     fetchHeartRateData () {
-      this.fetchHeartStateData()
+      return this.fetchHeartStateData()
     }
 
-    fetchHeartStateData () {
-      // TODO: 请求后端数据
-      this._data = [
-        { date: new Date(2017, 5, 16), heartRate: 80, systolic: 140, diastolic: 90 },
-        { date: new Date(2017, 5, 15), heartRate: 83, systolic: 144, diastolic: 88 },
-        { date: new Date(2017, 5, 14), heartRate: 79, systolic: 143, diastolic: 93 },
-        { date: new Date(2017, 5, 13), heartRate: 85, systolic: 148, diastolic: 94 },
-        { date: new Date(2017, 5, 12), heartRate: 82, systolic: 138, diastolic: 88 },
-        { date: new Date(2017, 5, 11), heartRate: 89, systolic: 137, diastolic: 88 },
-        { date: new Date(2017, 5, 10), heartRate: 88, systolic: 141, diastolic: 89 }
-      ]
-
+    async fetchHeartStateData () {
+      this._data = (await this.$http.get('heart-state', { params: { from: this.getDateStart() } })).data.data || []
+      this.transformDate()
       this.heartRateChart.setData(this._data)
 
       // 手动计算血压图表的定义域
