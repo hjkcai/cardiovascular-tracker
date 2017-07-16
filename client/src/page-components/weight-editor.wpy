@@ -1,28 +1,28 @@
 <template>
   <view id="weight-editor" class="canvas-page-wrapper">
-    <form class="md-list" @submit="submit">
+    <form class="md-list" @reset="submit">
       <view class="section">
         <text class="title">详细信息</text>
         <view class="md-form-item">
           <image src="../assets/icons/scale-bathroom.svg"></image>
-          <input type="digit" name="value" placeholder="体重" />
+          <input type="digit" name="value" placeholder="体重" @input="valueChanged" />
           <text>kg</text>
         </view>
         <view class="md-form-item">
           <image src="../assets/icons/calendar.svg"></image>
-          <picker mode="date" name="date" value="{{ date }}" @change="changeDate">
-            <view>{{ date }}</view>
+          <picker mode="date" name="date" value="{{ weightData.date }}" @change="dateChanged">
+            <view>{{ weightData.date }}</view>
           </picker>
         </view>
       </view>
       <view class="section">
         <text class="title">备注</text>
         <view class="textarea-wrapper md-list-item">
-          <textarea name="note" placeholder="点此添加备注"></textarea>
+          <textarea name="note" placeholder="点此添加备注" @change="noteChanged"></textarea>
         </view>
       </view>
       <view class="section submit">
-        <button class="md-button" formType="submit">提交</button>
+        <button class="md-button" formType="reset">提交</button>
         <view class="note">建议在晨起排便后、进食前测量</view>
       </view>
     </form>
@@ -31,32 +31,38 @@
 
 <script>
   import wepy from 'wepy'
-  import axios from '../lib/axios'
   import SubmitMixin from '../mixins/submit'
-  import { formatDate } from '../lib/util'
+  import { formatDate, generateChangeMethods } from '../lib/util'
 
   export default class WeightEditor extends wepy.component {
     mixins = [SubmitMixin]
 
     data = {
-      date: formatDate()
-    }
-
-    methods = {
-      changeDate (e) {
-        this.date = e.detail.value
+      weightData: {
+        value: '',
+        date: formatDate(),
+        note: ''
       }
     }
 
-    async submit (data) {
+    methods = generateChangeMethods('weightData', ['value', 'date', 'note'])
+
+    async submit () {
+      const data = Object.assign({}, this.weightData)
+
       if (!/[0-9.]+/.test(data.value)) {
         await this.$modal('提示', '体重数值无效，请重新输入')
       } else {
         data.value = parseFloat(data.value)
         data.date = new Date(data.date)
 
-        const result = (await axios.post('weight', data)).data
-        if (result.code) throw new Error(`数据提交失败: ${result.message} (${result.code})`)
+        const result = (await this.$http.post('weight', data)).data
+        this.weightData.date = formatDate()
+        this.$apply()
+
+        if (result.code) {
+          throw new Error(`数据提交失败: ${result.message} (${result.code})`)
+        }
       }
     }
 

@@ -33,3 +33,15 @@ export function formatTime (date) {
   const d = parseDate(date)
   return timeFormat(d)
 }
+
+/** 生成用于表单绑定的 change 函数 */
+export function generateChangeMethods (parent, props) {
+  const result = {}
+  props.forEach(prop => {
+    result[prop + 'Changed'] = function (e) {
+      this[parent][prop] = e.detail.value
+    }
+  })
+
+  return result
+}
