@@ -33,7 +33,7 @@ export default (async function ApiResponserMiddleware (ctx, next) {
   await next().catch(err => { error = err })
 
   if (error != null) {
-    if (error instanceof UserError) {
+    if (error instanceof UserError && process.env.NODE_ENV === 'production') {
       // 如果得到用户定义的错误, 则返回这个错误给客户端
       makeErrorResponse(ctx, error)
     } else {
