@@ -1,5 +1,6 @@
 <script>
   import wepy from 'wepy'
+  import './lib/wepy'
   import 'wepy-async-function'
 
   export default class extends wepy.app {
