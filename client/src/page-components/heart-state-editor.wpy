@@ -78,8 +78,14 @@
         delete data.time
 
         const result = (await this.$http.post('heart-state', data)).data
-        this.heartStateData.date = formatDate()
-        this.heartStateData.time = formatTime()
+        this.heartStateData = {
+          systolic: '',
+          diastolic: '',
+          heartRate: '',
+          date: formatDate(),
+          time: formatTime(),
+          note: ''
+        }
         this.$apply()
 
         if (result.code) {

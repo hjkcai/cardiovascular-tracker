@@ -57,7 +57,11 @@
         data.date = new Date(data.date)
 
         const result = (await this.$http.post('weight', data)).data
-        this.weightData.date = formatDate()
+        this.weightData = {
+          value: '',
+          date: formatDate(),
+          note: ''
+        }
         this.$apply()
 
         if (result.code) {
