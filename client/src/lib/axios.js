@@ -8,7 +8,8 @@ const instance = axios.create({
   baseURL: 'https://API_HOST/api',
   headers: {
     'Authorization': undefined
-  }
+  },
+  validateStatus: () => true
 })
 
 export default instance
