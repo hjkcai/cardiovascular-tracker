@@ -5,7 +5,7 @@ import wepy from 'wepy'
 export default class TabMixin extends wepy.mixin {
   data = {
     tabs: [],
-    activeTab: -1
+    activeTab: 0
   }
 
   methods = {
@@ -33,9 +33,5 @@ export default class TabMixin extends wepy.mixin {
       this.refreshActiveTab()
       this.$emit('tabChanged', this.activeTab, this)
     }
-  }
-
-  onLoad () {
-    this.switchTab(0)
   }
 }

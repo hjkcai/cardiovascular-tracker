@@ -49,8 +49,9 @@
       fontSize: state.fontSize
     }
 
-    onLoad () {
-      login()
+    async onLoad () {
+      await login()
+      this.refreshActiveTab()
     }
   }
 </script>

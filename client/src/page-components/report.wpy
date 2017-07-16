@@ -125,7 +125,7 @@
   import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
   import { timeFormat } from 'd3-time-format'
-  import { formatDate, formatTime } from '../lib/util'
+  import { trimDate, formatDate, formatTime } from '../lib/util'
 
   import * as d3Array from 'd3-array'
 
@@ -184,8 +184,7 @@
         this.dateRange = e.detail.value
       },
       refresh () {
-        this[`fetch${METHODS[this.activeTab]}Data`]()
-        this[`draw${METHODS[this.activeTab]}Chart`]()
+        this.fetchData()
       }
     }
 
@@ -201,18 +200,25 @@
       this.canvasHeight = this.weightChart.rect.height
     }
 
-    fetchWeightData () {
-      // TODO: 请求后端数据
-      this._data = [
-        { date: new Date(2017, 5, 16), value: 59 },
-        { date: new Date(2017, 5, 15), value: 58.9 },
-        { date: new Date(2017, 5, 14), value: 58.5 },
-        { date: new Date(2017, 5, 13), value: 58.3 },
-        { date: new Date(2017, 5, 12), value: 57.9 },
-        { date: new Date(2017, 5, 11), value: 59 },
-        { date: new Date(2017, 5, 10), value: 58.5 }
-      ]
+    getDateStart () {
+      const date = trimDate() - this.dateRanges[this.dateRange].length * 24 * 60 * 60 * 1000
+      return new Date(date)
+    }
 
+    transformDate () {
+      this._data.forEach(item => { item.date = new Date(item.date) })
+    }
+
+    async fetchData () {
+      await this.$loading('正在加载...')
+      await this[`fetch${METHODS[this.activeTab]}Data`]()
+      this[`draw${METHODS[this.activeTab]}Chart`]()
+      await this.$loading()
+    }
+
+    async fetchWeightData () {
+      this._data = (await this.$http.get('weight', { params: { from: this.getDateStart() } })).data.data || []
+      this.transformDate()
       this.weightChart.setData(this._data)
 
       // 生成体重数据摘要
