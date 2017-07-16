@@ -57,6 +57,9 @@ export const model = db.model<HeartState>('heart-state', schema)
 // WARNING: 代码与 ./weight.ts getWeightRecords 重复
 /** 获取某用户某时间范围的心率血压记录 */
 export function getHeartStateRecords (openid: string, from: Date, to: Date = new Date()) {
+  from = new Date(from)
+  to = new Date(to)
+
   let $gte = from
   let $lte = to
 

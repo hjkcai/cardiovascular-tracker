@@ -43,6 +43,9 @@ export const model = db.model<Weight>('weight', schema)
 // WARNING: 代码与 ./heart-state.ts getHeartStateRecords 重复
 /** 获取某用户某时间范围的体重记录 */
 export function getWeightRecords (openid: string, from: Date, to: Date = new Date()) {
+  from = new Date(from)
+  to = new Date(to)
+
   let $gte = from
   let $lte = to
 
@@ -56,6 +59,7 @@ export function getWeightRecords (openid: string, from: Date, to: Date = new Dat
 
 /** 删除某一天的体重记录 */
 export async function removeWeightRecord (openid: string, date: Date) {
+  date = new Date(date)
   const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
   const dayEnd = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)
   await model.remove({ openid, date: { $gte: dayStart, $lte: dayEnd} }).exec()
@@ -63,6 +67,8 @@ export async function removeWeightRecord (openid: string, date: Date) {
 
 /** 添加一条体重记录 */
 export async function addWeightRecord (openid: string, { value, date = new Date(), note = '' }: Partial<Weight>) {
+  date = new Date(date)
+
   // 删除当天的记录
   await removeWeightRecord(openid, date)
 
