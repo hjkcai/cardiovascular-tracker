@@ -119,8 +119,8 @@
   import TabMixin from '../mixins/tab'
   import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
-  import { formatDate } from '../lib/util'
   import { timeFormat } from 'd3-time-format'
+  import { formatDate, formatTime } from '../lib/util'
 
   import * as d3Array from 'd3-array'
 
@@ -291,7 +291,7 @@
         diastolicSum += item.diastolic
         heartRateSum += item.heartRate
 
-        item.dateValue = formatDate(item.date)
+        item.dateValue = formatDate(item.date) + ' ' + formatTime(item.date)
         if (item.systolic > 140 || item.diastolic > 90) {
           item.warning = WARNING_ICON
         } else {
