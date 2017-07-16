@@ -74,7 +74,7 @@
         data.systolic = parseInt(data.systolic)
         data.diastolic = parseInt(data.diastolic)
         data.heartRate = parseInt(data.heartRate)
-        data.date = `${data.date}T${data.time}:00Z`
+        data.date = new Date(`${data.date} ${data.time}:00`)
         delete data.time
 
         const result = (await this.$http.post('heart-state', data)).data
