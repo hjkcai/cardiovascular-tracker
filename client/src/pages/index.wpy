@@ -1,7 +1,7 @@
 <template>
   <view id="index" class="{{ fontSize }}">
     <view class="main">
-      <dataviewer wx:if="{{ activeTab === 0 }}"></dataviewer>
+      <report wx:if="{{ activeTab === 0 }}"></report>
       <addrecord wx:if="{{ activeTab === 1 }}"></addrecord>
       <view wx:if="{{ activeTab === 2 }}">page3</view>
     </view>
@@ -11,7 +11,7 @@
           <image src="../assets/icons/chart-line.svg"></image>
           <image src="../assets/icons/chart-line-active.svg"></image>
         </view>
-        <view class="label">数据</view>
+        <view class="label">健康报告</view>
       </view>
       <view class="nav-item add" @tap="switchSyncedTab" data-index="1">
         <button class="add-fab">
@@ -34,18 +34,18 @@
   import state from '../lib/state'
   import TabMixin from '../mixins/tab'
   import addrecord from '../page-components/add-record'
-  import dataviewer from '../page-components/data-viewer'
+  import report from '../page-components/report'
 
   export default class Index extends wepy.page {
     components = {
       addrecord,
-      dataviewer
+      report
     }
 
     mixins = [TabMixin]
 
     data = {
-      tabs: ['dataviewer', 'addrecord', null].map(component => ({ component })),
+      tabs: ['report', 'addrecord', null].map(component => ({ component })),
       syncedTab: 0,
       fontSize: state.fontSize
     }
