@@ -63,6 +63,8 @@
         if (result.code) {
           throw new Error(`数据提交失败: ${result.message} (${result.code})`)
         }
+
+        return true
       }
     }
 

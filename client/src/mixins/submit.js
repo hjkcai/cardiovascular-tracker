@@ -7,19 +7,22 @@ export default class SubmitMixin extends wepy.mixin {
     async submit (e) {
       await this.$loading('正在提交...')
 
+      let result
       try {
-        await this.submit(e.detail.value)
+        result = await this.submit(e.detail.value)
       } catch (err) {
         await this.$modal('错误', err.message)
       }
 
       await this.$loading()
-      await wepy.showToast({
-        title: '提交成功',
-        icon: 'success',
-        duration: 1000,
-        mask: true
-      })
+      if (result) {
+        await wepy.showToast({
+          title: '提交成功',
+          icon: 'success',
+          duration: 1000,
+          mask: true
+        })
+      }
     }
   }
 }

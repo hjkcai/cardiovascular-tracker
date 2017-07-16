@@ -1,39 +1,39 @@
 <template>
   <view id="heart-state-editor" class="canvas-page-wrapper">
-    <form class="md-list">
+    <form class="md-list" @reset="submit">
       <view class="section">
         <text class="title">详细信息</text>
         <view class="md-form-item">
           <image src="../assets/icons/heart.svg"></image>
-          <input type="number" placeholder="收缩压" />
+          <input type="number" name="systolic" placeholder="收缩压" @input="systolicChanged" />
           <text>mmHg</text>
           <text>/</text>
-          <input type="number" placeholder="舒张压" />
+          <input type="number" name="diastolic" placeholder="舒张压" @input="diastolicChanged" />
           <text>mmHg</text>
         </view>
         <view class="md-form-item">
           <image src="../assets/icons/heart-pulse.svg"></image>
-          <input type="number" placeholder="心率" />
+          <input type="number" name="heartRate" placeholder="心率" @input="heartRateChanged" />
           <text>bpm</text>
         </view>
         <view class="md-form-item date-time-picker">
           <image src="../assets/icons/calendar.svg"></image>
-          <picker mode="date">
-            <view>{{ date }}</view>
+          <picker id="date" mode="date" name="date" value="{{ heartStateData.date }}" @change="dateChanged">
+            <view>{{ heartStateData.date }}</view>
           </picker>
-          <picker mode="time">
-            <view>{{ time }}</view>
+          <picker id="time" mode="time" name="time" value="{{ heartStateData.time }}" @change="timeChanged">
+            <view>{{ heartStateData.time }}</view>
           </picker>
         </view>
       </view>
       <view class="section">
         <text class="title">备注</text>
         <view class="textarea-wrapper md-list-item">
-          <textarea placeholder="点此添加备注"></textarea>
+          <textarea name="note" placeholder="点此添加备注" @input="noteChanged"></textarea>
         </view>
       </view>
       <view class="section submit">
-        <button class="md-button" formType="submit">提交</button>
+        <button class="md-button" formType="reset">提交</button>
         <view class="note">建议测量前安静休息至少5分钟</view>
       </view>
     </form>
@@ -42,12 +42,52 @@
 
 <script>
   import wepy from 'wepy'
-  import { formatDate, formatTime } from '../lib/util'
+  import SubmitMixin from '../mixins/submit'
+  import { formatDate, formatTime, generateChangeMethods } from '../lib/util'
 
   export default class WeightEditor extends wepy.component {
+    mixins = [SubmitMixin]
+
     data = {
-      date: formatDate(),
-      time: formatTime()
+      heartStateData: {
+        systolic: '',
+        diastolic: '',
+        heartRate: '',
+        date: formatDate(),
+        time: formatTime(),
+        note: ''
+      }
+    }
+
+    methods = generateChangeMethods('heartStateData', ['systolic', 'diastolic', 'heartRate', 'date', 'time', 'note'])
+
+    async submit () {
+      const data = Object.assign({}, this.heartStateData)
+
+      if (!/[0-9]+/.test(data.systolic)) {
+        await this.$modal('提示', '收缩压数值无效，请重新输入')
+      } else if (!/[0-9]+/.test(data.diastolic)) {
+        await this.$modal('提示', '舒张压数值无效，请重新输入')
+      } else if (!/[0-9]+/.test(data.heartRate)) {
+        await this.$modal('提示', '心率数值无效，请重新输入')
+      } else {
+        data.systolic = parseInt(data.systolic)
+        data.diastolic = parseInt(data.diastolic)
+        data.heartRate = parseInt(data.heartRate)
+        data.date = `${data.date}T${data.time}:00Z`
+        delete data.time
+
+        const result = (await this.$http.post('heart-state', data)).data
+        this.heartStateData.date = formatDate()
+        this.heartStateData.time = formatTime()
+        this.$apply()
+
+        if (result.code) {
+          throw new Error(`数据提交失败: ${result.message} (${result.code})`)
+        }
+
+        return true
+      }
     }
 
     refresh () {}
