@@ -2,6 +2,7 @@
 
 import wepy from 'wepy'
 import axios from './axios'
+import events from './events'
 
 export function $modal (title, content, showCancel = false) {
   return wepy.showModal({
@@ -21,8 +22,20 @@ export function $loading (title, mask = true) {
 
 export const $http = axios
 
+export function $navigateTo (key, url) {
+  return wepy.navigateTo({ url }).then(() => new Promise(resolve => events.once(key, resolve)))
+}
+
+export function $navigateBack (key, ...args) {
+  events.emit(key, ...args)
+  return wepy.navigateBack()
+}
+
 Object.assign(wepy.component.prototype, {
   $modal,
   $loading,
-  $http
+  $http,
+  $navigateTo,
+  $navigateBack,
+  $globalEvents: events
 })
