@@ -12,7 +12,8 @@
     config = {
       pages: [
         'pages/index',
-        'pages/weight-editor'
+        'pages/weight-editor',
+        'pages/heart-state-editor'
       ],
       window: {
         backgroundTextStyle: 'light',

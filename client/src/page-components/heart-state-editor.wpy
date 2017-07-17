@@ -33,8 +33,9 @@
         </view>
       </view>
       <view class="section submit">
-        <button class="md-button" formType="submit">提交</button>
-        <view class="note">建议测量前安静休息至少5分钟</view>
+        <button class="md-button" formType="submit">{{ mode === 'add' ? '提交' : '修改' }}</button>
+        <view class="note delete" wx:if="{{ mode === 'edit' }}" @tap="removeRecord">删除此记录</view>
+        <view class="note" wx:if="{{ mode === 'add' }}">建议测量前安静休息至少5分钟</view>
       </view>
     </form>
   </view>
@@ -48,7 +49,15 @@
   export default class WeightEditor extends wepy.component {
     mixins = [SubmitMixin]
 
+    props = {
+      mode: {
+        type: String,
+        default: 'add'
+      }
+    }
+
     data = {
+      _id: '',
       heartStateData: {
         systolic: '',
         diastolic: '',
@@ -59,7 +68,26 @@
       }
     }
 
-    methods = generateChangeMethods('heartStateData', ['systolic', 'diastolic', 'heartRate', 'date', 'time', 'note'])
+    methods = {
+      ...generateChangeMethods('heartStateData', ['systolic', 'diastolic', 'heartRate', 'date', 'time', 'note']),
+      setData ({ _id, systolic, diastolic, heartRate, date, time, note }) {
+        this._id = _id
+        this.heartStateData = { systolic, diastolic, heartRate, date, time, note }
+      },
+      async removeRecord () {
+        if (await this.$modal('提示', '你确定要删除这条血压心率记录吗？', true)) {
+          await this.$loading('正在处理...')
+          const result = (await this.$http.delete('heart-state/' + this._id)).data
+          await this.$loading()
+
+          if (result.code) {
+            throw new Error(`记录删除失败: ${result.message} (${result.code})`)
+          }
+
+          this.$navigateBack('heart-state-editor', true)
+        }
+      }
+    }
 
     async submit () {
       const data = Object.assign({}, this.heartStateData)
@@ -79,13 +107,26 @@
         data.date = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
         delete data.time
 
-        const result = (await this.$http.post('heart-state', data)).data
+        let result
+        if (this.mode === 'add') result = (await this.$http.post('heart-state', data)).data
+        else {
+          // TODO: 添加修改接口
+        }
+
         if (result.code) {
           throw new Error(`数据提交失败: ${result.message} (${result.code})`)
         }
 
+        // 返回上级页面
+        setTimeout(() => {
+          if (this.mode === 'add') {
+            this.$emit('switchToReport', 1)
+          } else {
+            this.$navigateBack('heart-state-editor', true)
+          }
+        }, 1000)
+
         this.refresh()
-        setTimeout(() => this.$emit('switchToReport', 1), 1000)
         return true
       }
     }

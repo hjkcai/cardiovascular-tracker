@@ -106,7 +106,7 @@
         <view class="section">
           <text class="title">详细信息</text>
           <repeat for="{{ _data }}" key="{{ index }}">
-            <mdiconitem>
+            <mdiconitem @tap.user="editHeartStateData">
               <image slot="icon" src="{{ item.warning }}"></image>
               <text slot="caption">{{ item.dateValue }}</text>
               <text slot="left">{{ item.systolic }}mmHg / {{ item.diastolic }}mmHg, {{ item.heartRate }}bpm</text>
@@ -190,7 +190,11 @@
       async editWeightData (e) {
         const url = './weight-editor?' + qs.stringify(this._data[e.currentTarget.dataset.comIndex])
         const success = await this.$navigateTo('weight-editor', url)
-        console.log(success)
+        if (success) this.fetchData()
+      },
+      async editHeartStateData (e) {
+        const url = './heart-state-editor?' + qs.stringify(this._data[e.currentTarget.dataset.comIndex])
+        const success = await this.$navigateTo('heart-state-editor', url)
         if (success) this.fetchData()
       }
     }
