@@ -45,7 +45,7 @@
         <view class="section">
           <text class="title">详细信息</text>
           <repeat for="{{ _data }}" key="{{ index }}">
-            <mdlistitem>
+            <mdlistitem @tap.user="editWeightData">
               <text slot="caption">{{ item.dateValue }}</text>
               <text slot="left">{{ item.value }}kg</text>
               <text slot="right">{{ item.delta }}</text>
@@ -127,6 +127,7 @@
   import { timeFormat } from 'd3-time-format'
   import { trimDate, formatDate, formatTime } from '../lib/util'
 
+  import * as qs from 'qs'
   import * as d3Array from 'd3-array'
 
   const METHODS = ['Weight', 'BloodPressure', 'HeartRate']
@@ -185,6 +186,12 @@
       },
       refresh () {
         this.fetchData()
+      },
+      async editWeightData (e) {
+        const url = './weight-editor?' + qs.stringify(this._data[e.currentTarget.dataset.comIndex])
+        const success = await this.$navigateTo('weight-editor', url)
+        console.log(success)
+        if (success) this.fetchData()
       }
     }
 
