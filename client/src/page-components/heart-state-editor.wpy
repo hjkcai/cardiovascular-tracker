@@ -108,13 +108,11 @@
         delete data.time
 
         let result
-        if (this.mode === 'add') result = (await this.$http.post('heart-state', data)).data
-        else {
-          // TODO: 添加修改接口
-        }
+        if (this.mode === 'add') result = await this.$http.post('heart-state', data)
+        else result = await this.$http.put('heart-state/' + this._id, data)
 
-        if (result.code) {
-          throw new Error(`数据提交失败: ${result.message} (${result.code})`)
+        if (result.data.code) {
+          throw new Error(`数据提交失败: ${result.data.message} (${result.data.code})`)
         }
 
         // 返回上级页面
