@@ -41,5 +41,12 @@
         }
       }
     }
+
+    // 各编辑器
+    @if $target == editor {
+      .editor.#{$font-size-class} {
+        font-size: nth($font-size-levels, $index);
+      }
+    }
   }
 }
