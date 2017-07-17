@@ -2,6 +2,7 @@
 
 import db from '../lib/db'
 import { Document, Schema } from 'mongoose'
+import { NotFoundError, NotAuthorizedError } from '../lib/errors'
 
 /** 心率血压记录 */
 export interface HeartState extends Document {
@@ -74,6 +75,16 @@ export function getHeartStateRecords (openid: string, from: Date, to: Date = new
 /** 添加心率血压记录 */
 export function addHeartStateRecord (openid: string, { heartRate, systolic, diastolic, date = new Date(), note = '' }: Partial<HeartState>) {
   return new model({ openid, heartRate, systolic, diastolic, date, note }).save()
+}
+
+/** 修改心率血压记录 */
+export async function editHeartStateRecord (openid: string, _id: string, data: Partial<HeartState>) {
+  const doc = await model.findById(_id)
+  if (doc == null) throw new NotFoundError()
+  if (doc.openid !== openid) throw new NotAuthorizedError()
+
+  Object.assign(doc, data)
+  return doc.save()
 }
 
 /** 删除心率血压记录 */

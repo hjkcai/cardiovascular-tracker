@@ -31,6 +31,21 @@ router.post('heart-state', async (ctx, next) => {
   ctx.result = (await HeartState.addHeartStateRecord(ctx.session.openid, ctx.request.body))._id
 })
 
+// 修改心率血压记录
+router.post('heart-state', ValidateMiddleware({
+  heartRate: 'number',
+  systolic: 'number',
+  diastolic: 'number',
+  date: 'date-time',
+  note: 'string'
+}))
+
+router.put('heart-state/:id', async (ctx, next) => {
+  const _id: string = ctx.params.id
+  await HeartState.editHeartStateRecord(ctx.session.openid, _id, ctx.request.body)
+  ctx.result = null
+})
+
 // 删除心率血压记录
 router.delete('heart-state/:id', async (ctx, next) => {
   const _id: string = ctx.params.id

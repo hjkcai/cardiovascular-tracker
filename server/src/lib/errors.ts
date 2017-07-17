@@ -37,10 +37,10 @@ export class WechatSessionError extends UserError {
   }
 }
 
-/** 无效的用户输入 */
-export class InvalidUserInputError extends UserError {
-  constructor (field: string, value: any) {
-    super(`Invalid ${field}: ${value}`, 102, 400)
+/** 数据没有找到 */
+export class NotFoundError extends UserError {
+  constructor () {
+    super('Not Found', 102, 404)
   }
 }
 
@@ -48,5 +48,12 @@ export class InvalidUserInputError extends UserError {
 export class ValidationFailureError extends UserError {
   constructor (message: string) {
     super(message, 103, 400)
+  }
+}
+
+/** 未授权 */
+export class NotAuthorizedError extends UserError {
+  constructor () {
+    super('Not Authorized', 104, 403)
   }
 }
