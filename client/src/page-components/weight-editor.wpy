@@ -22,8 +22,9 @@
         </view>
       </view>
       <view class="section submit">
-        <button class="md-button" formType="submit">提交</button>
-        <view class="note">建议在晨起排便后、进食前测量</view>
+        <button class="md-button" formType="submit">{{ mode === 'add' ? '提交' : '修改' }}</button>
+        <view class="note delete" wx:if="{{ mode === 'edit' }}" @tap="removeRecord">删除此记录</view>
+        <view class="note" wx:if="{{ mode === 'add' }}">建议在晨起排便后、进食前测量</view>
       </view>
     </form>
   </view>
@@ -37,6 +38,13 @@
   export default class WeightEditor extends wepy.component {
     mixins = [SubmitMixin]
 
+    props = {
+      mode: {
+        type: String,
+        default: 'add'
+      }
+    }
+
     data = {
       weightData: {
         value: '',
@@ -45,7 +53,25 @@
       }
     }
 
-    methods = generateChangeMethods('weightData', ['value', 'date', 'note'])
+    methods = {
+      ...generateChangeMethods('weightData', ['value', 'date', 'note']),
+      setData ({ value, date, note }) {
+        this.weightData = { value, date, note }
+      },
+      async removeRecord () {
+        if (await this.$modal('提示', '你确定要删除这条体重记录吗？', true)) {
+          await this.$loading('正在处理...')
+          const result = (await this.$http.delete('weight', { params: { date: new Date(this.weightData.date) } })).data
+          await this.$loading()
+
+          if (result.code) {
+            throw new Error(`记录删除失败: ${result.message} (${result.code})`)
+          }
+
+          this.$navigateBack('weight-editor', true)
+        }
+      }
+    }
 
     async submit () {
       const data = Object.assign({}, this.weightData)
@@ -61,8 +87,16 @@
           throw new Error(`数据提交失败: ${result.message} (${result.code})`)
         }
 
+        // 返回上级页面
+        setTimeout(() => {
+          if (this.mode === 'add') {
+            this.$emit('switchToReport', 0)
+          } else {
+            this.$navigateBack('weight-editor', true)
+          }
+        }, 1000)
+
         this.refresh()
-        setTimeout(() => this.$emit('switchToReport', 0), 1000)
         return true
       }
     }
