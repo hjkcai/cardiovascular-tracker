@@ -49,6 +49,13 @@
       fontSize: state.fontSize
     }
 
+    events = {
+      switchToReport (reportIndex) {
+        this.activeTab = 0
+        this.$invoke('report', 'switchTab', reportIndex)
+      }
+    }
+
     async onLoad () {
       await login()
       this.refreshActiveTab()

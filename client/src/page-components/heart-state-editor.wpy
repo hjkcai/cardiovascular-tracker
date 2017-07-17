@@ -85,6 +85,7 @@
         }
 
         this.refresh()
+        setTimeout(() => this.$emit('switchToReport', 1), 1000)
         return true
       }
     }
