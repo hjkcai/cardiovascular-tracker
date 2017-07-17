@@ -240,7 +240,7 @@
 
         item.dateValue = formatDate(item.date)
         if (this._data[index + 1]) {
-          const delta = this._data[index + 1].value - item.value
+          const delta = item.value - this._data[index + 1].value
           item.delta = (delta > 0 ? '+' : '') + Math.round(delta * 100) / 100 + 'kg'
         }
       })
