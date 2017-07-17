@@ -1,5 +1,5 @@
 <template>
-  <view class="md-list-item" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+  <view class="md-list-item" @tap="tap" hover-class="hover" hover-start-time="20" hover-stay-time="70">
     <view class="caption">
       <slot name="caption"></slot>
     </view>
@@ -17,5 +17,11 @@
 <script>
   import wepy from 'wepy'
 
-  export default class MdListItem extends wepy.component {}
+  export default class MdListItem extends wepy.component {
+    methods = {
+      tap (e) {
+        this.$emit('tap', e)
+      }
+    }
+  }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <view class="md-icon-item" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+  <view class="md-icon-item" @tap="tap" hover-class="hover" hover-start-time="20" hover-stay-time="70">
     <view class="icon">
       <slot name="icon"></slot>
     </view>
@@ -25,6 +25,12 @@
   export default class MdIconItem extends wepy.component {
     props = {
       icon: String
+    }
+
+    methods = {
+      tap (e) {
+        this.$emit('tap', e)
+      }
     }
   }
 </script>
