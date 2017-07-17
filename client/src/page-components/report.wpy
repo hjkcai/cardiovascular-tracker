@@ -183,6 +183,7 @@
     methods = {
       changeDateRange (e) {
         this.dateRange = e.detail.value
+        this.fetchData()
       },
       refresh () {
         this.fetchData()
