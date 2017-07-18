@@ -1,0 +1,77 @@
+<template>
+  <view id="userinfo">
+    <view class="header">
+      <image class="avatar" src="{{ userinfo.avatarUrl }}"></image>
+      <view class="user-detail">
+        <view class="name">{{ userinfo.nickName }}</view>
+        <view>
+          <text>{{ gender }}</text>
+          <text class="age">{{ age }}岁</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { GENDER } from '../lib/constants'
+
+  export default class Userinfo extends wepy.component {
+    data = {
+      userinfo: this.$state.userinfo
+    }
+
+    computed = {
+      age () {
+        let birthday = this.userinfo.birthday
+        if (birthday) {
+          const now = new Date()
+          birthday = new Date(birthday)
+
+          const age = now.getFullYear() - birthday.getFullYear()
+          if (now.getMonth() > birthday.getMonth() || (now.getMonth() === birthday.getMonth() && now.getDate() >= birthday.getDate())) {
+            return age + 1
+          } else return age
+        } else return 0
+      },
+      gender () {
+        return GENDER[this.userinfo.gender]
+      }
+    }
+
+    refresh () {
+      this.userinfo = this.$state.userinfo
+      this.$apply()
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  #userinfo {
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+
+      image {
+        width: 64px;
+        height: 64px;
+        margin: 0 16px;
+        border-radius: 50%;
+      }
+
+      .name {
+        margin-bottom: 4px;
+        font-size: 1.25em;
+        font-weight: bold;
+      }
+
+      .age {
+        margin-left: 16px;
+      }
+    }
+  }
+</style>

@@ -3,7 +3,7 @@
     <view class="main">
       <report wx:if="{{ activeTab === 0 }}"></report>
       <addrecord wx:if="{{ activeTab === 1 }}"></addrecord>
-      <view wx:if="{{ activeTab === 2 }}">page3</view>
+      <userinfo wx:if="{{ activeTab === 2 }}"></userinfo>
     </view>
     <view class="bottom-nav">
       <view class="nav-item data {{ activeTab === 0 ? 'active' : '' }}" @tap="switchTab" data-index="0">
@@ -33,19 +33,21 @@
   import wepy from 'wepy'
   import report from '../page-components/report'
   import TabMixin from '../mixins/tab'
+  import userinfo from '../page-components/userinfo'
   import { login } from '../lib/state'
   import addrecord from '../page-components/add-record'
 
   export default class Index extends wepy.page {
     components = {
       addrecord,
+      userinfo,
       report
     }
 
     mixins = [TabMixin]
 
     data = {
-      tabs: ['report', 'addrecord', null].map(component => ({ component })),
+      tabs: ['report', 'addrecord', 'userinfo'].map(component => ({ component })),
       fontSize: this.$state.fontSize
     }
 
@@ -58,6 +60,7 @@
 
     async onLoad () {
       await login()
+      this.$invoke('userinfo', 'refresh')
       this.refreshActiveTab()
     }
   }

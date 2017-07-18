@@ -20,3 +20,5 @@ export const CANVAS_PADDINGS = {
   'large': { top: 7, right: 30, bottom: 26, left: 52 },
   'x-large': { top: 8, right: 32, bottom: 28, left: 56 }
 }
+
+export const GENDER = ['未知', '男', '女']
