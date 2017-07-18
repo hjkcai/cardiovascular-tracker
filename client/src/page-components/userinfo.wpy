@@ -1,5 +1,6 @@
 <template>
   <view id="userinfo">
+    <view class="title-shadow"></view>
     <view class="header">
       <image class="avatar" src="{{ userinfo.avatarUrl }}"></image>
       <view class="user-detail">
@@ -10,16 +11,37 @@
         </view>
       </view>
     </view>
+    <scroll-view class="md-list" scroll-y>
+      <view class="section">
+        <text class="title">个人信息</text>
+        <mdiconitem>
+          <image slot="icon" src="../assets/icons/cake-layered.svg"></image>
+          <text slot="caption">生日</text>
+          <text slot="left">{{ userinfo.birthday }}</text>
+        </mdiconitem>
+        <mdiconitem>
+          <image slot="icon" src="../assets/icons/human-male.svg"></image>
+          <text slot="caption">身高</text>
+          <text slot="left">{{ userinfo.height }}cm</text>
+        </mdiconitem>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import { GENDER } from '../lib/constants'
+  import mdiconitem from '../components/md-icon-item'
+  import { formatDate } from '../lib/util'
 
   export default class Userinfo extends wepy.component {
+    components = {
+      mdiconitem
+    }
+
     data = {
-      userinfo: this.$state.userinfo
+      userinfo: {}
     }
 
     computed = {
@@ -41,7 +63,11 @@
     }
 
     refresh () {
-      this.userinfo = this.$state.userinfo
+      this.userinfo = {
+        ...this.$state.userinfo,
+        birthday: formatDate(this.$state.userinfo)
+      }
+
       this.$apply()
     }
   }
@@ -51,6 +77,14 @@
   @import '../assets/styles/variables';
 
   #userinfo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
     .header {
       display: flex;
       align-items: center;
@@ -72,6 +106,10 @@
       .age {
         margin-left: 16px;
       }
+    }
+
+    .md-list {
+      margin-top: 0;
     }
   }
 </style>
