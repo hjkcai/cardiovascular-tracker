@@ -110,13 +110,12 @@
       .avatar {
         width: 64px;
         height: 64px;
-        margin-right: 16px;
+        margin-right: 24px;
         border-radius: 50%;
       }
 
       .name {
         margin-bottom: 4px;
-        font-size: 1.25em;
         font-weight: bold;
       }
 
