@@ -6,9 +6,9 @@ import ValidateMiddleware from '../lib/middlewares/validate'
 
 const router = new Router()
 
-// 获取完整用户信息
+// 获取部分用户信息
 router.get('userinfo', async (ctx, next) => {
-  ctx.result = await User.getUserInfo(ctx.session.openid)
+  ctx.result = await User.getUserInfo(ctx.session.openid, false)
 })
 
 // 修改用户信息

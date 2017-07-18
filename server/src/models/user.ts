@@ -64,8 +64,17 @@ export const schema = new Schema({
 export const model = db.model<User>('user', schema)
 
 /** 获取用户信息 */
-export function getUserInfo (openid: string) {
-  return model.findById(openid).exec()
+export function getUserInfo (openid: string, fullInfo = true) {
+  let projection: any = { _id: false }
+  if (!fullInfo) {
+    Object.assign(projection, {
+      birthday: true,
+      height: true,
+      disease: true
+    })
+  }
+
+  return model.findById(openid, projection).exec()
 }
 
 /** 修改用户信息 (只能修改不是从微信获取的用户信息) */
