@@ -21,7 +21,7 @@ export interface User extends Document {
   height: number | null,
 
   /** 疾病情况 */
-  disease: Disease[],
+  diseases: Disease[],
 
   // 从微信获得的信息
   nickName: string,
@@ -43,7 +43,7 @@ export const schema = new Schema({
     type: Number,
     default: null
   },
-  disease: {
+  diseases: {
     type: [{
       _id: false,
       name: String,
@@ -78,9 +78,9 @@ export function getUserInfo (openid: string, fullInfo = true) {
 }
 
 /** 修改用户信息 (只能修改不是从微信获取的用户信息) */
-export function setUserInfo (openid: string, { birthday, height, disease }: Partial<User>) {
+export function setUserInfo (openid: string, { birthday, height, diseases }: Partial<User>) {
   return model.findByIdAndUpdate(openid, {
-    $set: removeUndefined({ birthday, height, disease })
+    $set: removeUndefined({ birthday, height, diseases })
   }).exec()
 }
 

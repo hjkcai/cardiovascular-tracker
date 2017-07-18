@@ -15,7 +15,7 @@ router.get('userinfo', async (ctx, next) => {
 router.post('userinfo', ValidateMiddleware({
   birthday: 'date-time',
   height: 'number',
-  disease: [{
+  diseases: [{
     name: 'string',
     onset: 'date-time',
     detail: 'string'
