@@ -28,6 +28,18 @@
           <text slot="left">{{ userinfo.height }}cm</text>
         </mdiconitem>
       </view>
+      <view class="section">
+        <text class="title">疾病史</text>
+        <repeat for="{{ userinfo.diseases }}" key="{{ index }}">
+          <mdlistitem>
+            <text slot="caption">{{ item.name }}</text>
+            <view slot="left">
+              <view>确诊日期: {{ item.onset }}</view>
+              <view>{{ item.detail }}</view>
+            </view>
+          </mdlistitem>
+        </repeat>
+      </view>
     </scroll-view>
   </view>
 </template>
@@ -36,11 +48,12 @@
   import wepy from 'wepy'
   import { GENDER } from '../lib/constants'
   import mdiconitem from '../components/md-icon-item'
-  import { formatDate } from '../lib/util'
+  import mdlistitem from '../components/md-list-item'
 
   export default class Userinfo extends wepy.component {
     components = {
-      mdiconitem
+      mdiconitem,
+      mdlistitem
     }
 
     data = {
@@ -66,11 +79,7 @@
     }
 
     refresh () {
-      this.userinfo = {
-        ...this.$state.userinfo,
-        birthday: formatDate(this.$state.userinfo.birthday)
-      }
-
+      this.userinfo = this.$state.userinfo
       this.$apply()
     }
   }
