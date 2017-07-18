@@ -33,9 +33,15 @@
           <text slot="left">{{ userinfo.height }}cm</text>
         </mdiconitem>
       </view>
-      <view class="section">
+      <view class="section" wx:if="{{ userinfo.diseases.length === 0 }}">
         <text class="title">疾病史</text>
-        <repeat for="{{ userinfo.diseases }}" key="{{ index }}">
+        <view class="md-list-item">
+          <view class="caption">暂无疾病史</view>
+        </view>
+      </view>
+      <view class="section" wx:else>
+        <text class="title">疾病史</text>
+        <repeat for="{{ userinfo.diseases }}" key="index">
           <mdlistitem>
             <text slot="caption">{{ item.name }}</text>
             <view slot="left">
