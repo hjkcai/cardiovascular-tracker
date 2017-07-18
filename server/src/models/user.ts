@@ -7,7 +7,7 @@ import { Document, Schema } from 'mongoose'
 export interface Disease {
   name: string,
   onset: Date,
-  cure: Date
+  detail: string
 }
 
 export interface User extends Document {
@@ -48,7 +48,7 @@ export const schema = new Schema({
       _id: false,
       name: String,
       onset: Date,
-      cure: Date
+      detail: String
     }],
     default: []
   },

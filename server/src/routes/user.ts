@@ -18,7 +18,7 @@ router.post('userinfo', ValidateMiddleware({
   disease: [{
     name: 'string',
     onset: 'date-time',
-    cure: 'date-time'
+    detail: 'string'
   }]
 }))
 
