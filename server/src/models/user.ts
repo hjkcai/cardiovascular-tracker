@@ -70,7 +70,7 @@ export function getUserInfo (openid: string, fullInfo = true) {
     Object.assign(projection, {
       birthday: true,
       height: true,
-      disease: true
+      diseases: true
     })
   }
 
