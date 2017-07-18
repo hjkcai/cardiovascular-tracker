@@ -10,9 +10,14 @@
           <text class="age">{{ age }}岁</text>
         </view>
       </view>
-      <button class="settings">
-        <image src="../assets/icons/settings.svg"></image>
-      </button>
+      <view class="buttons">
+        <button>
+          <image src="../assets/icons/pencil.svg"></image>
+        </button>
+        <button>
+          <image src="../assets/icons/settings.svg"></image>
+        </button>
+      </view>
     </view>
     <scroll-view class="md-list" scroll-y>
       <view class="section">
@@ -119,18 +124,22 @@
         margin-left: 16px;
       }
 
-      .settings {
-        @include button-reset;
+      .buttons {
+        display: flex;
         margin-left: auto;
-        padding: 8px;
 
-        image {
-          width: $icon-size;
-          height: $icon-size;
-        }
+        button {
+          @include button-reset;
+          padding: 8px;
 
-        &.button-hover {
-          background-color: $dark-white;
+          image {
+            width: $icon-size;
+            height: $icon-size;
+          }
+
+          &.button-hover {
+            background-color: $dark-white;
+          }
         }
       }
     }
