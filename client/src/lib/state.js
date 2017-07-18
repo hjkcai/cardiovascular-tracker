@@ -1,6 +1,7 @@
 'use strict'
 
 import wepy from 'wepy'
+import { formatDate } from '../lib/util'
 import axios, { setToken } from '../lib/axios'
 import { $modal, $loading } from '../lib/wepy'
 
@@ -56,6 +57,18 @@ async function _login () {
       ...userinfo.userInfo,
       ...userinfoDetail.data
     }
+
+    state.userinfo.birthday = formatDate(state.userinfo.birthday)
+    state.userinfo.diseases = state.userinfo.diseases
+      .map(disease => {
+        disease.onset = new Date(disease.onset)
+        return disease
+      })
+      .sort((a, b) => a.onset - b.onset)
+      .map(disease => {
+        disease.onset = formatDate(disease.onset)
+        return disease
+      })
   }
 
   await $loading()
