@@ -6,7 +6,6 @@
 
 <script>
   import wepy from 'wepy'
-  import state from '../lib/state'
   import weighteditor from '../page-components/weight-editor'
   import { formatDate } from '../lib/util'
 
@@ -20,7 +19,7 @@
     }
 
     data = {
-      fontSize: state.fontSize,
+      fontSize: this.$state.fontSize,
       weightData: null
     }
 

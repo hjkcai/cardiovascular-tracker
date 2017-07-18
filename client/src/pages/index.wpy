@@ -33,8 +33,8 @@
   import wepy from 'wepy'
   import report from '../page-components/report'
   import TabMixin from '../mixins/tab'
+  import { login } from '../lib/state'
   import addrecord from '../page-components/add-record'
-  import state, { login } from '../lib/state'
 
   export default class Index extends wepy.page {
     components = {
@@ -46,7 +46,7 @@
 
     data = {
       tabs: ['report', 'addrecord', null].map(component => ({ component })),
-      fontSize: state.fontSize
+      fontSize: this.$state.fontSize
     }
 
     events = {

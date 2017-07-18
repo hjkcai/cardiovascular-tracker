@@ -11,6 +11,7 @@ const state = {
 }
 
 export default state
+wepy.component.prototype.$state = state
 
 export function unexceptedError (err) {
   // TODO: 上报错误
