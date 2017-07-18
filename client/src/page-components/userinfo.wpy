@@ -55,8 +55,8 @@
           birthday = new Date(birthday)
 
           const age = now.getFullYear() - birthday.getFullYear()
-          if (now.getMonth() > birthday.getMonth() || (now.getMonth() === birthday.getMonth() && now.getDate() >= birthday.getDate())) {
-            return age + 1
+          if (now.getMonth() < birthday.getMonth() || (now.getMonth() === birthday.getMonth() && now.getDate() < birthday.getDate())) {
+            return age - 1
           } else return age
         } else return 0
       },
@@ -68,7 +68,7 @@
     refresh () {
       this.userinfo = {
         ...this.$state.userinfo,
-        birthday: formatDate(this.$state.userinfo)
+        birthday: formatDate(this.$state.userinfo.birthday)
       }
 
       this.$apply()
