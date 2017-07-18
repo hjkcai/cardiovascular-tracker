@@ -6,7 +6,8 @@ import { $modal, $loading } from '../lib/wepy'
 
 const state = {
   code: '',
-  fontSize: 'normal'
+  fontSize: 'normal',
+  userinfo: {}
 }
 
 export default state
@@ -36,11 +37,24 @@ async function _login () {
     } else break
   }
 
+  // 获取请求 token
   const token = (await axios.post('login', { code, userinfo })).data
   if (token.code === 0) {
     setToken(token.data)
   } else {
     throw new Error(`登录错误: ${token.message} (${token.code})`)
+  }
+
+  // 获取并储存用户信息
+  const userinfoDetail = (await axios.get('userinfo')).data
+  if (userinfoDetail.code) {
+    setToken('')
+    throw new Error(`无法获取用户信息: ${userinfoDetail.message} (${userinfoDetail.code})`)
+  } else {
+    state.userinfo = {
+      ...userinfo.userInfo,
+      ...userinfoDetail.data
+    }
   }
 
   await $loading()
