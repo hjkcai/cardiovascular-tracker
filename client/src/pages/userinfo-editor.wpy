@@ -97,11 +97,10 @@
     onLoad (data) {
       data = JSON.parse(decodeURIComponent(data.q))
 
-      if (data.firstStart) {
-        wx.setNavigationBarTitle({ title: '完善个人信息' })
-        delete data.firstStart
-      }
+      if (data.firstStart) wx.setNavigationBarTitle({ title: '完善个人信息' })
+      if (data.birthday == null) data.birthday = formatDate()
 
+      delete data.firstStart
       this.userinfoData = data
     }
 

@@ -63,7 +63,7 @@ async function _login () {
 }
 
 export function updateUserinfo (userinfo) {
-  userinfo.birthday = formatDate(userinfo.birthday)
+  userinfo.birthday = userinfo.birthday ? formatDate(userinfo.birthday) : null
   userinfo.diseases = userinfo.diseases
     .map(disease => {
       disease.onset = new Date(disease.onset)

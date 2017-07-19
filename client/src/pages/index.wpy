@@ -61,6 +61,13 @@
     async onLoad () {
       await login()
       this.$invoke('userinfo', 'refresh')
+
+      if (this.$state.userinfo.height === null && this.$state.userinfo.birthday === null) {
+        if (await this.$modal('提示', '您还没有填写生日与身高信息，是否现在去填写？', true)) {
+          await this.$invoke('userinfo', 'editUserinfo', true)
+        }
+      }
+
       this.refreshActiveTab()
     }
   }

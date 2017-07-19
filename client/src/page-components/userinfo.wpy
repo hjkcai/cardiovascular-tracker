@@ -98,9 +98,13 @@
       about () {
         this.$navigateTo('', './settings')
       },
-      async editUserinfo () {
+      async editUserinfo (firstStart) {
+        if (typeof firstStart !== 'boolean') {
+          firstStart = false
+        }
+
         const { birthday, height, diseases } = this.userinfo
-        const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify({ birthday, height, diseases }) })
+        const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify({ birthday, height, diseases, firstStart }) })
         const data = await this.$navigateTo('userinfo-editor', url)
 
         await this.$loading('正在加载...')
@@ -121,7 +125,7 @@
         const result = (await this.$http.post('userinfo', data)).data
         if (result.code) {
           this.$modal('错误', `数据提交失败: ${result.message} (${result.code})`)
-        } else updateUserinfo({}, this.userinfo, data)
+        } else updateUserinfo(Object.assign({}, this.userinfo, data))
 
         await this.$loading()
       }
