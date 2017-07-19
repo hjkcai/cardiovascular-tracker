@@ -7,7 +7,7 @@
         <view class="name">{{ userinfo.nickName }}</view>
         <view>
           <text>{{ gender }}</text>
-          <text class="age">{{ age }}岁</text>
+          <text class="age">{{ userinfo.birthday ? (age + '岁') : '未知' }}</text>
         </view>
       </view>
     </view>
@@ -27,12 +27,12 @@
         <mdiconitem>
           <image slot="icon" src="../assets/icons/cake-layered.svg"></image>
           <text slot="caption">生日</text>
-          <text slot="left">{{ userinfo.birthday }}</text>
+          <text slot="left">{{ userinfo.birthday ? userinfo.birthday : '未知' }}</text>
         </mdiconitem>
         <mdiconitem>
           <image slot="icon" src="../assets/icons/human-male.svg"></image>
           <text slot="caption">身高</text>
-          <text slot="left">{{ userinfo.height }}cm</text>
+          <text slot="left">{{ userinfo.height ? (userinfo.height + 'cm') : '未知' }}</text>
         </mdiconitem>
       </view>
       <view class="section" wx:if="{{ userinfo.diseases.length === 0 }}">
