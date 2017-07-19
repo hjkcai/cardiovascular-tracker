@@ -13,7 +13,7 @@
     </view>
     <scroll-view class="md-list" scroll-y>
       <view class="section buttons">
-        <button>
+        <button @tap="editUserinfo">
           <image src="../assets/icons/pencil.svg"></image>
           <text>修改个人信息</text>
         </button>
@@ -63,6 +63,8 @@
   import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
 
+  import * as qs from 'qs'
+
   export default class Userinfo extends wepy.component {
     components = {
       mdiconitem,
@@ -88,6 +90,16 @@
       },
       gender () {
         return GENDER[this.userinfo.gender]
+      }
+    }
+
+    methods = {
+      async editUserinfo () {
+        const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify(this.userinfo) })
+        const result = await this.$navigateTo('userinfo-editor', url)
+        if (result) {
+          this.$state.userinfo = this.userinfo = Object.assign({}, this.userinfo, result)
+        }
       }
     }
 

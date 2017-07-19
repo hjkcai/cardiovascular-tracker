@@ -1,0 +1,103 @@
+<template>
+  <view class="editor {{ fontSize }}">
+    <view id="userinfo-editor" class="canvas-page-wrapper">
+      <form class="md-list" @submit="submit">
+        <view class="section">
+          <text class="title">生日</text>
+          <view class="md-form-item">
+            <image src="../assets/icons/cake-layered.svg"></image>
+            <picker mode="date" name="birthday" value="{{ userinfoData.birthday }}" @change="birthdayChanged">
+              <view>{{ userinfoData.birthday }}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="section">
+          <text class="title">身高</text>
+          <view class="md-form-item">
+            <image src="../assets/icons/human-male.svg"></image>
+            <input type="number" name="height" value="{{ userinfoData.height }}" placeholder="身高" @input="heightChanged" />
+            <text>cm</text>
+          </view>
+        </view>
+        <view class="section submit">
+          <button class="md-button" formType="submit">提交</button>
+        </view>
+      </form>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import SubmitMixin from '../mixins/submit'
+  import { generateChangeMethods } from '../lib/util'
+
+  export default class WeightEditor extends wepy.page {
+    config = {
+      navigationBarTitleText: '修改个人信息'
+    }
+
+    mixins = [SubmitMixin]
+
+    data = {
+      fontSize: this.$state.fontSize,
+      userinfoData: {
+        birthday: '',
+        height: '',
+        diseases: []
+      }
+    }
+
+    methods = {
+      ...generateChangeMethods('userinfoData', ['birthday', 'height'])
+    }
+
+    onLoad (data) {
+      data = JSON.parse(decodeURIComponent(data.q))
+
+      if (data.firstStart) {
+        wx.setNavigationBarTitle({ title: '完善个人信息' })
+      }
+
+      this.userinfoData = data
+    }
+
+    onUnload () {
+      this.$globalEvents.emit('userinfo-editor')
+    }
+
+    async submit () {
+      const data = Object.assign({}, this.userinfoData)
+
+      if (!data.birthday) {
+        await this.$modal('提示', '请填写您的生日')
+      } else if (!data.height) {
+        await this.$modal('提示', '请填写您的身高')
+      } else if (!/[0-9.]+/.test(data.height)) {
+        await this.$modal('提示', '体重数值无效，请重新输入')
+      } else {
+        data.birthday = new Date(data.birthday)
+        data.height = parseFloat(data.height)
+        data.diseases = data.diseases.map(disease => {
+          disease.onset = new Date(disease.onset)
+          return disease
+        })
+
+        const result = (await this.$http.post('userinfo', data)).data
+        if (result.code) {
+          throw new Error(`数据提交失败: ${result.message} (${result.code})`)
+        }
+
+        // 返回上级页面
+        setTimeout(() => this.$navigateBack('userinfo-editor', this.userinfoData), 1000)
+        return true
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+  @import '../assets/styles/font-sizes';
+  @include font-size-defs(editor);
+</style>
