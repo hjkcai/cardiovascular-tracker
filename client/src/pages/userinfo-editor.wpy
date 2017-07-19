@@ -19,6 +19,25 @@
             <text>cm</text>
           </view>
         </view>
+        <view class="section">
+          <text class="title">疾病史</text>
+          <repeat for="{{ userinfoData.diseases }}" key="{{ index }}">
+            <mdiconitem>
+              <image slot="icon" src="../assets/icons/delete.svg" @tap="removeDisease" data-index="{{ index }}"></image>
+              <text slot="caption">{{ item.name }}</text>
+              <view slot="left">
+                <view>确诊日期: {{ item.onset }}</view>
+                <view>{{ item.detail }}</view>
+              </view>
+            </mdiconitem>
+          </repeat>
+          <view class="md-icon-item" @tap="addDisease" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+            <image class="icon" src="../assets/icons/plus.svg"></image>
+            <view class="content-wrapper">
+              <view class="caption">添加疾病记录</view>
+            </view>
+          </view>
+        </view>
         <view class="section submit">
           <button class="md-button" formType="submit">提交</button>
         </view>
@@ -29,15 +48,20 @@
 
 <script>
   import wepy from 'wepy'
+  import mdiconitem from '../components/md-icon-item'
   import SubmitMixin from '../mixins/submit'
-  import { generateChangeMethods } from '../lib/util'
+  import { formatDate, generateChangeMethods } from '../lib/util'
 
-  export default class WeightEditor extends wepy.page {
+  export default class UserinfoEditor extends wepy.page {
     config = {
       navigationBarTitleText: '修改个人信息'
     }
 
     mixins = [SubmitMixin]
+
+    components = {
+      mdiconitem
+    }
 
     data = {
       fontSize: this.$state.fontSize,
@@ -49,7 +73,17 @@
     }
 
     methods = {
-      ...generateChangeMethods('userinfoData', ['birthday', 'height'])
+      ...generateChangeMethods('userinfoData', ['birthday', 'height']),
+      addDisease () {
+        this.userinfoData.diseases.push({
+          name: '疾病' + (this.userinfoData.diseases.length + 1),
+          onset: formatDate(),
+          detail: '点击修改疾病详情'
+        })
+      },
+      removeDisease (e) {
+        this.userinfoData.diseases.splice(e.currentTarget.dataset.index, 1)
+      }
     }
 
     onLoad (data) {
