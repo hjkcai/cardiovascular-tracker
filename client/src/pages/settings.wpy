@@ -36,18 +36,20 @@
 <script>
   import wepy from 'wepy'
   import mdlistitem from '../components/md-list-item'
+  import FontSizeMixin from '../mixins/font-size'
 
   export default class Settings extends wepy.page {
     config = {
       navigationBarTitleText: '小程序选项'
     }
 
+    mixins = [FontSizeMixin]
+
     components = {
       mdlistitem
     }
 
     data = {
-      fontSize: this.$state.fontSize,
       FONT_SIZES: {
         'small': '小',
         'normal': '普通',

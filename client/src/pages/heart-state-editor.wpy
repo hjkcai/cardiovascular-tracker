@@ -6,6 +6,7 @@
 
 <script>
   import wepy from 'wepy'
+  import FontSizeMixin from '../mixins/font-size'
   import heartstateeditor from '../page-components/heart-state-editor'
   import { formatDate, formatTime } from '../lib/util'
 
@@ -13,13 +14,13 @@
     config = {
       navigationBarTitleText: '修改体重记录'
     }
+    mixins = [FontSizeMixin]
 
     components = {
       heartstateeditor
     }
 
     data = {
-      fontSize: this.$state.fontSize,
       heartStateData: null
     }
 

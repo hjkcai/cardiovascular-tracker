@@ -7,6 +7,7 @@
 <script>
   import wepy from 'wepy'
   import weighteditor from '../page-components/weight-editor'
+  import FontSizeMixin from '../mixins/font-size'
   import { formatDate } from '../lib/util'
 
   export default class WeightEditor extends wepy.page {
@@ -14,12 +15,13 @@
       navigationBarTitleText: '修改体重记录'
     }
 
+    mixins = [FontSizeMixin]
+
     components = {
       weighteditor
     }
 
     data = {
-      fontSize: this.$state.fontSize,
       weightData: null
     }
 

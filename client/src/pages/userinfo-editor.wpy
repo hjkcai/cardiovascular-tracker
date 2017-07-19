@@ -46,6 +46,7 @@
 <script>
   import wepy from 'wepy'
   import mdiconitem from '../components/md-icon-item'
+  import FontSizeMixin from '../mixins/font-size'
   import { formatDate, generateChangeMethods } from '../lib/util'
 
   import * as qs from 'qs'
@@ -55,12 +56,13 @@
       navigationBarTitleText: '修改个人信息'
     }
 
+    mixins = [FontSizeMixin]
+
     components = {
       mdiconitem
     }
 
     data = {
-      fontSize: this.$state.fontSize,
       userinfoData: {
         birthday: '',
         height: '',

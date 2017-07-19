@@ -32,6 +32,7 @@
 <script>
   import wepy from 'wepy'
   import weighteditor from '../page-components/weight-editor'
+  import FontSizeMixin from '../mixins/font-size'
   import { formatDate, generateChangeMethods } from '../lib/util'
 
   export default class DiseaseEditor extends wepy.page {
@@ -39,12 +40,13 @@
       navigationBarTitleText: '修改体重记录'
     }
 
+    mixins = [FontSizeMixin]
+
     components = {
       weighteditor
     }
 
     data = {
-      fontSize: this.$state.fontSize,
       diseaseData: {
         name: '',
         onset: formatDate(),

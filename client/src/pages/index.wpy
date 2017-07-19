@@ -36,6 +36,7 @@
   import userinfo from '../page-components/userinfo'
   import { login } from '../lib/state'
   import addrecord from '../page-components/add-record'
+  import FontSizeMixin from '../mixins/font-size'
 
   export default class Index extends wepy.page {
     components = {
@@ -44,11 +45,10 @@
       report
     }
 
-    mixins = [TabMixin]
+    mixins = [TabMixin, FontSizeMixin]
 
     data = {
-      tabs: ['report', 'addrecord', 'userinfo'].map(component => ({ component })),
-      fontSize: this.$state.fontSize
+      tabs: ['report', 'addrecord', 'userinfo'].map(component => ({ component }))
     }
 
     events = {
