@@ -10,16 +10,18 @@
           <text class="age">{{ age }}岁</text>
         </view>
       </view>
-      <view class="buttons">
+    </view>
+    <scroll-view class="md-list" scroll-y>
+      <view class="section buttons">
         <button>
           <image src="../assets/icons/pencil.svg"></image>
+          <text>修改个人信息</text>
         </button>
         <button>
           <image src="../assets/icons/settings.svg"></image>
+          <text>小程序选项</text>
         </button>
       </view>
-    </view>
-    <scroll-view class="md-list" scroll-y>
       <view class="section">
         <text class="title">个人信息</text>
         <mdiconitem>
@@ -128,29 +130,35 @@
       .age {
         margin-left: 16px;
       }
-
-      .buttons {
-        display: flex;
-        margin-left: auto;
-
-        button {
-          @include button-reset;
-          padding: 8px;
-
-          image {
-            width: $icon-size;
-            height: $icon-size;
-          }
-
-          &.button-hover {
-            background-color: $dark-white;
-          }
-        }
-      }
     }
 
     .md-list {
       margin-top: 0;
+    }
+
+    .buttons {
+      padding: 0;
+      display: flex;
+
+      button {
+        @include button-reset;
+        padding: 12px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $primary;
+
+        image {
+          width: $icon-size;
+          height: $icon-size;
+          margin-right: 8px;
+        }
+
+        &.button-hover {
+          background-color: $dark-white;
+        }
+      }
     }
   }
 </style>
