@@ -101,7 +101,6 @@
         await this.$navigateTo('userinfo-editor', url)
         this.$globalEvents.once('userinfo-editor', result => {
           if (result) {
-            result.height = parseInt(result.height)
             this.$state.userinfo = this.userinfo = Object.assign({}, this.userinfo, result)
             this.$apply()
           }

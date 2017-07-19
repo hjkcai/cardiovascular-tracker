@@ -1,0 +1,75 @@
+<template>
+  <view class="editor {{ fontSize }}">
+    <view id="disease-editor" class="canvas-page-wrapper">
+      <form class="md-list" @submit="submit">
+        <view class="section">
+          <text class="title">疾病名称</text>
+          <view class="md-form-item">
+            <image src="../assets/icons/bug.svg"></image>
+            <input type="digit" name="value" value="{{ diseaseData.name }}" placeholder="疾病名称" @input="nameChanged" />
+          </view>
+        </view>
+        <view class="section">
+          <text class="title">初诊日期</text>
+          <view class="md-form-item">
+            <image src="../assets/icons/calendar.svg"></image>
+            <picker mode="date" name="onset" value="{{ diseaseData.onset }}" @change="onsetChanged">
+              <view>{{ diseaseData.onset }}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="section">
+          <text class="title">疾病详情</text>
+          <view class="textarea-wrapper md-list-item">
+            <textarea name="detail" value="{{ diseaseData.detail }}" placeholder="点此添加疾病详情" @input="detailChanged" auto-height></textarea>
+          </view>
+        </view>
+      </form>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import weighteditor from '../page-components/weight-editor'
+  import { formatDate, generateChangeMethods } from '../lib/util'
+
+  export default class DiseaseEditor extends wepy.page {
+    config = {
+      navigationBarTitleText: '修改体重记录'
+    }
+
+    components = {
+      weighteditor
+    }
+
+    data = {
+      fontSize: this.$state.fontSize,
+      diseaseData: {
+        name: '',
+        onset: formatDate(),
+        detail: ''
+      }
+    }
+
+    methods = generateChangeMethods('diseaseData', ['name', 'onset', 'detail'])
+
+    onLoad (data) {
+      data = JSON.parse(decodeURIComponent(data.q))
+      if (data.detail === '点击修改疾病详情') data.detail = ''
+      this.diseaseData = data
+    }
+
+    onUnload () {
+      this.diseaseData.name = this.diseaseData.name.trim()
+      this.diseaseData.detail = this.diseaseData.detail.trim()
+      this.$globalEvents.emit('disease-editor', this.diseaseData)
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+  @import '../assets/styles/font-sizes';
+  @include font-size-defs(editor);
+</style>

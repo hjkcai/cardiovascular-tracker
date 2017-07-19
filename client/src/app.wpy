@@ -13,6 +13,7 @@
       pages: [
         'pages/index',
         'pages/weight-editor',
+        'pages/disease-editor',
         'pages/userinfo-editor',
         'pages/heart-state-editor'
       ],

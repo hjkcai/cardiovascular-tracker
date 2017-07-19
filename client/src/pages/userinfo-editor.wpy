@@ -22,7 +22,7 @@
         <view class="section">
           <text class="title">疾病史</text>
           <repeat for="{{ userinfoData.diseases }}" key="{{ index }}">
-            <mdiconitem>
+            <mdiconitem @tap.user="editDisease">
               <image slot="icon" src="../assets/icons/delete.svg" @tap="removeDisease" data-index="{{ index }}"></image>
               <text slot="caption">{{ item.name }}</text>
               <view slot="left">
@@ -47,6 +47,8 @@
   import wepy from 'wepy'
   import mdiconitem from '../components/md-icon-item'
   import { formatDate, generateChangeMethods } from '../lib/util'
+
+  import * as qs from 'qs'
 
   export default class UserinfoEditor extends wepy.page {
     config = {
@@ -74,6 +76,16 @@
           onset: formatDate(),
           detail: '点击修改疾病详情'
         })
+      },
+      async editDisease (e) {
+        const data = this.userinfoData.diseases[e.currentTarget.dataset.comIndex]
+        const url = './disease-editor?' + qs.stringify({ q: JSON.stringify(data) })
+        const result = await this.$navigateTo('disease-editor', url)
+
+        data.onset = result.onset
+        if (result.name) data.name = result.name
+        if (result.detail) data.detail = result.detail
+        this.$apply()
       },
       removeDisease (e) {
         this.userinfoData.diseases.splice(e.currentTarget.dataset.index, 1)
@@ -104,7 +116,7 @@
       if (data.birthday) data.birthday = new Date(data.birthday)
       else delete data.birthday
 
-      if (!data.height) data.height = parseInt(data.height)
+      if (data.height && /\d+/.test(data.height)) data.height = parseInt(data.height)
       else delete data.height
 
       data.diseases = data.diseases.map(disease => {
@@ -116,7 +128,7 @@
       const result = (await this.$http.post('userinfo', data)).data
       if (result.code) {
         this.$modal('错误', `数据提交失败: ${result.message} (${result.code})`)
-      } else returns = this.userinfoData
+      } else returns = data
 
       // 通知上级页面提交完成
       this.$globalEvents.emit('userinfo-editor', returns)
