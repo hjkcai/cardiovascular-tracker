@@ -125,7 +125,10 @@
         const result = (await this.$http.post('userinfo', data)).data
         if (result.code) {
           this.$modal('错误', `数据提交失败: ${result.message} (${result.code})`)
-        } else updateUserinfo(Object.assign({}, this.userinfo, data))
+        } else {
+          this.userinfo = updateUserinfo(Object.assign({}, this.userinfo, data))
+          this.$apply()
+        }
 
         await this.$loading()
       }
