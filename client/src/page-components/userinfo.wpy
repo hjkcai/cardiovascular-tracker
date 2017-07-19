@@ -17,7 +17,7 @@
           <image src="../assets/icons/pencil.svg"></image>
           <text>修改个人信息</text>
         </button>
-        <button>
+        <button @tap="about">
           <image src="../assets/icons/settings.svg"></image>
           <text>小程序选项</text>
         </button>
@@ -95,6 +95,9 @@
     }
 
     methods = {
+      about () {
+        this.$navigateTo('', './settings')
+      },
       async editUserinfo () {
         const { birthday, height, diseases } = this.userinfo
         const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify({ birthday, height, diseases }) })

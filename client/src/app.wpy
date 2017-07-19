@@ -12,6 +12,7 @@
     config = {
       pages: [
         'pages/index',
+        'pages/settings',
         'pages/weight-editor',
         'pages/disease-editor',
         'pages/userinfo-editor',
