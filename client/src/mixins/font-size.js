@@ -16,4 +16,8 @@ export default class FontSizeMixin extends wepy.mixin {
 
     this.$globalEvents.on('fontSizeChanged', this.fontSizeChangedHandler)
   }
+
+  onUnload () {
+    this.$globalEvents.off('fontSizeChanged', this.fontSizeChangedHandler)
+  }
 }

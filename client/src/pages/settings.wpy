@@ -1,10 +1,10 @@
 <template>
-  <view class="editor {{ fontSize }}">
+  <view id="settings" class="editor {{ fontSize }}">
     <view class="canvas-page-wrapper">
       <view class="md-list">
         <view class="section">
           <text class="title">设置</text>
-          <mdlistitem>
+          <mdlistitem @tap.user="changeFontSize">
             <text slot="caption">字体大小</text>
             <text slot="left">{{ FONT_SIZES[fontSize] }}</text>
           </mdlistitem>
@@ -38,6 +38,8 @@
   import mdlistitem from '../components/md-list-item'
   import FontSizeMixin from '../mixins/font-size'
 
+  const FONT_SIZES = ['small', 'normal', 'large', 'x-large']
+
   export default class Settings extends wepy.page {
     config = {
       navigationBarTitleText: '小程序选项'
@@ -57,6 +59,19 @@
         'x-large': '特大'
       }
     }
+
+    methods = {
+      async changeFontSize () {
+        try {
+          const { tapIndex } = await wepy.showActionSheet({
+            itemList: ['小', '普通', '大', '特大']
+          })
+
+          this.$state.fontSize = FONT_SIZES[tapIndex]
+          this.$globalEvents.emit('fontSizeChanged')
+        } catch (e) {}
+      }
+    }
   }
 </script>
 
@@ -64,4 +79,10 @@
   @import '../assets/styles/variables';
   @import '../assets/styles/font-sizes';
   @include font-size-defs(editor);
+
+  #settings {
+    .md-list {
+      padding: 0;
+    }
+  }
 </style>

@@ -168,7 +168,6 @@
       padding-left: $page-padding-left-right + 4px;
       margin-bottom: 16px;
       color: $gray;
-      font-size: 16px;
     }
 
     view.md-list-item, view.md-icon-item, view.md-form-item {
