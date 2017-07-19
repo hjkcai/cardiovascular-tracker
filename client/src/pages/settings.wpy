@@ -67,6 +67,7 @@
             itemList: ['小', '普通', '大', '特大']
           })
 
+          wx.setStorageSync('font-size', FONT_SIZES[tapIndex])
           this.$state.fontSize = FONT_SIZES[tapIndex]
           this.$globalEvents.emit('fontSizeChanged')
         } catch (e) {}
