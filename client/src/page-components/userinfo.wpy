@@ -95,11 +95,21 @@
 
     methods = {
       async editUserinfo () {
-        const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify(this.userinfo) })
-        const result = await this.$navigateTo('userinfo-editor', url)
-        if (result) {
-          this.$state.userinfo = this.userinfo = Object.assign({}, this.userinfo, result)
-        }
+        const { birthday, height, diseases } = this.userinfo
+        const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify({ birthday, height, diseases }) })
+
+        await this.$navigateTo('userinfo-editor', url)
+        this.$globalEvents.once('userinfo-editor', result => {
+          if (result) {
+            result.height = parseInt(result.height)
+            this.$state.userinfo = this.userinfo = Object.assign({}, this.userinfo, result)
+            this.$apply()
+          }
+
+          this.$loading()
+        })
+
+        await this.$loading('正在加载...')
       }
     }
 

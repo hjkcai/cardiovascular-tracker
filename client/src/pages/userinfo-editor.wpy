@@ -38,9 +38,6 @@
             </view>
           </view>
         </view>
-        <view class="section submit">
-          <button class="md-button" formType="submit">提交</button>
-        </view>
       </form>
     </view>
   </view>
@@ -49,15 +46,12 @@
 <script>
   import wepy from 'wepy'
   import mdiconitem from '../components/md-icon-item'
-  import SubmitMixin from '../mixins/submit'
   import { formatDate, generateChangeMethods } from '../lib/util'
 
   export default class UserinfoEditor extends wepy.page {
     config = {
       navigationBarTitleText: '修改个人信息'
     }
-
-    mixins = [SubmitMixin]
 
     components = {
       mdiconitem
@@ -91,6 +85,7 @@
 
       if (data.firstStart) {
         wx.setNavigationBarTitle({ title: '完善个人信息' })
+        delete data.firstStart
       }
 
       this.userinfoData = data
@@ -98,34 +93,33 @@
 
     onUnload () {
       this.$globalEvents.emit('userinfo-editor')
+      this.submit()
     }
 
     async submit () {
       const data = Object.assign({}, this.userinfoData)
+      let returns = false
 
-      if (!data.birthday) {
-        await this.$modal('提示', '请填写您的生日')
-      } else if (!data.height) {
-        await this.$modal('提示', '请填写您的身高')
-      } else if (!/[0-9.]+/.test(data.height)) {
-        await this.$modal('提示', '体重数值无效，请重新输入')
-      } else {
-        data.birthday = new Date(data.birthday)
-        data.height = parseFloat(data.height)
-        data.diseases = data.diseases.map(disease => {
-          disease.onset = new Date(disease.onset)
-          return disease
-        })
+      // 去除无效字段
+      if (data.birthday) data.birthday = new Date(data.birthday)
+      else delete data.birthday
 
-        const result = (await this.$http.post('userinfo', data)).data
-        if (result.code) {
-          throw new Error(`数据提交失败: ${result.message} (${result.code})`)
-        }
+      if (!data.height) data.height = parseInt(data.height)
+      else delete data.height
 
-        // 返回上级页面
-        setTimeout(() => this.$navigateBack('userinfo-editor', this.userinfoData), 1000)
-        return true
-      }
+      data.diseases = data.diseases.map(disease => {
+        disease.onset = new Date(disease.onset)
+        return disease
+      })
+
+      // 提交数据
+      const result = (await this.$http.post('userinfo', data)).data
+      if (result.code) {
+        this.$modal('错误', `数据提交失败: ${result.message} (${result.code})`)
+      } else returns = this.userinfoData
+
+      // 通知上级页面提交完成
+      this.$globalEvents.emit('userinfo-editor', returns)
     }
   }
 </script>
