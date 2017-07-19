@@ -98,18 +98,29 @@
       async editUserinfo () {
         const { birthday, height, diseases } = this.userinfo
         const url = './userinfo-editor?' + qs.stringify({ q: JSON.stringify({ birthday, height, diseases }) })
-
-        await this.$navigateTo('userinfo-editor', url)
-        this.$globalEvents.once('userinfo-editor', result => {
-          if (result) {
-            this.userinfo = updateUserinfo({}, this.userinfo, result)
-            this.$apply()
-          }
-
-          this.$loading()
-        })
+        const data = await this.$navigateTo('userinfo-editor', url)
 
         await this.$loading('正在加载...')
+
+        // 去除无效字段
+        if (data.birthday) data.birthday = new Date(data.birthday)
+        else delete data.birthday
+
+        if (data.height && /\d+/.test(data.height)) data.height = parseInt(data.height)
+        else delete data.height
+
+        data.diseases = data.diseases.map(disease => {
+          disease.onset = new Date(disease.onset)
+          return disease
+        })
+
+        // 提交数据
+        const result = (await this.$http.post('userinfo', data)).data
+        if (result.code) {
+          this.$modal('错误', `数据提交失败: ${result.message} (${result.code})`)
+        } else updateUserinfo({}, this.userinfo, data)
+
+        await this.$loading()
       }
     }
 

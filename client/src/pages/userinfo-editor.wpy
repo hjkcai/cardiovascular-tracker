@@ -104,34 +104,7 @@
     }
 
     onUnload () {
-      this.$globalEvents.emit('userinfo-editor')
-      this.submit()
-    }
-
-    async submit () {
-      const data = Object.assign({}, this.userinfoData)
-      let returns = false
-
-      // 去除无效字段
-      if (data.birthday) data.birthday = new Date(data.birthday)
-      else delete data.birthday
-
-      if (data.height && /\d+/.test(data.height)) data.height = parseInt(data.height)
-      else delete data.height
-
-      data.diseases = data.diseases.map(disease => {
-        disease.onset = new Date(disease.onset)
-        return disease
-      })
-
-      // 提交数据
-      const result = (await this.$http.post('userinfo', data)).data
-      if (result.code) {
-        this.$modal('错误', `数据提交失败: ${result.message} (${result.code})`)
-      } else returns = data
-
-      // 通知上级页面提交完成
-      this.$globalEvents.emit('userinfo-editor', returns)
+      this.$globalEvents.emit('userinfo-editor', Object.assign({}, this.userinfoData))
     }
   }
 </script>
