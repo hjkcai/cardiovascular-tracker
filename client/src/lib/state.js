@@ -53,23 +53,28 @@ async function _login () {
     setToken('')
     throw new Error(`无法获取用户信息: ${userinfoDetail.message} (${userinfoDetail.code})`)
   } else {
-    state.userinfo = {
+    updateUserinfo({
       ...userinfo.userInfo,
       ...userinfoDetail.data
-    }
-
-    state.userinfo.birthday = formatDate(state.userinfo.birthday)
-    state.userinfo.diseases = state.userinfo.diseases
-      .map(disease => {
-        disease.onset = new Date(disease.onset)
-        return disease
-      })
-      .sort((a, b) => a.onset - b.onset)
-      .map(disease => {
-        disease.onset = formatDate(disease.onset)
-        return disease
-      })
+    })
   }
 
   await $loading()
+}
+
+export function updateUserinfo (userinfo) {
+  userinfo.birthday = formatDate(userinfo.birthday)
+  userinfo.diseases = userinfo.diseases
+    .map(disease => {
+      disease.onset = new Date(disease.onset)
+      return disease
+    })
+    .sort((a, b) => a.onset - b.onset)
+    .map(disease => {
+      disease.onset = formatDate(disease.onset)
+      return disease
+    })
+
+  state.userinfo = userinfo
+  return userinfo
 }

@@ -62,6 +62,7 @@
   import { GENDER } from '../lib/constants'
   import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
+  import { updateUserinfo } from '../lib/state'
 
   import * as qs from 'qs'
 
@@ -101,7 +102,7 @@
         await this.$navigateTo('userinfo-editor', url)
         this.$globalEvents.once('userinfo-editor', result => {
           if (result) {
-            this.$state.userinfo = this.userinfo = Object.assign({}, this.userinfo, result)
+            this.userinfo = updateUserinfo({}, this.userinfo, result)
             this.$apply()
           }
 
