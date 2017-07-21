@@ -1,0 +1,32 @@
+<template>
+  <view class="summary-item">
+    <view class="caption">
+      <slot name="caption"></slot>
+    </view>
+    <view class="content">
+      <slot name="content"></slot>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class SummaryItem extends wepy.component {}
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  .summary-item {
+    text-align: center;
+
+    .caption {
+      margin-bottom: 4px;
+    }
+
+    .number {
+      margin-right: 4px;
+      font-size: 1.5em;
+    }
+  }
+</style>
