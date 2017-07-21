@@ -4,7 +4,7 @@
     <view class="tabs collapsed">
       <view
         wx:for="{{ tabs }}" wx:key="{{ _tab_index }}" wx:for-item="tab" wx:for-index="_tab_index"
-        @tap="switchTab" data-index="{{ _tab_index }}"
+        @tap="switchCategory" data-index="{{ _tab_index }}"
         class="tab {{ activeTab === _tab_index ? 'active' : '' }}"
         hover-class="hover" hover-start-time="20" hover-stay-time="70"
       >{{ tab.name }}</view>
@@ -179,6 +179,15 @@
     }
 
     methods = {
+      switchCategory (e) {
+        const index = e.currentTarget.dataset.index
+        if ((index === 1 || index === 2) && (this.activeTab === 1 || this.activeTab === 2)) {
+          this.activeTab = index
+          this.drawChart()
+        } else {
+          this.switchTab(index)
+        }
+      },
       changeDateRange (e) {
         if (this.dateRange !== e.detail.value) {
           wx.setStorageSync('dateRange', e.detail.value)
@@ -225,7 +234,7 @@
     async fetchData () {
       await this.$loading('正在加载...')
       await this[`fetch${METHODS[this.activeTab]}Data`]()
-      this[`draw${METHODS[this.activeTab]}Chart`]()
+      this.drawChart()
       await this.$loading()
     }
 
@@ -328,6 +337,10 @@
           average: Math.round(heartRateSum / data.length)
         }
       })
+    }
+
+    drawChart () {
+      return this[`draw${METHODS[this.activeTab]}Chart`]()
     }
 
     drawWeightChart () {
