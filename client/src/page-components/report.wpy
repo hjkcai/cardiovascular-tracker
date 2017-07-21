@@ -157,7 +157,7 @@
 
     data = {
       tabs: ['体重', '血压', '心率'].map(name => ({ name, component: './' })),
-      dateRange: 1,
+      dateRange: Number(wx.getStorageSync('dateRange') || 2),
       dateRanges: [
         { name: '今天', length: 0 },
         { name: '三天', length: 2 },
@@ -181,6 +181,7 @@
     methods = {
       changeDateRange (e) {
         if (this.dateRange !== e.detail.value) {
+          wx.setStorageSync('dateRange', e.detail.value)
           this.dateRange = e.detail.value
           this.fetchData()
         }
