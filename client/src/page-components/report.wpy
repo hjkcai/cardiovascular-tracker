@@ -198,7 +198,7 @@
     onLoad () {
       // 初始化各个图表
       this.ctx = wx.createCanvasContext('chart')
-      this.weightChart = new Chart(this.ctx, this._data, d => d.date, d => d.value)
+      this.weightChart = new Chart(this.ctx, this._data, d => trimDate(d.date), d => d.value)
       this.heartRateChart = new Chart(this.ctx, this._data, d => d.date, d => d.heartRate)
       this.systolicChart = new Chart(this.ctx, this._data, d => d.date, d => d.systolic)
       this.diastolicChart = new Chart(this.ctx, this._data, d => d.date, d => d.diastolic)
