@@ -235,7 +235,7 @@
       this.weightChart.setData(this._data)
 
       // 生成体重数据摘要
-      let max = this._data[0].value, min = this._data[0].value, sum = 0
+      let max = -Infinity, min = Infinity, sum = 0
       this._data.forEach((item, index) => {
         max = Math.max(max, item.value)
         min = Math.min(min, item.value)
