@@ -269,10 +269,12 @@
       this.systolicChart.setData(this._data, false)
       this.systolicChart.updateXScale()
       this.systolicChart.updateYScale(bloodPressureDomain)
+      this.systolicChart.updateLinearRegression()
 
       this.diastolicChart.setData(this._data, false)
       this.diastolicChart.updateXScale()
       this.diastolicChart.updateYScale(bloodPressureDomain)
+      this.diastolicChart.updateLinearRegression()
 
       // 生成摘要信息
       this.generateHeartStateSummary()
@@ -325,8 +327,8 @@
     drawWeightChart () {
       this.weightChart.clear()
       this.weightChart.drawAxisBottom(xAxisFormat)
-      this.weightChart.drawDataLine()
       this.weightChart.drawLinearRegression()
+      this.weightChart.drawDataPoints()
       this.weightChart.drawAxisLeft()
       this.weightChart.draw()
     }
@@ -335,18 +337,20 @@
       this.systolicChart.clear()
       this.systolicChart.drawAxisBottom(xAxisFormat)
       this.systolicChart.drawAxisLeft()
-      this.systolicChart.drawDataLine()
+      this.systolicChart.drawLinearRegression()
+      this.systolicChart.drawDataPoints()
       this.systolicChart.draw()
 
-      this.diastolicChart.drawDataLine()
+      this.diastolicChart.drawLinearRegression()
+      this.diastolicChart.drawDataPoints('white', 'black')
       this.diastolicChart.draw()
     }
 
     drawHeartRateChart () {
       this.heartRateChart.clear()
       this.heartRateChart.drawAxisBottom(xAxisFormat)
-      this.heartRateChart.drawDataLine()
       this.heartRateChart.drawLinearRegression()
+      this.heartRateChart.drawDataPoints()
       this.heartRateChart.drawAxisLeft()
       this.heartRateChart.draw()
     }

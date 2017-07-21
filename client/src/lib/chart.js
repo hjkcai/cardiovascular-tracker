@@ -125,6 +125,7 @@ export default class Chart {
 
     this.ctx.setFontSize(fontSize)
     this.ctx.setTextAlign('right')
+    this.ctx.setTextBaseline('middle')
 
     // 绘制坐标轴线
     drawLine(this.ctx, this.rect.left, this.rect.bottom, this.rect.left, this.rect.top)
@@ -136,7 +137,7 @@ export default class Chart {
       const y = this.yScale(yTickValue)
 
       drawLine(this.ctx, x, y, x - TICK_SIZE, y)
-      this.ctx.fillText(tickFormatter(yTickValue), x - LEFT_TICKS_MARGIN, y + fontSize / 2 - 1)
+      this.ctx.fillText(tickFormatter(yTickValue), x - LEFT_TICKS_MARGIN, y)
     })
   }
 
@@ -147,6 +148,7 @@ export default class Chart {
 
     this.ctx.setFontSize(fontSize)
     this.ctx.setTextAlign('center')
+    this.ctx.setTextBaseline('top')
 
     // 绘制坐标轴线
     drawLine(this.ctx, this.rect.left, this.rect.bottom, this.rect.right, this.rect.bottom)
@@ -158,7 +160,7 @@ export default class Chart {
       const y = this.rect.bottom
 
       drawLine(this.ctx, x, y, x, y + TICK_SIZE)
-      this.ctx.fillText(tickFormatter(xTickValue), x, y + fontSize + BOTTOM_TICKS_MARGIN)
+      this.ctx.fillText(tickFormatter(xTickValue), x, y + BOTTOM_TICKS_MARGIN)
     })
   }
 
@@ -167,6 +169,24 @@ export default class Chart {
     const line = d3.line().curve(d3.curveCatmullRom).x(d => this.xScale(this.xAccessor(d))).y(d => this.yScale(this.yAccessor(d)))
     line.context(this.ctx)(this.data)
     this.ctx.stroke()
+  }
+
+  drawDataPoints (fill = 'black', stroke = 'white') {
+    this.draw(() => {
+      this.ctx.setFillStyle(fill)
+      this.ctx.setStrokeStyle(stroke)
+      this.ctx.setLineWidth(2)
+
+      this.data.forEach(d => {
+        const x = Math.floor(this.xScale(this.xAccessor(d))) + 0.5
+        const y = Math.floor(this.yScale(this.yAccessor(d))) + 0.5
+
+        this.ctx.beginPath()
+        this.ctx.arc(x, y, 3, 0, 2 * Math.PI)
+        this.ctx.stroke()
+        this.ctx.fill()
+      })
+    })
   }
 
   /** 绘制线性回归线 */
