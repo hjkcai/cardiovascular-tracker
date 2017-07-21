@@ -17,6 +17,9 @@ const BOTTOM_TICKS_MARGIN = 6
 const LEFT_AXIS_BOTTOM_PADDING = 10
 const IDENTITY = a => a
 
+// 用于决定绘制点时点的大小
+const pointSizeScale = d3.scaleLinear().domain([0, 100]).range([3, 2]).clamp(true)
+
 // 用于决定坐标轴上有多少个 tick 要显示出来
 const canvasSizeScale = d3.scaleLinear().domain([220, 325]).range([0, 2]).clamp(true)
 const fontSizeScale = d3.scaleLinear().domain([14, 20]).range([0, 1]).clamp(true)
@@ -183,7 +186,9 @@ export default class Chart {
     this.ctx.stroke()
   }
 
-  drawDataPoints (fill = 'black', stroke = 'white') {
+  drawDataPoints (fill = 'black', stroke = 'rgba(255,255,255,0)') {
+    const pointSize = pointSizeScale(this.data.length)
+
     this.draw(() => {
       this.ctx.setFillStyle(fill)
       this.ctx.setStrokeStyle(stroke)
@@ -194,7 +199,7 @@ export default class Chart {
         const y = Math.floor(this.yScale(this.yAccessor(d))) + 0.5
 
         this.ctx.beginPath()
-        this.ctx.arc(x, y, 3, 0, 2 * Math.PI)
+        this.ctx.arc(x, y, pointSize, 0, 2 * Math.PI)
         this.ctx.stroke()
         this.ctx.fill()
       })
