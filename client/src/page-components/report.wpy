@@ -27,20 +27,29 @@
       <scroll-view wx:if="{{ _data.length > 0 && activeTab === 0 }}" class="md-list" scroll-y>
         <view class="section">
           <text class="title">摘要</text>
-          <mdlistitem>
-            <text slot="caption">最重体重</text>
-            <text slot="left">{{ summary.weight.max.value }}kg</text>
-            <text slot="right">{{ summary.weight.max.dateValue }}</text>
-          </mdlistitem>
-          <mdlistitem>
-            <text slot="caption">最轻体重</text>
-            <text slot="left">{{ summary.weight.min.value }}kg</text>
-            <text slot="right">{{ summary.weight.min.dateValue }}</text>
-          </mdlistitem>
-          <mdlistitem>
-            <text slot="caption">平均体重</text>
-            <text slot="left">{{ summary.weight.average }}kg</text>
-          </mdlistitem>
+          <view class="summary-items">
+            <summaryitem>
+              <text slot="caption">最重</text>
+              <text slot="content">
+                <text class="number">{{ summary.weight.max }}</text>
+                <text>kg</text>
+              </text>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">最轻</text>
+              <text slot="content">
+                <text class="number">{{ summary.weight.min }}</text>
+                <text>kg</text>
+              </text>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">平均</text>
+              <text slot="content">
+                <text class="number">{{ summary.weight.average }}</text>
+                <text>kg</text>
+              </text>
+            </summaryitem>
+          </view>
         </view>
         <view class="section">
           <text class="title">详细信息</text>
@@ -54,54 +63,56 @@
         </view>
       </scroll-view>
 
-      <!-- 血压 -->
+      <!-- 血压心率 -->
       <scroll-view wx:if="{{ _data.length > 0 && (activeTab === 1 || activeTab === 2) }}" class="md-list" scroll-y>
         <view class="section" wx:if="{{ activeTab === 1 }}">
           <text class="title">摘要</text>
-          <mdiconitem>
-            <image slot="icon" src="{{ summary.systolic.max.warning }}"></image>
-            <text slot="caption">最高收缩压</text>
-            <text slot="left">{{ summary.systolic.max.systolic }}mmHg</text>
-            <text slot="right">{{ summary.systolic.max.dateValue }}</text>
-          </mdiconitem>
-          <mdiconitem>
-            <image slot="icon" src="{{ summary.systolic.average.warning }}"></image>
-            <text slot="caption">平均收缩压</text>
-            <text slot="left">{{ summary.systolic.average.systolic }}mmHg</text>
-          </mdiconitem>
-          <mdiconitem>
-            <image slot="icon" src="{{ summary.diastolic.max.warning }}"></image>
-            <text slot="caption">最高舒张压</text>
-            <text slot="left">{{ summary.diastolic.max.diastolic }}mmHg</text>
-            <text slot="right">{{ summary.diastolic.max.dateValue }}</text>
-          </mdiconitem>
-          <mdiconitem>
-            <image slot="icon" src="{{ summary.diastolic.average.warning }}"></image>
-            <text slot="caption">平均舒张压</text>
-            <text slot="left">{{ summary.diastolic.average.diastolic }}mmHg</text>
-          </mdiconitem>
-          <mdiconitem>
-            <text slot="caption">达标率</text>
-            <text slot="left">{{ summary.bloodPressure.rate }}%</text>
-            <text slot="right">{{ summary.bloodPressure.regular }} / {{ _data.length }}</text>
-          </mdiconitem>
+          <view class="summary-items">
+            <summaryitem>
+              <text slot="caption">最高</text>
+              <view slot="content">
+                <text class="number">{{ summary.systolic.max }}</text>
+                <text class="number">/</text>
+                <text class="number">{{ summary.diastolic.max }}</text>
+                <view>mmHg</view>
+              </view>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">平均</text>
+              <view slot="content">
+                <text class="number">{{ summary.systolic.average }}</text>
+                <text class="number">/</text>
+                <text class="number">{{ summary.diastolic.average }}</text>
+                <view>mmHg</view>
+              </view>
+            </summaryitem>
+          </view>
         </view>
         <view class="section" wx:if="{{ activeTab === 2 }}">
           <text class="title">摘要</text>
-          <mdiconitem>
-            <text slot="caption">最高心率</text>
-            <text slot="left">{{ summary.heartRate.max.heartRate }}bpm</text>
-            <text slot="right">{{ summary.heartRate.max.dateValue }}</text>
-          </mdiconitem>
-          <mdiconitem>
-            <text slot="caption">最低心率</text>
-            <text slot="left">{{ summary.heartRate.min.heartRate }}bpm</text>
-            <text slot="right">{{ summary.heartRate.min.dateValue }}</text>
-          </mdiconitem>
-          <mdiconitem>
-            <text slot="caption">平均心率</text>
-            <text slot="left">{{ summary.heartRate.average }}bpm</text>
-          </mdiconitem>
+          <view class="summary-items">
+            <summaryitem>
+              <text slot="caption">最高</text>
+              <text slot="content">
+                <text class="number">{{ summary.heartRate.max }}</text>
+                <text>bpm</text>
+              </text>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">最低</text>
+              <text slot="content">
+                <text class="number">{{ summary.heartRate.min }}</text>
+                <text>bpm</text>
+              </text>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">平均</text>
+              <text slot="content">
+                <text class="number">{{ summary.heartRate.average }}</text>
+                <text>bpm</text>
+              </text>
+            </summaryitem>
+          </view>
         </view>
         <view class="section">
           <text class="title">详细信息</text>
@@ -124,6 +135,7 @@
   import TabMixin from '../mixins/tab'
   import mdiconitem from '../components/md-icon-item'
   import mdlistitem from '../components/md-list-item'
+  import summaryitem from '../components/summary-item'
   import { timeFormat } from 'd3-time-format'
   import { trimDate, formatDate, formatTime } from '../lib/util'
 
@@ -137,7 +149,8 @@
   export default class Report extends wepy.component {
     components = {
       mdiconitem,
-      mdlistitem
+      mdlistitem,
+      summaryitem
     }
 
     mixins = [TabMixin]
@@ -155,28 +168,10 @@
       canvasHeight: 0,
       _data: [],
       summary: {
-        weight: {
-          min: { dateValue: '', value: 0 },
-          max: { dateValue: '', value: 0 },
-          average: 0
-        },
-        systolic: {
-          max: { systolic: 0, dateValue: '', warning: '' },
-          average: { systolic: 0, warning: '' }
-        },
-        diastolic: {
-          max: { diastolic: 0, dateValue: '' },
-          average: { diastolic: 0, warning: '' }
-        },
-        bloodPressure: {
-          regular: 0,
-          rate: 0
-        },
-        heartRate: {
-          max: { heartRate: 0, dateValue: '' },
-          min: { heartRate: 0, dateValue: '' },
-          average: 0
-        }
+        weight: { min: 0, max: 0, average: 0 },
+        systolic: { max: 0, average: 0 },
+        diastolic: { max: 0, average: 0 },
+        heartRate: { max: 0, min: 0, average: 0 }
       }
     }
 
@@ -234,13 +229,10 @@
       this.weightChart.setData(this._data)
 
       // 生成体重数据摘要
-      let max = 0     // 数组下标
-      let min = 0     // 数组下标
-      let sum = 0     // 数值
-
+      let max = this._data[0].value, min = this._data[0].value, sum = 0
       this._data.forEach((item, index) => {
-        if (item.value > this._data[max].value) max = index
-        if (item.value < this._data[min].value) min = index
+        max = Math.max(max, item.value)
+        min = Math.min(min, item.value)
         sum += item.value
 
         item.dateValue = formatDate(item.date)
@@ -251,8 +243,8 @@
       })
 
       this.summary.weight = {
-        max: this._data[max],
-        min: this._data[min],
+        max,
+        min,
         average: Math.round(sum / this._data.length * 100) / 100
       }
 
@@ -289,17 +281,16 @@
     }
 
     generateHeartStateSummary () {
-      let systolicMax = 0, systolicSum = 0
-      let diastolicMax = 0, diastolicSum = 0
-      let regularBloodPressure = 0
-      let heartRateMax = 0, heartRateMin = 0, heartRateSum = 0
+      let systolicMax = -Infinity, systolicSum = 0
+      let diastolicMax = -Infinity, diastolicSum = 0
+      let heartRateMax = -Infinity, heartRateMin = Infinity, heartRateSum = 0
 
       const data = this._data
       data.forEach((item, index) => {
-        if (item.systolic > data[systolicMax].systolic) systolicMax = index
-        if (item.diastolic > data[diastolicMax].diastolic) diastolicMax = index
-        if (item.heartRate > data[heartRateMax].heartRate) heartRateMax = index
-        if (item.heartRate < data[heartRateMin].heartRate) heartRateMin = index
+        systolicMax = Math.max(systolicMax, item.systolic)
+        diastolicMax = Math.max(diastolicMax, item.diastolic)
+        heartRateMax = Math.max(heartRateMax, item.heartRate)
+        heartRateMin = Math.min(heartRateMin, item.heartRate)
 
         systolicSum += item.systolic
         diastolicSum += item.diastolic
@@ -308,8 +299,6 @@
         item.dateValue = formatDate(item.date) + ' ' + formatTime(item.date)
         if (item.systolic > 140 || item.diastolic > 90) {
           item.warning = WARNING_ICON
-        } else {
-          regularBloodPressure += 1
         }
       })
 
@@ -318,26 +307,16 @@
 
       Object.assign(this.summary, {
         systolic: {
-          max: data[systolicMax],
-          average: {
-            systolic: systolicAverage,
-            warning: systolicAverage > 140 ? WARNING_ICON : ''
-          }
+          max: systolicMax,
+          average: systolicAverage
         },
         diastolic: {
-          max: data[diastolicMax],
-          average: {
-            diastolic: diastolicAverage,
-            warning: diastolicAverage > 90 ? WARNING_ICON : ''
-          }
-        },
-        bloodPressure: {
-          regular: regularBloodPressure,
-          rate: Math.round(regularBloodPressure / data.length * 10000) / 100
+          max: diastolicMax,
+          average: diastolicAverage
         },
         heartRate: {
-          max: data[heartRateMax],
-          min: data[heartRateMin],
+          max: heartRateMax,
+          min: heartRateMin,
           average: Math.round(heartRateSum / data.length)
         }
       })
@@ -380,6 +359,15 @@
   #report {
     .tabs {
       padding-right: 8px;
+    }
+
+    .summary-items {
+      display: flex;
+      padding: 0;
+
+      .summary-item {
+        flex: 1;
+      }
     }
 
     .date-range {
