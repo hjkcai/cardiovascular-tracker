@@ -153,8 +153,20 @@ export default class Chart {
     // 绘制坐标轴线
     drawLine(this.ctx, this.rect.left, this.rect.bottom, this.rect.right, this.rect.bottom)
 
+    // 保证刻度数不超过天数
+    let xTicks = this.xScale.ticks(xTicksCount)
+    let dayStart = +this.xScale.domain()[0]
+    let dayEnd = +this.xScale.domain()[1]
+    let days = Math.floor((dayEnd - dayStart) / 24 / 60 / 60 / 1000)
+
+    if (days < xTicks.length) {
+      xTicks = []
+      for (let date = dayStart; date <= dayEnd; date += 24 * 60 * 60 * 1000) {
+        xTicks.push(date)
+      }
+    }
+
     // 绘制刻度
-    const xTicks = this.xScale.ticks(xTicksCount)
     xTicks.forEach(xTickValue => {
       const x = this.xScale(xTickValue)
       const y = this.rect.bottom
