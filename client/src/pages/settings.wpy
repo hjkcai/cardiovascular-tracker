@@ -25,7 +25,7 @@
           </mdlistitem>
           <mdlistitem>
             <text slot="caption">反馈</text>
-            <text slot="left">发邮件到 huajingkun1214@gmail.com，或在 github 上开 issue</text>
+            <text slot="left">发邮件到 xcxheart@qq.com，或在 github 上开 issue</text>
           </mdlistitem>
         </view>
       </view>
