@@ -159,9 +159,12 @@
       tabs: ['体重', '血压', '心率'].map(name => ({ name, component: './' })),
       dateRange: 1,
       dateRanges: [
-        { name: '一周', length: 7 },
+        { name: '今天', length: 0 },
+        { name: '三天', length: 2 },
+        { name: '一周', length: 6 },
         { name: '两周', length: 14 },
         { name: '一个月', length: 30 },
+        { name: '两个月', length: 60 },
         { name: '三个月', length: 90 }
       ],
       canvasWidth: 0,
