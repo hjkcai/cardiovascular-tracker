@@ -15,7 +15,7 @@
         </view>
         <view class="md-form-item">
           <image src="../assets/icons/heart-pulse.svg"></image>
-          <input type="number" name="heartRate" value="{{ heartStateData.heartRate }}" placeholder="心率" @input="heartRateChanged" />
+          <input type="number" name="heartRate" value="{{ heartStateData.heartRate }}" placeholder="脉搏" @input="heartRateChanged" />
           <text>bpm</text>
         </view>
         <view class="md-form-item date-time-picker">
@@ -77,7 +77,7 @@
         this.heartStateData = { systolic, diastolic, heartRate, date, time, note }
       },
       async removeRecord () {
-        if (await this.$modal('提示', '你确定要删除这条血压心率记录吗？', true)) {
+        if (await this.$modal('提示', '你确定要删除这条血压脉搏记录吗？', true)) {
           await this.$loading('正在处理...')
           const result = (await this.$http.delete('heart-state/' + this._id)).data
           await this.$loading()
@@ -99,7 +99,7 @@
       } else if (!/[0-9]+/.test(data.diastolic)) {
         await this.$modal('提示', '舒张压数值无效，请重新输入')
       } else if (!/[0-9]+/.test(data.heartRate)) {
-        await this.$modal('提示', '心率数值无效，请重新输入')
+        await this.$modal('提示', '脉搏数值无效，请重新输入')
       } else {
         data.systolic = parseInt(data.systolic)
         data.diastolic = parseInt(data.diastolic)

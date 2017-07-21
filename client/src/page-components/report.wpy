@@ -63,7 +63,7 @@
         </view>
       </scroll-view>
 
-      <!-- 血压心率 -->
+      <!-- 血压脉搏 -->
       <scroll-view wx:if="{{ _data.length > 0 && (activeTab === 1 || activeTab === 2) }}" class="md-list" scroll-y>
         <view class="section" wx:if="{{ activeTab === 1 }}">
           <text class="title">摘要</text>
@@ -156,7 +156,7 @@
     mixins = [TabMixin]
 
     data = {
-      tabs: ['体重', '血压', '心率'].map(name => ({ name, component: './' })),
+      tabs: ['体重', '血压', '脉搏'].map(name => ({ name, component: './' })),
       dateRange: Number(wx.getStorageSync('dateRange') || 2),
       dateRanges: [
         { name: '今天', length: 0 },

@@ -32,7 +32,7 @@
           component: 'weighteditor'
         },
         {
-          name: '血压心率',
+          name: '血压脉搏',
           component: 'heartstateeditor'
         }
       ]
