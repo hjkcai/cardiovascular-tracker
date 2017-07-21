@@ -328,6 +328,7 @@
       this.weightChart.clear()
       this.weightChart.drawAxisBottom(xAxisFormat)
       this.weightChart.drawLinearRegression()
+      this.weightChart.drawDataLine()
       this.weightChart.drawDataPoints()
       this.weightChart.drawAxisLeft()
       this.weightChart.draw()
@@ -338,10 +339,12 @@
       this.systolicChart.drawAxisBottom(xAxisFormat)
       this.systolicChart.drawAxisLeft()
       this.systolicChart.drawLinearRegression()
+      this.systolicChart.drawDataLine()
       this.systolicChart.drawDataPoints()
       this.systolicChart.draw()
 
       this.diastolicChart.drawLinearRegression()
+      this.diastolicChart.drawDataLine()
       this.diastolicChart.drawDataPoints('white', 'black')
       this.diastolicChart.draw()
     }
@@ -350,6 +353,7 @@
       this.heartRateChart.clear()
       this.heartRateChart.drawAxisBottom(xAxisFormat)
       this.heartRateChart.drawLinearRegression()
+      this.heartRateChart.drawDataLine()
       this.heartRateChart.drawDataPoints()
       this.heartRateChart.drawAxisLeft()
       this.heartRateChart.draw()
