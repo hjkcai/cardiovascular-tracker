@@ -7,7 +7,9 @@
           <image src="../assets/icons/heart.svg"></image>
           <input type="number" name="systolic" value="{{ heartStateData.systolic }}" placeholder="收缩压" @input="systolicChanged" />
           <text>mmHg</text>
-          <text>/</text>
+        </view>
+        <view class="md-form-item">
+          <image></image>
           <input type="number" name="diastolic" value="{{ heartStateData.diastolic }}" placeholder="舒张压" @input="diastolicChanged" />
           <text>mmHg</text>
         </view>
