@@ -6,7 +6,7 @@
           <text class="title">疾病名称</text>
           <view class="md-form-item">
             <image src="../assets/icons/bug.svg"></image>
-            <input type="digit" name="value" value="{{ diseaseData.name }}" placeholder="疾病名称" @input="nameChanged" />
+            <input type="text" name="value" value="{{ diseaseData.name }}" placeholder="疾病名称" @input="nameChanged" />
           </view>
         </view>
         <view class="section">
