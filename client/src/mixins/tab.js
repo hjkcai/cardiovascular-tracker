@@ -23,9 +23,9 @@ export default class TabMixin extends wepy.mixin {
     }
   }
 
-  switchTab (e) {
+  switchTab (e, forceRefresh = false) {
     const newActiveTab = Number((e && typeof e === 'object') ? e.currentTarget.dataset.index : e)
-    if (newActiveTab !== this.activeTab) {
+    if (forceRefresh || newActiveTab !== this.activeTab) {
       // 有些时候数据没有应用更改, 所以手动 $apply
       this.activeTab = newActiveTab
       this.$apply()

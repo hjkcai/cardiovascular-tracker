@@ -54,7 +54,7 @@
     events = {
       switchToReport (reportIndex) {
         this.activeTab = 0
-        this.$invoke('report', 'switchTab', reportIndex)
+        this.$invoke('report', 'switchTab', reportIndex, true)
       }
     }
 
