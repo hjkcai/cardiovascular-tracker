@@ -29,6 +29,22 @@
           <text class="title">摘要</text>
           <view class="summary-items">
             <summaryitem>
+              <text slot="caption">今日</text>
+              <text slot="content">
+                <text class="number">{{ summary.weight.today }}</text>
+                <text>kg</text>
+              </text>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">平均</text>
+              <text slot="content">
+                <text class="number">{{ summary.weight.average }}</text>
+                <text>kg</text>
+              </text>
+            </summaryitem>
+          </view>
+          <view class="summary-items">
+            <summaryitem>
               <text slot="caption">最重</text>
               <text slot="content">
                 <text class="number">{{ summary.weight.max }}</text>
@@ -39,13 +55,6 @@
               <text slot="caption">最轻</text>
               <text slot="content">
                 <text class="number">{{ summary.weight.min }}</text>
-                <text>kg</text>
-              </text>
-            </summaryitem>
-            <summaryitem>
-              <text slot="caption">平均</text>
-              <text slot="content">
-                <text class="number">{{ summary.weight.average }}</text>
                 <text>kg</text>
               </text>
             </summaryitem>
@@ -69,11 +78,11 @@
           <text class="title">摘要</text>
           <view class="summary-items">
             <summaryitem>
-              <text slot="caption">最高</text>
+              <text slot="caption">今日平均</text>
               <view slot="content">
-                <text class="number">{{ summary.systolic.max }}</text>
+                <text class="number">{{ summary.systolic.today }}</text>
                 <text class="number">/</text>
-                <text class="number">{{ summary.diastolic.max }}</text>
+                <text class="number">{{ summary.diastolic.today }}</text>
                 <view>mmHg</view>
               </view>
             </summaryitem>
@@ -87,9 +96,45 @@
               </view>
             </summaryitem>
           </view>
+          <view class="summary-items">
+            <summaryitem>
+              <text slot="caption">最高</text>
+              <view slot="content">
+                <text class="number">{{ summary.systolic.max }}</text>
+                <text class="number">/</text>
+                <text class="number">{{ summary.diastolic.max }}</text>
+                <view>mmHg</view>
+              </view>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">最低</text>
+              <view slot="content">
+                <text class="number">{{ summary.systolic.min }}</text>
+                <text class="number">/</text>
+                <text class="number">{{ summary.diastolic.min }}</text>
+                <view>mmHg</view>
+              </view>
+            </summaryitem>
+          </view>
         </view>
         <view class="section" wx:if="{{ activeTab === 2 }}">
           <text class="title">摘要</text>
+          <view class="summary-items">
+            <summaryitem>
+              <text slot="caption">今日平均</text>
+              <text slot="content">
+                <text class="number">{{ summary.heartRate.today }}</text>
+                <text>bpm</text>
+              </text>
+            </summaryitem>
+            <summaryitem>
+              <text slot="caption">平均</text>
+              <text slot="content">
+                <text class="number">{{ summary.heartRate.average }}</text>
+                <text>bpm</text>
+              </text>
+            </summaryitem>
+          </view>
           <view class="summary-items">
             <summaryitem>
               <text slot="caption">最高</text>
@@ -102,13 +147,6 @@
               <text slot="caption">最低</text>
               <text slot="content">
                 <text class="number">{{ summary.heartRate.min }}</text>
-                <text>bpm</text>
-              </text>
-            </summaryitem>
-            <summaryitem>
-              <text slot="caption">平均</text>
-              <text slot="content">
-                <text class="number">{{ summary.heartRate.average }}</text>
                 <text>bpm</text>
               </text>
             </summaryitem>
@@ -146,6 +184,13 @@
   const xAxisFormat = timeFormat('%m/%d')
   const WARNING_ICON = '../assets/icons/warning.svg'
 
+  const summaryTemplate = () => ({
+    today: '未知',
+    max: -Infinity,
+    min: Infinity,
+    average: 0
+  })
+
   export default class Report extends wepy.component {
     components = {
       mdiconitem,
@@ -171,10 +216,10 @@
       canvasHeight: 0,
       _data: [],
       summary: {
-        weight: { min: 0, max: 0, average: 0 },
-        systolic: { max: 0, average: 0 },
-        diastolic: { max: 0, average: 0 },
-        heartRate: { max: 0, min: 0, average: 0 }
+        weight: summaryTemplate(),
+        systolic: summaryTemplate(),
+        diastolic: summaryTemplate(),
+        heartRate: summaryTemplate()
       }
     }
 
@@ -244,11 +289,11 @@
       this.weightChart.setData(this._data)
 
       // 生成体重数据摘要
-      let max = -Infinity, min = Infinity, sum = 0
+      const summary = summaryTemplate()
       this._data.forEach((item, index) => {
-        max = Math.max(max, item.value)
-        min = Math.min(min, item.value)
-        sum += item.value
+        summary.max = Math.max(summary.max, item.value)
+        summary.min = Math.min(summary.min, item.value)
+        summary.average += item.value
 
         item.dateValue = formatDate(item.date)
         if (this._data[index + 1]) {
@@ -257,12 +302,12 @@
         }
       })
 
-      this.summary.weight = {
-        max,
-        min,
-        average: Math.round(sum / this._data.length * 100) / 100
+      if (trimDate(this._data[0].date) === trimDate()) {
+        summary.today = this._data[0].value
       }
 
+      summary.average = Math.round(summary.average / this._data.length * 100) / 100
+      this.summary.weight = summary
       this.$apply()
     }
 
@@ -298,20 +343,33 @@
     }
 
     generateHeartStateSummary () {
-      let systolicMax = -Infinity, systolicSum = 0
-      let diastolicMax = -Infinity, diastolicSum = 0
-      let heartRateMax = -Infinity, heartRateMin = Infinity, heartRateSum = 0
+      const today = trimDate()
+      const summary = {
+        systolic: summaryTemplate(),
+        diastolic: summaryTemplate(),
+        heartRate: summaryTemplate()
+      }
 
-      const data = this._data
-      data.forEach((item, index) => {
-        systolicMax = Math.max(systolicMax, item.systolic)
-        diastolicMax = Math.max(diastolicMax, item.diastolic)
-        heartRateMax = Math.max(heartRateMax, item.heartRate)
-        heartRateMin = Math.min(heartRateMin, item.heartRate)
+      let todays = 0
+      this._data.forEach(item => {
+        summary.systolic.max = Math.max(summary.systolic.max, item.systolic)
+        summary.diastolic.max = Math.max(summary.diastolic.max, item.diastolic)
+        summary.heartRate.max = Math.max(summary.heartRate.max, item.heartRate)
 
-        systolicSum += item.systolic
-        diastolicSum += item.diastolic
-        heartRateSum += item.heartRate
+        summary.systolic.min = Math.min(summary.systolic.min, item.systolic)
+        summary.diastolic.min = Math.min(summary.diastolic.min, item.diastolic)
+        summary.heartRate.min = Math.min(summary.heartRate.min, item.heartRate)
+
+        summary.systolic.average += item.systolic
+        summary.diastolic.average += item.diastolic
+        summary.heartRate.average += item.heartRate
+
+        if (trimDate(item.date) === today) {
+          summary.systolic.today += item.systolic
+          summary.diastolic.today += item.diastolic
+          summary.heartRate.today += item.heartRate
+          todays += 1
+        }
 
         item.dateValue = formatDate(item.date) + ' ' + formatTime(item.date)
         if (item.systolic > 140 || item.diastolic > 90) {
@@ -319,24 +377,17 @@
         }
       })
 
-      const systolicAverage = Math.round(systolicSum / data.length)
-      const diastolicAverage = Math.round(diastolicSum / data.length)
+      if (todays > 0) {
+        summary.systolic.today = Math.round(summary.systolic.today / todays)
+        summary.diastolic.today = Math.round(summary.diastolic.today / todays)
+        summary.heartRate.today = Math.round(summary.heartRate.today / todays)
+      }
 
-      Object.assign(this.summary, {
-        systolic: {
-          max: systolicMax,
-          average: systolicAverage
-        },
-        diastolic: {
-          max: diastolicMax,
-          average: diastolicAverage
-        },
-        heartRate: {
-          max: heartRateMax,
-          min: heartRateMin,
-          average: Math.round(heartRateSum / data.length)
-        }
-      })
+      summary.systolic.average = Math.round(summary.systolic.average / this._data.length)
+      summary.diastolic.average = Math.round(summary.diastolic.average / this._data.length)
+      summary.heartRate.average = Math.round(summary.heartRate.average / this._data.length)
+
+      Object.assign(this.summary, summary)
     }
 
     drawChart () {
@@ -391,6 +442,10 @@
     .summary-items {
       display: flex;
       padding: 0;
+
+      &:last-child {
+        margin-top: 16px;
+      }
 
       .summary-item {
         flex: 1;
