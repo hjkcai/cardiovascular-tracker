@@ -128,7 +128,6 @@ export default class Chart {
 
     this.ctx.setFontSize(fontSize)
     this.ctx.setTextAlign('right')
-    this.ctx.setTextBaseline('middle')
 
     // 绘制坐标轴线
     drawLine(this.ctx, this.rect.left, this.rect.bottom, this.rect.left, this.rect.top)
@@ -140,7 +139,7 @@ export default class Chart {
       const y = this.yScale(yTickValue)
 
       drawLine(this.ctx, x, y, x - TICK_SIZE, y)
-      this.ctx.fillText(tickFormatter(yTickValue), x - LEFT_TICKS_MARGIN, y)
+      this.ctx.fillText(tickFormatter(yTickValue), x - LEFT_TICKS_MARGIN, y + fontSize / 2 - 1)
     })
   }
 
@@ -151,7 +150,6 @@ export default class Chart {
 
     this.ctx.setFontSize(fontSize)
     this.ctx.setTextAlign('center')
-    this.ctx.setTextBaseline('top')
 
     // 绘制坐标轴线
     drawLine(this.ctx, this.rect.left, this.rect.bottom, this.rect.right, this.rect.bottom)
@@ -175,7 +173,7 @@ export default class Chart {
       const y = this.rect.bottom
 
       drawLine(this.ctx, x, y, x, y + TICK_SIZE)
-      this.ctx.fillText(tickFormatter(xTickValue), x, y + BOTTOM_TICKS_MARGIN)
+      this.ctx.fillText(tickFormatter(xTickValue), x, y + fontSize + BOTTOM_TICKS_MARGIN)
     })
   }
 
