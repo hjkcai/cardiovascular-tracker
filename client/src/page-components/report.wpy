@@ -300,7 +300,7 @@
         }
       })
 
-      if (trimDate(this._data[0].date) === trimDate()) {
+      if (+trimDate(this._data[0].date) === +trimDate()) {
         summary.today = this._data[0].value
       }
 
@@ -341,7 +341,7 @@
     }
 
     generateHeartStateSummary () {
-      const today = trimDate()
+      const today = +trimDate()
       const summary = {
         systolic: summaryTemplate(),
         diastolic: summaryTemplate(),
@@ -362,7 +362,7 @@
         summary.diastolic.average += item.diastolic
         summary.heartRate.average += item.heartRate
 
-        if (trimDate(item.date) === today) {
+        if (+trimDate(item.date) === today) {
           summary.systolic.today += item.systolic
           summary.diastolic.today += item.diastolic
           summary.heartRate.today += item.heartRate
