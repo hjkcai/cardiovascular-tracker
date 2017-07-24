@@ -9,25 +9,6 @@
             <text slot="left">{{ FONT_SIZES[fontSize] }}</text>
           </mdlistitem>
         </view>
-        <view class="section">
-          <text class="title">关于</text>
-          <mdlistitem>
-            <text slot="caption">关于</text>
-            <text slot="left">本小程序是一个用于记录病人每天心血管状态的一个小工具，希望能够帮助心血管疾病病人早日恢复健康</text>
-          </mdlistitem>
-          <mdlistitem>
-            <text slot="caption">项目主页</text>
-            <text slot="left">https://github.com/hjkcai/cardiovascular-tracker</text>
-          </mdlistitem>
-          <mdlistitem>
-            <text slot="caption">开源协议</text>
-            <text slot="left">本小程序基于 MIT 协议开放全部源代码，在项目主页中可查看更多信息</text>
-          </mdlistitem>
-          <mdlistitem>
-            <text slot="caption">反馈</text>
-            <text slot="left">发邮件到 xcxheart@qq.com，或在 github 上开 issue</text>
-          </mdlistitem>
-        </view>
       </view>
     </view>
   </view>
