@@ -204,8 +204,6 @@
       tabs: ['体重', '血压', '脉搏'].map(name => ({ name, component: './' })),
       dateRange: Number(wx.getStorageSync('dateRange') || 2),
       dateRanges: [
-        { name: '今天', length: 0 },
-        { name: '三天', length: 2 },
         { name: '一周', length: 6 },
         { name: '两周', length: 14 },
         { name: '一个月', length: 30 },
