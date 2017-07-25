@@ -300,7 +300,7 @@
         }
       })
 
-      if (+trimDate(this._data[0].date) === +trimDate()) {
+      if (this._data.length > 0 && +trimDate(this._data[0].date) === +trimDate()) {
         summary.today = this._data[0].value
       }
 
