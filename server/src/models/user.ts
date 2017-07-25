@@ -3,6 +3,7 @@
 import db from '../lib/db'
 import { removeUndefined } from '../lib/util'
 import { Document, Schema } from 'mongoose'
+import { randomString, sha1 } from '../lib/util'
 
 export interface Disease {
   name: string,
@@ -13,6 +14,9 @@ export interface Disease {
 export interface User extends Document {
   /** 等同于 openid */
   _id: string,
+
+  /** sha1(_id + salt), 在分享时作为用户唯一标识 */
+  uid: string,
 
   /** 生日 */
   birthday: Date | null,
@@ -35,6 +39,10 @@ export interface User extends Document {
 
 export const schema = new Schema({
   _id: String,
+  uid: {
+    type: String,
+    index: true
+  },
   birthday: {
     type: Date,
     default: null
@@ -68,6 +76,7 @@ export function getUserInfo (openid: string, fullInfo = true) {
   let projection: any = { _id: false }
   if (!fullInfo) {
     Object.assign(projection, {
+      uid: true,
       birthday: true,
       height: true,
       diseases: true
@@ -85,6 +94,15 @@ export function setUserInfo (openid: string, { birthday, height, diseases }: Par
 }
 
 /** 更新微信用户信息. 如果用户不存在则新建 */
-export function updateWechatUserInfo (userinfo: WechatUserInfo) {
-  return model.findByIdAndUpdate(userinfo.openId, { $set: userinfo }, { upsert: true }).exec()
+export async function updateWechatUserInfo (userinfo: WechatUserInfo) {
+  let doc = await model.findById(userinfo.openId)
+  if (doc) {
+    Object.assign(doc, userinfo)
+  } else {
+    doc = new model(userinfo)
+    doc._id = userinfo.openId
+    doc.uid = sha1(userinfo.openId + randomString(6))
+  }
+
+  return doc.save()
 }
