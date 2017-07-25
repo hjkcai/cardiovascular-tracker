@@ -52,6 +52,13 @@
     }
 
     events = {
+      tabChanged (activeTab) {
+        if (activeTab === 0) {
+          wepy.showShareMenu()
+        } else {
+          wepy.hideShareMenu()
+        }
+      },
       switchToReport (reportIndex) {
         this.activeTab = 0
         this.$invoke('report', 'switchTab', reportIndex, true)
@@ -69,6 +76,13 @@
       }
 
       this.refreshActiveTab()
+    }
+
+    onShareAppMessage () {
+      return {
+        title: '心血管健康助理',
+        path: '/page/index?uid=' + this.$state.userinfo.uid
+      }
     }
   }
 </script>
