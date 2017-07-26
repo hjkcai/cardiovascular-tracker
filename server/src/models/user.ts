@@ -145,6 +145,8 @@ export async function addFriend (openid: string, friendUid: string) {
 
   friend.friends.push({ uid: user.uid, confirmed })
   await friend.save()
+
+  await user.save()
   return confirmed
 }
 
