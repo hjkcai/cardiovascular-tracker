@@ -1,5 +1,6 @@
 <template>
   <view id="settings" class="editor {{ fontSize }}">
+    <view class="title-shadow"></view>
     <view class="canvas-page-wrapper">
       <view class="md-list">
         <view class="section">

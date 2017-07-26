@@ -1,5 +1,6 @@
 <template>
   <view class="editor {{ fontSize }}">
+    <view class="title-shadow"></view>
     <heartstateeditor mode="edit"></heartstateeditor>
   </view>
 </template>

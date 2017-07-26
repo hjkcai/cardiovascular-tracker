@@ -1,5 +1,6 @@
 <template>
   <view class="editor {{ fontSize }}">
+    <view class="title-shadow"></view>
     <weighteditor mode="edit"></weighteditor>
   </view>
 </template>

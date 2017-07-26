@@ -1,5 +1,6 @@
 <template>
   <view class="editor {{ fontSize }}">
+    <view class="title-shadow"></view>
     <view id="userinfo-editor" class="canvas-page-wrapper">
       <form class="md-list" @submit="submit">
         <view class="section">
