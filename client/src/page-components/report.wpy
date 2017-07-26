@@ -17,7 +17,7 @@
     </view>
     <view class="content canvas-page-wrapper">
       <canvas wx:if="{{ _data.length >= 3 }}" canvas-id="chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
-      <view wx:else class="tip" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px">
+      <view wx:else class="fullscreen-tip" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px">
         <image src="../assets/icons/chart-line.svg"></image>
         <text wx:if="{{ _data.length === 0 }}">暂无数据，点击下面的加号开始记录吧</text>
         <text wx:else>数据数量不足以显示图表，点击下面的加号继续记录吧</text>
@@ -471,23 +471,6 @@
         top: 0;
         width: 100%;
         height: 100%;
-      }
-    }
-
-    .tip {
-      padding: 0 10%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      line-height: 1.25;
-      color: $gray;
-
-      image {
-        width: 64px;
-        height: 64px;
-        margin-bottom: 8px;
       }
     }
   }

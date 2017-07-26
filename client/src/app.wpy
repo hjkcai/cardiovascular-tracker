@@ -301,4 +301,21 @@
       }
     }
   }
+
+  .fullscreen-tip {
+    padding: 0 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.25;
+    color: $gray;
+
+    image {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 8px;
+    }
+  }
 </style>
