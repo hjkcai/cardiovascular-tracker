@@ -2,6 +2,7 @@
 
 import * as User from '../models/user'
 import * as Router from 'koa-router'
+import { required } from '../lib/ajv'
 import ValidateMiddleware from '../lib/middlewares/validate'
 
 const router = new Router()
@@ -28,13 +29,13 @@ router.post('userinfo', async (ctx, next) => {
 })
 
 // 发起添加亲友请求, 返回双方是否已经是亲友
-router.post('friend', ValidateMiddleware({ uid: 'string' }))
+router.post('friend', ValidateMiddleware({ uid: required('string') }))
 router.post('friend', async (ctx, next) => {
   ctx.result = await User.addFriend(ctx.session.openid, ctx.request.body.uid)
 })
 
 // 删除亲友
-router.delete('friend', ValidateMiddleware({ uid: 'string' }, 'query'))
+router.delete('friend', ValidateMiddleware({ uid: required('string') }, 'query'))
 router.delete('friend', async (ctx, next) => {
   await User.removeFriend(ctx.session.openid, ctx.query.uid)
   ctx.result = null
