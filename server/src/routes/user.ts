@@ -33,4 +33,11 @@ router.post('friend', async (ctx, next) => {
   ctx.result = await User.addFriend(ctx.session.openid, ctx.request.body.uid)
 })
 
+// 删除亲友
+router.delete('friend', ValidateMiddleware({ uid: 'string' }, 'query'))
+router.delete('friend', async (ctx, next) => {
+  await User.removeFriend(ctx.session.openid, ctx.query.uid)
+  ctx.result = null
+})
+
 export default router
