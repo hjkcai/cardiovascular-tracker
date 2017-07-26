@@ -16,7 +16,7 @@
   import TabMixin from '../mixins/tab'
   import userinfo from './userinfo'
 
-  export default class DataViewer extends wepy.component {
+  export default class UserinfoWrapper extends wepy.component {
     components = {
       userinfo
     }
