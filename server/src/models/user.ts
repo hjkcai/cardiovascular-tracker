@@ -14,6 +14,9 @@ export interface Disease {
 export interface Friend {
   uid: string,
   confirmed: boolean
+
+  /** 好友申请/添加时间 */
+  date: Date
 }
 
 export interface User extends Document {
@@ -72,7 +75,8 @@ export const schema = new Schema({
     type: [{
       _id: false,
       uid: String,
-      confirmed: Boolean
+      confirmed: Boolean,
+      date: Date
     }],
     default: () => []
   },
@@ -156,12 +160,13 @@ export async function addFriend (openid: string, friendUid: string) {
       if (friendItem.confirmed) return true
 
       friendItem.confirmed = true
+      friendItem.date = new Date()
       confirmed = true
       break
     }
   }
 
-  friend.friends.push({ uid: user.uid, confirmed })
+  friend.friends.push({ uid: user.uid, confirmed, date: new Date() })
   await friend.save()
 
   await user.save()
