@@ -1,0 +1,49 @@
+<template>
+  <scroll-view id="friends" scroll-y>
+    <view class="friends" wx:if="{{ friends.length > 0 }}"></view>
+    <view class="no-friend fullscreen-tip" wx:else>
+      <image src="../assets/icons/face.svg"></image>
+      <text>暂无亲友。切换到“健康报告”页面，将您的报告分享给微信好友，双方同意后即可互相查看健康报告</text>
+    </view>
+  </scroll-view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Friends extends wepy.component {
+    data = {
+      friends: []
+    }
+
+    async refresh () {
+      await this.$loading('正在加载...')
+
+      const friends = (await this.$http.get('friends')).data
+      if (friends.code) {
+        await this.$modal(`获取亲友信息失败：${friends.message} (${friends.code})`)
+      } else {
+        this.friends = friends.data
+        this.$apply()
+      }
+
+      await this.$loading()
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  #friends {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    .no-friend {
+      padding-top: 32px;
+    }
+  }
+</style>

@@ -6,18 +6,20 @@
     </view>
     <view class="content">
       <userinfo wx:if="{{ activeTab === 0 }}" class="page"></userinfo>
-      <view wx:if="{{ activeTab === 1 }}" class="page"></view>
+      <friends wx:if="{{ activeTab === 1 }}" class="page"></friends>
     </view>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import friends from './friends'
   import TabMixin from '../mixins/tab'
   import userinfo from './userinfo'
 
   export default class UserinfoWrapper extends wepy.component {
     components = {
+      friends,
       userinfo
     }
 
@@ -31,7 +33,7 @@
         },
         {
           name: '我的亲友',
-          component: null
+          component: 'friends'
         }
       ]
     }
