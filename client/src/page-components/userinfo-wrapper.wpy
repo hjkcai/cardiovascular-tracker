@@ -1,0 +1,49 @@
+<template>
+  <view id="userinfo-wrapper" class="tabs-wrapper">
+    <view class="title-shadow"></view>
+    <view class="tabs">
+      <view wx:for="{{ tabs }}" wx:key="{{ index }}" data-index="{{ index }}" @tap="switchTab" class="tab {{ activeTab === index ? 'active' : '' }}">{{ item.name }}</view>
+    </view>
+    <view class="content">
+      <userinfo wx:if="{{ activeTab === 0 }}" class="page"></userinfo>
+      <view wx:if="{{ activeTab === 1 }}" class="page"></view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import TabMixin from '../mixins/tab'
+  import userinfo from './userinfo'
+
+  export default class DataViewer extends wepy.component {
+    components = {
+      userinfo
+    }
+
+    mixins = [TabMixin]
+
+    data = {
+      tabs: [
+        {
+          name: '个人资料',
+          component: 'userinfo'
+        },
+        {
+          name: '我的亲友',
+          component: null
+        }
+      ]
+    }
+
+    methods = {
+      refresh () {
+        this.refreshActiveTab()
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+</style>

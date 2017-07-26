@@ -1,6 +1,5 @@
 <template>
   <view id="userinfo">
-    <view class="title-shadow"></view>
     <view class="header">
       <image class="avatar" src="{{ userinfo.avatarUrl }}"></image>
       <view class="user-detail">

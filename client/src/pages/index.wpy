@@ -3,7 +3,7 @@
     <view class="main">
       <report wx:if="{{ activeTab === 0 }}"></report>
       <addrecord wx:if="{{ activeTab === 1 }}"></addrecord>
-      <userinfo wx:if="{{ activeTab === 2 }}"></userinfo>
+      <userinfowrapper wx:if="{{ activeTab === 2 }}"></userinfowrapper>
     </view>
     <view class="bottom-nav">
       <view class="nav-item data {{ activeTab === 0 ? 'active' : '' }}" @tap="switchTab" data-index="0">
@@ -33,22 +33,22 @@
   import wepy from 'wepy'
   import report from '../page-components/report'
   import TabMixin from '../mixins/tab'
-  import userinfo from '../page-components/userinfo'
   import { login } from '../lib/state'
   import addrecord from '../page-components/add-record'
   import FontSizeMixin from '../mixins/font-size'
+  import userinfowrapper from '../page-components/userinfo-wrapper'
 
   export default class Index extends wepy.page {
     components = {
+      report,
       addrecord,
-      userinfo,
-      report
+      userinfowrapper
     }
 
     mixins = [TabMixin, FontSizeMixin]
 
     data = {
-      tabs: ['report', 'addrecord', 'userinfo'].map(component => ({ component }))
+      tabs: ['report', 'addrecord', 'userinfowrapper'].map(component => ({ component }))
     }
 
     events = {
@@ -67,11 +67,11 @@
 
     async onLoad () {
       await login()
-      this.$invoke('userinfo', 'refresh')
+      this.$invoke('userinfowrapper', 'refresh')
 
       if (this.$state.userinfo.height === null && this.$state.userinfo.birthday === null) {
         if (await this.$modal('提示', '您还没有填写生日与身高信息，是否现在去填写？', true)) {
-          await this.$invoke('userinfo', 'editUserinfo', true)
+          await this.$invoke('userinfowrapper/userinfo', 'editUserinfo', true)
         }
       }
 
