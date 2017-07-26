@@ -150,13 +150,14 @@ export async function addFriend (openid: string, friendUid: string) {
   return confirmed
 }
 
+/** 删除亲友 */
 export async function removeFriend (openid: string, friendUid: string) {
   const user = await model.findById(openid)
   if (!user) throw new NotFoundError()
 
   await model.update(
     { $or: [{ _id: openid }, { uid: friendUid }] },
-    { $pull: { friends: { $or: [{ uid: user.uid }, { uid: friendUid }] } } },
+    { $pull: { friends: { $elemMatch: { $or: [{ uid: user.uid }, { uid: friendUid }] } } } },
     { multi: true }
   )
 }
