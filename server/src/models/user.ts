@@ -1,14 +1,19 @@
 'use strict'
 
 import db from '../lib/db'
-import { removeUndefined } from '../lib/util'
+import { NotFoundError } from '../lib/errors'
 import { Document, Schema } from 'mongoose'
-import { randomString, sha1 } from '../lib/util'
+import { randomString, removeUndefined, sha1 } from '../lib/util'
 
 export interface Disease {
   name: string,
   onset: Date,
   detail: string
+}
+
+export interface Friend {
+  uid: string,
+  confirmed: boolean
 }
 
 export interface User extends Document {
@@ -26,6 +31,9 @@ export interface User extends Document {
 
   /** 疾病情况 */
   diseases: Disease[],
+
+  /** 亲友信息 */
+  friends: Friend[],
 
   // 从微信获得的信息
   nickName: string,
@@ -58,7 +66,15 @@ export const schema = new Schema({
       onset: Date,
       detail: String
     }],
-    default: []
+    default: () => []
+  },
+  friends: {
+    type: [{
+      _id: false,
+      uid: String,
+      confirmed: Boolean
+    }],
+    default: () => []
   },
   nickName: String,
   gender: Number,
@@ -105,4 +121,29 @@ export async function updateWechatUserInfo (userinfo: WechatUserInfo) {
   }
 
   return doc.save()
+}
+
+/** 添加亲友, 返回双方是否已经是亲友 */
+export async function addFriend (openid: string, friendUid: string) {
+  const user = await model.findById(openid)
+  const friend = await model.findOne({ uid: friendUid })
+
+  if (!user || !friend) {
+    throw new NotFoundError()
+  }
+
+  let confirmed = false
+  for (const friendItem of user.friends) {
+    if (friendItem.uid === friendUid) {
+      if (friendItem.confirmed) return true
+
+      friendItem.confirmed = true
+      confirmed = true
+      break
+    }
+  }
+
+  friend.friends.push({ uid: user.uid, confirmed })
+  await friend.save()
+  return confirmed
 }

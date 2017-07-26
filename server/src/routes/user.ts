@@ -27,4 +27,10 @@ router.post('userinfo', async (ctx, next) => {
   ctx.result = null
 })
 
+// 发起添加亲友请求, 返回双方是否已经是亲友
+router.post('friend', ValidateMiddleware({ uid: 'string' }))
+router.post('friend', async (ctx, next) => {
+  ctx.result = await User.addFriend(ctx.session.openid, ctx.request.body.uid)
+})
+
 export default router
