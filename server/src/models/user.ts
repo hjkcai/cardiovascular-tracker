@@ -123,6 +123,24 @@ export async function updateWechatUserInfo (userinfo: WechatUserInfo) {
   return doc.save()
 }
 
+/** 获取亲友信息 */
+export async function getFriends (openid: string) {
+  const user = await model.findById(openid)
+  if (!user) throw new NotFoundError()
+
+  // 直接使用 user.friends 会带上 mongoose 的附加字段, 所以要 toObject 一次
+  const result: (Friend & Partial<User>)[] = (user.toObject() as User).friends
+  for (const item of result) {
+    const friend = await model.findOne({ uid: item.uid })
+    if (!friend) throw new NotFoundError()
+
+    item.nickName = friend.nickName
+    item.avatarUrl = friend.avatarUrl
+  }
+
+  return result
+}
+
 /** 添加亲友, 返回双方是否已经是亲友 */
 export async function addFriend (openid: string, friendUid: string) {
   const user = await model.findById(openid)

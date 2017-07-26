@@ -28,6 +28,11 @@ router.post('userinfo', async (ctx, next) => {
   ctx.result = null
 })
 
+// 获取亲友信息
+router.get('friends', async (ctx, next) => {
+  ctx.result = await User.getFriends(ctx.session.openid)
+})
+
 // 发起添加亲友请求, 返回双方是否已经是亲友
 router.post('friend', ValidateMiddleware({ uid: required('string') }))
 router.post('friend', async (ctx, next) => {
