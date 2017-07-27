@@ -1,6 +1,24 @@
 <template>
   <scroll-view id="friends" scroll-y>
-    <view class="friends" wx:if="{{ friends.length > 0 }}"></view>
+    <view class="friends-wrapper" wx:if="{{ friends.length > 0 }}">
+      <view class="friends md-list">
+        <view class="unconfirmed-friends" wx:if="{{ hasUnconfirmedFriends }}">
+          <text class="title">新的亲友</text>
+          <view class="friend md-icon-item unconfirmed" wx:for="{{ friends }}" wx:if="{{ !item.confirmed }}">
+            <image src="{{ item.avatarUrl }}"></image>
+            <text>{{ item.nickName }}</text>
+          </view>
+        </view>
+        <view class="confirmed-friends">
+          <text class="title" wx:if="{{ hasUnconfirmedFriends }}">所有亲友</text>
+          <view class="friend md-icon-item" wx:for="{{ friends }}" wx:if="{{ item.confirmed }}" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+            <image src="{{ item.avatarUrl }}"></image>
+            <text>{{ item.nickName }}</text>
+          </view>
+        </view>
+        <view class="note">在“健康报告”页面把报告转发给微信好友来添加亲友</view>
+      </view>
+    </view>
     <view class="no-friend fullscreen-tip" wx:else>
       <image src="../assets/icons/face.svg"></image>
       <text>暂无亲友。切换到“健康报告”页面，将您的报告分享给微信好友，双方同意后即可互相查看健康报告</text>
@@ -14,6 +32,12 @@
   export default class Friends extends wepy.component {
     data = {
       friends: []
+    }
+
+    computed = {
+      hasUnconfirmedFriends () {
+        return this.friends.some(friend => !friend.confirmed)
+      }
     }
 
     async refresh () {
@@ -44,6 +68,30 @@
 
     .no-friend {
       padding-top: 32px;
+    }
+
+    .friends {
+      padding-top: 16px;
+
+      .friend {
+        image {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+        }
+
+        &.unconfirmed {
+          background-color: $dark-white;
+        }
+      }
+    }
+
+    .note {
+      margin-top: 16px;
+      padding: 0 10% 16px;
+      text-align: center;
+      font-size: 0.9em;
+      color: $gray;
     }
   }
 </style>
