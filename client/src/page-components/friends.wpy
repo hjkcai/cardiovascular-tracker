@@ -67,8 +67,16 @@
         }).then(a => a.tapIndex).catch(() => null)
 
         if (index === 0 && await this.$modal('提示', `你确定要删除亲友${friend.nickName}吗？`, true)) {
-          await this.$http.delete('friend?uid=' + friend.uid)
-          return this.refresh()
+          await this.$loading('正在处理')
+
+          const result = (await this.$http.delete('friend?uid=' + friend.uid)).data
+          if (result.code) {
+            await this.$modal('错误', `删除亲友失败: ${result.message} (${result.code})`)
+          } else {
+            await this.refresh()
+          }
+
+          await this.$loading()
         }
       }
     }
