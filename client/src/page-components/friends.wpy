@@ -7,7 +7,7 @@
           <view class="friend md-icon-item unconfirmed" wx:for="{{ friends }}" wx:key="{{ index }}" wx:if="{{ !item.confirmed }}">
             <image src="{{ item.avatarUrl }}"></image>
             <text>{{ item.nickName }}</text>
-            <button class="md-button">接受</button>
+            <button class="md-button" @tap="addFriend" data-index="{{ index }}">接受</button>
           </view>
         </view>
         <view class="confirmed-friends">
@@ -47,6 +47,19 @@
     }
 
     methods = {
+      async addFriend (e) {
+        await this.$loading('正在处理...')
+
+        const friend = this.friends[e.currentTarget.dataset.index]
+        const result = (await this.$http.post('friend', { uid: friend.uid })).data
+        if (result.code) {
+          await this.$modal('错误', `添加亲友失败: ${result.message} (${result.code})`)
+        } else {
+          await this.refresh()
+        }
+
+        await this.$loading()
+      },
       async removeFriend (e) {
         const friend = this.friends[e.currentTarget.dataset.index]
         const index = await wepy.showActionSheet({
