@@ -71,7 +71,7 @@
       await login()
 
       // 如果用户从好友转发中进入小程序, 先确认亲友关系, 确认后直接转到亲友的健康报告中
-      if (this.$state.scene === 1007 && uid) {
+      if (this.$state.scene === 1007 && uid && this.$state.userinfo.uid !== uid) {
         await this.$loading('正在加载...')
 
         let showFriendsReport = false
