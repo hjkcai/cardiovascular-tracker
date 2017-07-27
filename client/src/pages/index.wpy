@@ -38,6 +38,8 @@
   import FontSizeMixin from '../mixins/font-size'
   import userinfowrapper from '../page-components/userinfo-wrapper'
 
+  import * as qs from 'qs'
+
   export default class Index extends wepy.page {
     components = {
       report,
@@ -65,10 +67,46 @@
       }
     }
 
-    async onLoad () {
+    async onLoad ({ uid }) {
       await login()
-      this.$invoke('userinfowrapper', 'refresh')
 
+      // 如果用户从好友转发中进入小程序, 先确认亲友关系, 确认后直接转到亲友的健康报告中
+      if (this.$state.scene === 1007 && uid) {
+        await this.$loading('正在加载...')
+
+        let showFriendsReport = false
+        const friendInfo = (await this.$http.get(`userinfo/${uid}`)).data
+        if (friendInfo.code) {
+          this.$modal('错误', `无法读取用户数据: ${friendInfo.message} (${friendInfo.code})`)
+        } else if (friendInfo.data.isFriend) {
+          showFriendsReport = true
+        } else if (await this.$modal('提示', `是否将${friendInfo.data.nickName}添加到你的亲友列表中？`, true)) {
+          const result = (await this.$http.post('friend', { uid })).data
+          if (result.code) {
+            await this.$modal('错误', `无法添加亲友: ${result.message} (${result.code})`)
+          } else if (!result.data) {
+            await this.$modal('提示', '对方已收到您的亲友添加请求，待对方同意后即可互相查看健康报告')
+          } else {
+            showFriendsReport = true
+          }
+        }
+
+        if (showFriendsReport) {
+          const query = qs.stringify({
+            q: JSON.stringify({
+              uid: uid,
+              ...friendInfo.data
+            })
+          })
+
+          await this.$loading()
+          return wepy.redirectTo({ url: './report?' + query })
+        }
+
+        await this.$loading()
+      }
+
+      this.$invoke('userinfowrapper', 'refresh')
       if (this.$state.userinfo.height === null && this.$state.userinfo.birthday === null) {
         if (await this.$modal('提示', '您还没有填写生日与身高信息，是否现在去填写？', true)) {
           await this.$invoke('userinfowrapper/userinfo', 'editUserinfo', true)
