@@ -133,7 +133,14 @@ export async function getFriends (openid: string) {
   if (!user) throw new NotFoundError()
 
   // 直接使用 user.friends 会带上 mongoose 的附加字段, 所以要 toObject 一次
-  const result: (Friend & Partial<User>)[] = (user.toObject() as User).friends
+  const result: (Friend & Partial<User>)[] = (user.toObject() as User).friends.sort((a, b) => {
+    if (a.confirmed === b.confirmed) {
+      return +b.date - +a.date
+    } else {
+      return +a.confirmed - +b.confirmed
+    }
+  })
+
   for (const item of result) {
     const friend = await model.findOne({ uid: item.uid })
     if (!friend) throw new NotFoundError()
