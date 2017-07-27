@@ -7,6 +7,7 @@
           <view class="friend md-icon-item unconfirmed" wx:for="{{ friends }}" wx:if="{{ !item.confirmed }}">
             <image src="{{ item.avatarUrl }}"></image>
             <text>{{ item.nickName }}</text>
+            <button class="md-button">接受</button>
           </view>
         </view>
         <view class="confirmed-friends">
@@ -70,20 +71,26 @@
       padding-top: 32px;
     }
 
-    .friends {
-      padding-top: 16px;
-
-      .friend {
-        image {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-        }
-
-        &.unconfirmed {
-          background-color: $dark-white;
-        }
+    .friend {
+      image {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
       }
+
+      button {
+        padding: 8px 16px;
+        margin-left: auto;
+      }
+    }
+
+    .unconfirmed-friends {
+      padding-top: 16px;
+      background-color: $dark-white;
+    }
+
+    .confirmed-friends {
+      padding-top: 16px;
     }
 
     .note {
