@@ -22,7 +22,7 @@ router.get('userinfo/:uid', async (ctx, next) => {
 
   ctx.result = {
     nickName: target.nickName,
-    isFriend: target.friends.some(friend => friend.uid === user.uid)
+    isFriend: target.friends.some(friend => friend.uid === user.uid && friend.confirmed)
   }
 })
 
