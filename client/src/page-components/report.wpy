@@ -19,8 +19,14 @@
       <canvas wx:if="{{ _data.length >= 3 }}" canvas-id="chart" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px"></canvas>
       <view wx:else class="fullscreen-tip" style="width: {{ canvasWidth }}px; height: {{ canvasHeight }}px">
         <image src="../assets/icons/chart-line.svg"></image>
-        <text wx:if="{{ _data.length === 0 }}">暂无数据，点击下面的加号开始记录吧</text>
-        <text wx:else>数据数量不足以显示图表，点击下面的加号继续记录吧</text>
+        <text wx:if="{{ _data.length === 0 }}">
+          <text>暂无数据</text>
+          <text wx:if="{{ !friendUid }}">，点击下面的加号开始记录吧</text>
+        </text>
+        <text wx:else>
+          <text>数据数量不足以显示图表</text>
+          <text wx:if="{{ !friendUid }}">，点击下面的加号继续记录吧</text>
+        </text>
       </view>
 
       <!-- 体重 -->
@@ -218,7 +224,10 @@
         systolic: summaryTemplate(),
         diastolic: summaryTemplate(),
         heartRate: summaryTemplate()
-      }
+      },
+
+      // 亲友 uid, 当亲友 uid 为空时显示用户自己的健康报告
+      friendUid: ''
     }
 
     methods = {
@@ -233,23 +242,35 @@
       },
       changeDateRange (e) {
         if (this.dateRange !== e.detail.value) {
-          wx.setStorageSync('dateRange', e.detail.value)
+          if (!this.friendUid) {
+            wx.setStorageSync('dateRange', e.detail.value)
+          }
+
           this.dateRange = e.detail.value
-          this.fetchData()
+          return this.fetchData()
         }
       },
       refresh () {
-        this.fetchData()
+        return this.fetchData()
       },
       async editWeightData (e) {
+        if (this.friendUid) return
+
         const url = './weight-editor?' + qs.stringify(this._data[e.currentTarget.dataset.comIndex])
         const success = await this.$navigateTo('weight-editor', url)
-        if (success) this.fetchData()
+        if (success) return this.fetchData()
       },
       async editHeartStateData (e) {
+        if (this.friendUid) return
+
         const url = './heart-state-editor?' + qs.stringify(this._data[e.currentTarget.dataset.comIndex])
         const success = await this.$navigateTo('heart-state-editor', url)
-        if (success) this.fetchData()
+        if (success) return this.fetchData()
+      },
+      setFriendUid (friendUid) {
+        if (friendUid) friendUid = '/' + friendUid
+        this.friendUid = friendUid
+        this.$apply()
       }
     }
 
@@ -282,7 +303,7 @@
     }
 
     async fetchWeightData () {
-      this._data = (await this.$http.get('weight', { params: { from: this.getDateStart() } })).data.data || []
+      this._data = (await this.$http.get('weight' + this.friendUid, { params: { from: this.getDateStart() } })).data.data || []
       this.transformDate()
       this.weightChart.setData(this._data)
 
@@ -318,7 +339,7 @@
     }
 
     async fetchHeartStateData () {
-      this._data = (await this.$http.get('heart-state', { params: { from: this.getDateStart() } })).data.data || []
+      this._data = (await this.$http.get('heart-state' + this.friendUid, { params: { from: this.getDateStart() } })).data.data || []
       this.transformDate()
       this.heartRateChart.setData(this._data)
 
