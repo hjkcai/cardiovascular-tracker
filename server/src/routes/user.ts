@@ -3,6 +3,7 @@
 import * as User from '../models/user'
 import * as Router from 'koa-router'
 import { required } from '../lib/ajv'
+import { NotFoundError } from '../lib/errors'
 import ValidateMiddleware from '../lib/middlewares/validate'
 import FriendValidationMiddleware from '../lib/middlewares/friend'
 
@@ -13,14 +14,15 @@ router.get('userinfo', async (ctx, next) => {
   ctx.result = await User.getUserInfo(ctx.session.openid, false)
 })
 
-// 获取好友信息
-router.get('userinfo/:friendUid', FriendValidationMiddleware)
-router.get('userinfo/:friendUid', async (ctx, next) => {
-  if (ctx.friend) {
-    ctx.result = {
-      nickName: ctx.friend.nickName,
-      avatarUrl: ctx.friend.avatarUrl
-    }
+// 获取其它用户的昵称, 以及该用户是否是当前用户的朋友
+router.get('userinfo/:uid', async (ctx, next) => {
+  const user = await User.getUserInfo(ctx.session.openid)
+  const target = await User.model.findOne({ uid: ctx.params.uid }, { _id: false, nickName: true, friends: true })
+  if (!user || !target) throw new NotFoundError()
+
+  ctx.result = {
+    nickName: target.nickName,
+    isFriend: target.friends.some(friend => friend.uid === user.uid)
   }
 })
 
