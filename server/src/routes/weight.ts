@@ -5,6 +5,7 @@ import * as Weight from '../models/weight'
 
 import { required } from '../lib/ajv'
 import ValidateMiddleware from '../lib/middlewares/validate'
+import FriendValidationMiddleware from '../lib/middlewares/friend'
 
 const router = new Router()
 
@@ -16,6 +17,19 @@ router.get('weight', ValidateMiddleware({
 
 router.get('weight', async (ctx, next) => {
   ctx.result = await Weight.getWeightRecords(ctx.session.openid, ctx.query.from, ctx.query.to)
+})
+
+// 获取朋友的体重记录
+router.get('weight/:friendUid', FriendValidationMiddleware)
+router.get('weight/:friendUid', ValidateMiddleware({
+  from: required('date-time'),
+  to: 'date-time'
+}, 'query'))
+
+router.get('weight/:friendUid', async (ctx, next) => {
+  if (ctx.friend) {
+    ctx.result = await Weight.getWeightRecords(ctx.friend._id, ctx.query.from, ctx.query.to)
+  }
 })
 
 // 增加体重记录

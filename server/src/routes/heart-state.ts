@@ -5,6 +5,7 @@ import * as HeartState from '../models/heart-state'
 
 import { required } from '../lib/ajv'
 import ValidateMiddleware from '../lib/middlewares/validate'
+import FriendValidationMiddleware from '../lib/middlewares/friend'
 
 const router = new Router()
 
@@ -16,6 +17,19 @@ router.get('heart-state', ValidateMiddleware({
 
 router.get('heart-state', async (ctx, next) => {
   ctx.result = await HeartState.getHeartStateRecords(ctx.session.openid, ctx.query.from, ctx.query.to)
+})
+
+// 获取朋友的心率血压记录
+router.get('heart-state/:friendUid', FriendValidationMiddleware)
+router.get('heart-state/:friendUid', ValidateMiddleware({
+  from: required('date-time'),
+  to: 'date-time'
+}, 'query'))
+
+router.get('heart-state/:friendUid', async (ctx, next) => {
+  if (ctx.friend) {
+    ctx.result = await HeartState.getHeartStateRecords(ctx.friend._id, ctx.query.from, ctx.query.to)
+  }
 })
 
 // 添加心率血压记录
