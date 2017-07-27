@@ -57,3 +57,10 @@ export class NotAuthorizedError extends UserError {
     super('Not Authorized', 104, 403)
   }
 }
+
+/** 不是好友关系 */
+export class NotFriendError extends UserError {
+  constructor () {
+    super('You are not a friend of that user', 105, 403)
+  }
+}
