@@ -3,6 +3,8 @@
   import './lib/wepy'
   import 'wepy-async-function'
 
+  import state from './lib/state'
+
   export default class extends wepy.app {
     constructor () {
       super()
@@ -24,6 +26,10 @@
         navigationBarTitleText: '心血管健康助理',
         navigationBarTextStyle: 'white'
       }
+    }
+
+    onLaunch (options) {
+      state.scene = options.scene
     }
   }
 </script>

@@ -7,6 +7,7 @@ import { $modal, $loading } from '../lib/wepy'
 
 const state = {
   code: '',
+  scene: null,
   fontSize: wx.getStorageSync('font-size') || 'normal',
   userinfo: {}
 }
