@@ -2,7 +2,11 @@
   <view id="userinfo-wrapper" class="tabs-wrapper">
     <view class="title-shadow"></view>
     <view class="tabs">
-      <view wx:for="{{ tabs }}" wx:key="{{ index }}" data-index="{{ index }}" @tap="switchTab" class="tab {{ activeTab === index ? 'active' : '' }}">{{ item.name }}</view>
+      <view class="tab {{ activeTab === 0 ? 'active' : '' }}" @tap="switchTab" data-index="0">个人资料</view>
+      <view class="tab {{ activeTab === 1 ? 'active' : '' }}" @tap="switchTab" data-index="1">
+        <text>我的亲友</text>
+        <text class="badge" wx:if="{{ unconfirmedFriends > 0 }}">{{ unconfirmedFriends }}</text>
+      </view>
     </view>
     <view class="content">
       <userinfo wx:if="{{ activeTab === 0 }}" class="page"></userinfo>
@@ -26,16 +30,8 @@
     mixins = [TabMixin]
 
     data = {
-      tabs: [
-        {
-          name: '个人资料',
-          component: 'userinfo'
-        },
-        {
-          name: '我的亲友',
-          component: 'friends'
-        }
-      ]
+      tabs: ['userinfo', 'friends'].map(component => ({ component })),
+      unconfirmedFriends: 0
     }
 
     methods = {
@@ -43,9 +39,33 @@
         this.refreshActiveTab()
       }
     }
+
+    onLoad () {
+      // 监听未确认朋友数量改变事件
+      this.$globalEvents.on('unconfirmedFriendsChanged', count => {
+        this.unconfirmedFriends = count
+        this.$apply()
+      })
+    }
   }
 </script>
 
 <style lang="scss">
   @import '../assets/styles/variables';
+
+  #userinfo-wrapper {
+    .badge {
+      $badge-height: 1.33em;
+
+      height: $badge-height;
+      padding: 0 6px;
+      border-radius: $badge-height / 2;
+      margin-left: 8px;
+      display: flex;
+      align-items: center;
+      font-size: 0.85em;
+      color: $primary;
+      background-color: white;
+    }
+  }
 </style>

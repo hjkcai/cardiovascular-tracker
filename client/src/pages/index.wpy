@@ -23,7 +23,10 @@
           <image src="../assets/icons/userinfo.svg"></image>
           <image src="../assets/icons/userinfo-active.svg"></image>
         </view>
-        <view class="label">我的信息</view>
+        <view class="label">
+          <text>我的信息</text>
+          <view class="badge" wx:if="{{ unconfirmedFriends > 0 }}"></view>
+        </view>
       </view>
     </view>
   </view>
@@ -50,7 +53,8 @@
     mixins = [TabMixin, FontSizeMixin]
 
     data = {
-      tabs: ['report', 'addrecord', 'userinfowrapper'].map(component => ({ component }))
+      tabs: ['report', 'addrecord', 'userinfowrapper'].map(component => ({ component })),
+      unconfirmedFriends: 0
     }
 
     events = {
@@ -106,12 +110,20 @@
         await this.$loading()
       }
 
-      this.$invoke('userinfowrapper', 'refresh')
+      this.$invoke('userinfowrapper/userinfo', 'refresh')
+      this.$invoke('userinfowrapper/friends', 'refresh')
+
       if (this.$state.userinfo.height === null && this.$state.userinfo.birthday === null) {
         if (await this.$modal('提示', '您还没有填写生日与身高信息，是否现在去填写？', true)) {
           await this.$invoke('userinfowrapper/userinfo', 'editUserinfo', true)
         }
       }
+
+      // 监听未确认朋友数量改变事件
+      this.$globalEvents.on('unconfirmedFriendsChanged', count => {
+        this.unconfirmedFriends = count
+        this.$apply()
+      })
 
       this.refreshActiveTab()
     }
@@ -167,8 +179,22 @@
       }
 
       .label {
+        position: relative;
         display: flex;
         align-items: center;
+
+        .badge {
+          $badge-size: 8px;
+
+          position: absolute;
+          right: -$badge-size / 2;
+          top: -$badge-size / 2;
+          width: $badge-size;
+          height: $badge-size;
+          border-radius: 50%;
+          color: white;
+          background-color: $primary;
+        }
       }
 
       &.active .icon image {

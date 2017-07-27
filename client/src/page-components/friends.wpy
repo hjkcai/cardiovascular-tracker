@@ -98,6 +98,11 @@
         await this.$modal(`获取亲友信息失败：${friends.message} (${friends.code})`)
       } else {
         this.friends = friends.data
+        this.$globalEvents.emit('unconfirmedFriendsChanged', this.friends.reduce((count, friend) => {
+          if (!friend.confirmed) count += 1
+          return count
+        }, 0))
+
         this.$apply()
       }
 
