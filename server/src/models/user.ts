@@ -157,9 +157,8 @@ export async function addFriend (openid: string, friendUid: string) {
   const user = await model.findById(openid)
   const friend = await model.findOne({ uid: friendUid })
 
-  if (!user || !friend) {
-    throw new NotFoundError()
-  }
+  if (!user || !friend) throw new NotFoundError()
+  if (user._id === friend._id) return true
 
   let confirmed = false
   for (const friendItem of user.friends) {
