@@ -4,12 +4,24 @@ import * as User from '../models/user'
 import * as Router from 'koa-router'
 import { required } from '../lib/ajv'
 import ValidateMiddleware from '../lib/middlewares/validate'
+import FriendValidationMiddleware from '../lib/middlewares/friend'
 
 const router = new Router()
 
 // 获取部分用户信息
 router.get('userinfo', async (ctx, next) => {
   ctx.result = await User.getUserInfo(ctx.session.openid, false)
+})
+
+// 获取好友信息
+router.get('userinfo/:friendUid', FriendValidationMiddleware)
+router.get('userinfo/:friendUid', async (ctx, next) => {
+  if (ctx.friend) {
+    ctx.result = {
+      nickName: ctx.friend.nickName,
+      avatarUrl: ctx.friend.avatarUrl
+    }
+  }
 })
 
 // 修改用户信息
