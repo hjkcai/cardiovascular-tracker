@@ -173,9 +173,11 @@ export async function addFriend (openid: string, friendUid: string) {
     }
   }
 
-  friend.friends.push({ uid: user.uid, confirmed, date: new Date() })
-  await friend.save()
+  if (!friend.friends.some(friend => friend.uid === user.uid)) {
+    friend.friends.push({ uid: user.uid, confirmed, date: new Date() })
+  }
 
+  await friend.save()
   await user.save()
   return confirmed
 }
