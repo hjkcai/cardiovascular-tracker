@@ -4,7 +4,7 @@
       <view class="friends md-list">
         <view class="unconfirmed-friends" wx:if="{{ hasUnconfirmedFriends }}">
           <text class="title">新的亲友</text>
-          <view class="friend md-icon-item unconfirmed" wx:for="{{ friends }}" wx:if="{{ !item.confirmed }}">
+          <view class="friend md-icon-item unconfirmed" wx:for="{{ friends }}" wx:key="{{ index }}" wx:if="{{ !item.confirmed }}">
             <image src="{{ item.avatarUrl }}"></image>
             <text>{{ item.nickName }}</text>
             <button class="md-button">接受</button>
@@ -12,7 +12,12 @@
         </view>
         <view class="confirmed-friends">
           <text class="title" wx:if="{{ hasUnconfirmedFriends }}">所有亲友</text>
-          <view class="friend md-icon-item" wx:for="{{ friends }}" wx:if="{{ item.confirmed }}" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+          <view
+            class="friend md-icon-item"
+            wx:for="{{ friends }}" wx:key="{{ index }}" wx:if="{{ item.confirmed }}"
+            @longtap="removeFriend" data-index="{{ index }}"
+            hover-class="hover" hover-start-time="20" hover-stay-time="70"
+          >
             <image src="{{ item.avatarUrl }}"></image>
             <text>{{ item.nickName }}</text>
           </view>
@@ -38,6 +43,20 @@
     computed = {
       hasUnconfirmedFriends () {
         return this.friends.some(friend => !friend.confirmed)
+      }
+    }
+
+    methods = {
+      async removeFriend (e) {
+        const friend = this.friends[e.currentTarget.dataset.index]
+        const index = await wepy.showActionSheet({
+          itemList: ['删除亲友']
+        }).then(a => a.tapIndex).catch(() => null)
+
+        if (index === 0 && await this.$modal('提示', `你确定要删除亲友${friend.nickName}吗？`, true)) {
+          await this.$http.delete('friend?uid=' + friend.uid)
+          return this.refresh()
+        }
       }
     }
 
