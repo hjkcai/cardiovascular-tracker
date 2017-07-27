@@ -20,10 +20,31 @@
       report
     }
 
+    /**
+     * 可以通过两个方式进入此页面:
+     * 1. report?q=[JSON数据, 包括uid和nickName]
+     * 2. report?uid=[uid]
+     */
     async onLoad (data) {
-      data = JSON.parse(decodeURIComponent(data.q))
+      if (data.q) {
+        data = JSON.parse(decodeURIComponent(data.q))
+      } else if (data.uid) {
+        data = { uid: data.uid }
+      }
+
+      if (data.nickName) {
+        await wepy.setNavigationBarTitle({ title: `${data.nickName}的健康报告` })
+      } else {
+        this.$http.get(`userinfo/${data.uid}`).then(({ data }) => {
+          if (data.code) {
+            /* TODO: 上报异常 */
+          } else {
+            wepy.setNavigationBarTitle({ title: `${data.data.nickName}的健康报告` })
+          }
+        })
+      }
+
       this.$invoke('report', 'setFriendUid', data.uid)
-      await wepy.setNavigationBarTitle({ title: `${data.nickName}的健康报告` })
       await this.$invoke('report', 'refresh')
     }
   }

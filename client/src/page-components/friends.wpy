@@ -16,7 +16,7 @@
           <view
             class="friend md-icon-item"
             wx:for="{{ friends }}" wx:key="{{ index }}" wx:if="{{ item.confirmed }}"
-            @longtap="removeFriend" data-index="{{ index }}"
+            @tap="showReport" @longtap="removeFriend" data-index="{{ index }}"
             hover-class="hover" hover-start-time="20" hover-stay-time="70"
           >
             <image src="{{ item.avatarUrl }}"></image>
@@ -74,6 +74,10 @@
         if (index === 0 && await this.$modal('提示', `你确定要删除亲友${friend.nickName}吗？`, true)) {
           return this.removeFriend(friend.uid)
         }
+      },
+      showReport (e) {
+        const friend = this.friends[e.currentTarget.dataset.index]
+        this.$navigateTo('./report?uid=' + friend.uid)
       }
     }
 

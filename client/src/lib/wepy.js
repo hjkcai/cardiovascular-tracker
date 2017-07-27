@@ -23,7 +23,12 @@ export function $loading (title, mask = true) {
 export const $http = axios
 
 export function $navigateTo (key, url) {
-  return wepy.navigateTo({ url }).then(() => new Promise(resolve => events.once(key, resolve)))
+  if (key && !url) {
+    url = key
+    key = undefined
+  }
+
+  return wepy.navigateTo({ url }).then(() => key && new Promise(resolve => events.once(key, resolve)))
 }
 
 export function $navigateBack (key, ...args) {
