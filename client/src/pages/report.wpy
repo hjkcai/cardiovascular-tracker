@@ -1,0 +1,36 @@
+<template>
+  <view id="index" class="{{ fontSize }}">
+    <report></report>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import report from '../page-components/report'
+  import FontSizeMixin from '../mixins/font-size'
+
+  export default class Report extends wepy.page {
+    config = {
+      navigationBarTitleText: '亲友的健康报告'
+    }
+
+    mixins = [FontSizeMixin]
+
+    components = {
+      report
+    }
+
+    async onLoad (data) {
+      data = JSON.parse(decodeURIComponent(data.q))
+      this.$invoke('report', 'setFriendUid', data.uid)
+      await wepy.setNavigationBarTitle({ title: `${data.nickName}的健康报告` })
+      await this.$invoke('report', 'refresh')
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+  @import '../assets/styles/font-sizes';
+  @include font-size-defs(index);
+</style>
