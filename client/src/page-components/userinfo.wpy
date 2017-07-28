@@ -14,7 +14,7 @@
       <view class="section buttons">
         <button @tap="editUserinfo">
           <image src="../assets/icons/pencil.svg"></image>
-          <text>修改个人信息</text>
+          <text>修改信息</text>
         </button>
         <button @tap="about">
           <image src="../assets/icons/settings.svg"></image>
