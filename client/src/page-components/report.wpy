@@ -384,6 +384,10 @@
         summary.heartRate.average += item.heartRate
 
         if (+trimDate(item.date) === today) {
+          if (typeof summary.systolic.today === 'string') {
+            summary.systolic.today = summary.diastolic.today = summary.heartRate.today = 0
+          }
+
           summary.systolic.today += item.systolic
           summary.diastolic.today += item.diastolic
           summary.heartRate.today += item.heartRate
