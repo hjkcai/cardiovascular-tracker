@@ -309,7 +309,7 @@
     }
   }
 
-  .fullscreen-tip {
+  view.fullscreen-tip {
     padding: 0 10%;
     display: flex;
     flex-direction: column;
