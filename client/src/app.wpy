@@ -97,6 +97,7 @@
         align-items: center;
         justify-content: center;
         border-bottom: $tabs-line-width solid transparent;
+        font-weight: bold;
 
         &.hover {
           background-color: rgba(255, 255, 255, 0.25);
