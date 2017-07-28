@@ -131,7 +131,7 @@
     onShareAppMessage () {
       return {
         title: '心血管健康助理',
-        path: '/page/index?uid=' + this.$state.userinfo.uid
+        path: 'pages/index?uid=' + this.$state.userinfo.uid
       }
     }
   }
