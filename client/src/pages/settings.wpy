@@ -2,7 +2,7 @@
   <view id="settings" class="editor {{ fontSize }}">
     <view class="title-shadow"></view>
     <view class="canvas-page-wrapper">
-      <view class="md-list">
+      <scroll-view class="md-list" scroll-y>
         <view class="section">
           <text class="title">设置</text>
           <mdlistitem @tap.user="changeFontSize">
@@ -10,7 +10,33 @@
             <text slot="left">{{ FONT_SIZES[fontSize] }}</text>
           </mdlistitem>
         </view>
-      </view>
+        <view class="section">
+          <text class="title">反馈</text>
+          <mdlistitem>
+            <text slot="caption">小程序测试版</text>
+            <text slot="left">如果您在试用中发现任何问题，或者有任何改进建议，欢迎随时联系我们</text>
+          </mdlistitem>
+          <mdlistitem>
+            <text slot="caption">反馈邮箱</text>
+            <text slot="left">xcxheart@qq.com</text>
+          </mdlistitem>
+          <mdlistitem>
+            <text slot="caption">留言</text>
+            <text slot="left">点击右上角“…”按键，在“相关公众号”选择并关注“曹龙兴医生”，在公众号中留言</text>
+          </mdlistitem>
+        </view>
+        <view class="section">
+          <text class="title">开源信息</text>
+          <mdlistitem>
+            <text slot="caption">项目主页</text>
+            <text slot="left">https://github.com/hjkcai/cardiovascular-tracker</text>
+          </mdlistitem>
+          <mdlistitem>
+            <text slot="caption">开源协议</text>
+            <text slot="left">本小程序基于 MIT 协议开放全部源代码，在项目主页中可查看更多信息。欢迎开 issue</text>
+          </mdlistitem>
+        </view>
+      </scroll-view>
     </view>
   </view>
 </template>
