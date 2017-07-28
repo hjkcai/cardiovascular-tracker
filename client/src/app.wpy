@@ -310,6 +310,10 @@
     }
   }
 
+  scroll-view.md-list {
+    overflow: scroll;
+  }
+
   view.fullscreen-tip {
     padding: 0 10%;
     display: flex;
