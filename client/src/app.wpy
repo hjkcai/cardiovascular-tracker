@@ -188,6 +188,7 @@
         display: flex;
         color: $gray;
         font-size: 0.9em;
+        overflow: hidden;
 
         .right {
           margin-left: auto;

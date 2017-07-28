@@ -27,10 +27,12 @@
         </view>
         <view class="section">
           <text class="title">开源信息</text>
-          <mdlistitem>
-            <text slot="caption">项目主页</text>
-            <text slot="left">https://github.com/hjkcai/cardiovascular-tracker</text>
-          </mdlistitem>
+          <view class="md-list-item" hover-class="hover" hover-start-time="20" hover-stay-time="70">
+            <view class="caption">项目主页</view>
+            <view class="content">
+              <view class="left" style="width: 100%; word-wrap: break-word">https://github.com/hjkcai/cardiovascular-tracker</view>
+            </view>
+          </view>
           <mdlistitem>
             <text slot="caption">开源协议</text>
             <text slot="left">本小程序基于 MIT 协议开放全部源代码，在项目主页中可查看更多信息。欢迎开 issue</text>
