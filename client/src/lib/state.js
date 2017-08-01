@@ -25,20 +25,14 @@ export function login () {
 }
 
 async function _login () {
-  let code, userinfo
+  let code
   await $loading('正在加载...')
 
   if (state.code && await wepy.checkSession()) code = state.code
   else code = (await wepy.login()).code     // TODO: 错误处理
 
-  while (true) {
-    await wepy.getUserInfo().then(result => { userinfo = result })
-
-    if (!userinfo) {
-      await $modal('提示', '心血管健康助力需要您的公开个人信息才能继续使用，请勾选用户信息权限')
-      await wepy.openSetting()
-    } else break
-  }
+  const userinfo = await wepy.getUserInfo().catch(() => {})
+  if (!userinfo) return false
 
   // 获取请求 token
   const token = (await axios.post('login', { code, userinfo })).data
@@ -61,6 +55,7 @@ async function _login () {
   }
 
   await $loading()
+  return true
 }
 
 export function updateUserinfo (userinfo) {

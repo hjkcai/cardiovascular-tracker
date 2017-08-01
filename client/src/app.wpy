@@ -16,6 +16,7 @@
         'pages/index',
         'pages/report',
         'pages/settings',
+        'pages/no-permission',
         'pages/weight-editor',
         'pages/disease-editor',
         'pages/userinfo-editor',
