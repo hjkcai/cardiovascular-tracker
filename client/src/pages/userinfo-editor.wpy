@@ -39,6 +39,9 @@
             </view>
           </view>
         </view>
+        <view class="section submit">
+          <button class="md-button" @tap="save">保存</button>
+        </view>
       </form>
     </view>
   </view>
@@ -92,6 +95,9 @@
       },
       removeDisease (e) {
         this.userinfoData.diseases.splice(e.currentTarget.dataset.index, 1)
+      },
+      save () {
+        this.$navigateBack()
       }
     }
 
