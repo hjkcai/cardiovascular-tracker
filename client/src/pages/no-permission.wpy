@@ -1,0 +1,43 @@
+<template>
+  <view id="no-permission" class="{{ fontSize }}">
+    <view class="title-shadow"></view>
+    <view class="fullscreen-tip">
+      <image src="../assets/icons/chart-line.svg"></image>
+      <text>心血管健康助理需要您的头像和昵称信息才能正常使用，请同意我们获取您的个人信息</text>
+    </view>
+    <button class="md-button" open-type="getUserInfo" @getuserinfo="success">授权</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import FontSizeMixin from '../mixins/font-size'
+
+  export default class HeartStateEditor extends wepy.page {
+    config = {
+      navigationBarTitleText: '心血管健康助理'
+    }
+
+    mixins = [FontSizeMixin]
+
+    methods = {
+      success () {
+        wepy.redirectTo({ url: './index' })
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import '../assets/styles/variables';
+
+  #no-permission {
+    padding-top: 16px;
+
+    .md-button {
+      display: block;
+      margin: 16px;
+      padding: 12px 0;
+    }
+  }
+</style>
