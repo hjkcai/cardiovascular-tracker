@@ -24,7 +24,7 @@
           <text class="title">疾病史</text>
           <repeat for="{{ userinfoData.diseases }}" key="{{ index }}">
             <mdiconitem @tap.user="editDisease">
-              <image slot="icon" src="../assets/icons/delete.svg" @tap="removeDisease" data-index="{{ index }}"></image>
+              <image slot="icon" src="../assets/icons/delete.svg" @tap.stop="removeDisease" data-index="{{ index }}"></image>
               <text slot="caption">{{ item.name }}</text>
               <view slot="left">
                 <view>确诊日期: {{ item.onset }}</view>
