@@ -32,7 +32,10 @@ export function $navigateTo (key, url) {
 }
 
 export function $navigateBack (key, ...args) {
-  events.emit(key, ...args)
+  if (key) {
+    events.emit(key, ...args)
+  }
+
   return wepy.navigateBack()
 }
 
